@@ -1,0 +1,51 @@
+generator client {
+  provider        = "prisma-client-js"
+  previewFeatures = ["driverAdapters"]
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Proposition {
+  id          String   @id @default(uuid())
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  title       String   @db.VarChar(255)
+  description String   @db.Text
+  yearResults Result[]
+}
+
+model Year {
+  id        String   @id @default(uuid())
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  year      Int      @unique
+  results   Result[]
+}
+
+model County {
+  id        String   @id @default(uuid())
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  name      String   @db.VarChar(255)
+  results   Result[]
+}
+
+model Result {
+  id            String      @id @default(uuid())
+  createdAt     DateTime    @default(now())
+  updatedAt     DateTime    @updatedAt
+  votesFor      Int
+  votesAgainst  Int
+  turnout       Int // Total number of eligible voters
+  proposition   Proposition @relation(fields: [propositionId], references: [id])
+  propositionId String
+  year          Year        @relation(fields: [yearId], references: [id])
+  yearId        String
+  county        County      @relation(fields: [countyId], references: [id])
+  countyId      String
+
+  @@unique([propositionId, yearId, countyId])
+}

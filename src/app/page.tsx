@@ -5,6 +5,8 @@ import { MapContainer } from '@/components/map/MapContainer';
 import { LayerControl } from '@/components/controls/LayerControl';
 import { Card } from '@/components/ui/Card';
 import { Button } from '@/components/ui/Button';
+import PropositionDropdown from '@/components/filtering/PropositionDropdown'
+
 
 export default function Home() {
   return (
@@ -20,7 +22,16 @@ export default function Home() {
           </div>
           
           <div className="space-y-4">
-            <Card>
+            <Card className="p-4">
+              <div className="space-y-4">
+                <div>
+                  <h3 className="text-sm font-medium mb-2">Select Proposition</h3>
+                  <PropositionDropdown />
+                </div>
+              </div>
+            </Card>
+            
+            <Card className="p-4">
               <LayerControl 
                 layers={[
                   { id: 'counties', label: 'Counties' },
@@ -32,9 +43,9 @@ export default function Home() {
               />
             </Card>
             
-            <Card>
+            <Card className="p-4">
               <div className="space-y-2">
-                <Button variant="primary" className="w-full">
+                <Button variant="default" className="w-full">
                   Export Map
                 </Button>
               </div>
