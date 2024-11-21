@@ -1,37 +1,31 @@
 'use client';
 
 import { Header } from '@/components/layout/Header';
-import { MapContainer } from '@/components/map/MapContainer';
+import { ColoradoMap } from '@/components/map/D3Map';
 import { LayerControl } from '@/components/controls/LayerControl';
+import { PropositionFilters } from '@/components/filtering/PropositionFilters';
 import { Card } from '@/components/ui/Card';
 import { Button } from '@/components/ui/Button';
-import PropositionDropdown from '@/components/filtering/PropositionDropdown'
-
 
 export default function Home() {
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen bg-gray-50 text-gray-900">
       <Header />
       
       <main className="container mx-auto px-4 py-8">
         <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
           <div className="md:col-span-3">
-            <Card>
-              <MapContainer />
+            <Card className="h-[800px]">
+              <ColoradoMap />
             </Card>
           </div>
           
           <div className="space-y-4">
             <Card className="p-4">
-              <div className="space-y-4">
-                <div>
-                  <h3 className="text-sm font-medium mb-2">Select Proposition</h3>
-                  <PropositionDropdown />
-                </div>
-              </div>
+              <PropositionFilters />
             </Card>
             
-            <Card className="p-4">
+            <Card>
               <LayerControl 
                 layers={[
                   { id: 'counties', label: 'Counties' },
@@ -43,9 +37,9 @@ export default function Home() {
               />
             </Card>
             
-            <Card className="p-4">
+            <Card>
               <div className="space-y-2">
-                <Button variant="default" className="w-full">
+                <Button variant="primary" className="w-full">
                   Export Map
                 </Button>
               </div>
