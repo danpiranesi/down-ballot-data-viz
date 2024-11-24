@@ -18,3 +18,4 @@ to main only on those days.
 - NO committing syntactically incorrect code into branches. Everuthing you commit
 should work. You should have tested it.
 - NO turning on git on VSCode.
+- Don't commit .env files
