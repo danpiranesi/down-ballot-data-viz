@@ -1,31 +1,15 @@
 import prisma from '@/lib/prisma'
 import { NextResponse } from 'next/server'
 
-export async function GET(
-  request: Request,
-  { params }: { params: { id: string } }
-) {
+export async function GET() {
   try {
-    const results = await prisma.result.findMany({
-      where: {
-        propositionId: params.id
-      },
-      select: {
-        year: {
-          select: {
-            year: true
-          }
-        }
-      },
-      distinct: ['yearId'],
+    const results = await prisma.years.findMany({
       orderBy: {
-        year: {
-          year: 'desc'
-        }
+        year: 'desc',  // Sort by year in descending order
       }
     })
     
-    const years = results.map(result => result.year.year)
+    const years = results.map(result => result.year)
     
     return NextResponse.json(years)
   } catch (error) {

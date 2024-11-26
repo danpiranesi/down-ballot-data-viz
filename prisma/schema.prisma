@@ -8,44 +8,133 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model Proposition {
-  id          String   @id @default(uuid())
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
-  title       String   @db.VarChar(255)
-  description String   @db.Text
-  yearResults Result[]
+model proposition_votes {
+  proposition_id        Int    @id @default(autoincrement())
+  proposition_name      String @db.VarChar(255)
+  proposition_year      Int
+  yes_votes_adams       Int?
+  no_votes_adams        Int?
+  yes_votes_alamosa     Int?
+  no_votes_alamosa      Int?
+  yes_votes_arapahoe    Int?
+  no_votes_arapahoe     Int?
+  yes_votes_archuleta   Int?
+  no_votes_archuleta    Int?
+  yes_votes_baca        Int?
+  no_votes_baca         Int?
+  yes_votes_bent        Int?
+  no_votes_bent         Int?
+  yes_votes_boulder     Int?
+  no_votes_boulder      Int?
+  yes_votes_broomfield  Int?
+  no_votes_broomfield   Int?
+  yes_votes_chaffee     Int?
+  no_votes_chaffee      Int?
+  yes_votes_clear_creek Int?
+  no_votes_clear_creek  Int?
+  yes_votes_douglas     Int?
+  no_votes_douglas      Int?
+  yes_votes_eagle       Int?
+  no_votes_eagle        Int?
+  yes_votes_elpaso      Int?
+  no_votes_elpaso       Int?
+  yes_votes_elbert      Int?
+  no_votes_elbert       Int?
+  yes_votes_fremont     Int?
+  no_votes_fremont      Int?
+  yes_votes_garfield    Int?
+  no_votes_garfield     Int?
+  yes_votes_gilpin      Int?
+  no_votes_gilpin       Int?
+  yes_votes_grand       Int?
+  no_votes_grand        Int?
+  yes_votes_gunnison    Int?
+  no_votes_gunnison     Int?
+  yes_votes_hinsdale    Int?
+  no_votes_hinsdale     Int?
+  yes_votes_huerfano    Int?
+  no_votes_huerfano     Int?
+  yes_votes_jackson     Int?
+  no_votes_jackson      Int?
+  yes_votes_jefferson   Int?
+  no_votes_jefferson    Int?
+  yes_votes_kiowa       Int?
+  no_votes_kiowa        Int?
+  yes_votes_kit_carson  Int?
+  no_votes_kit_carson   Int?
+  yes_votes_la_plata    Int?
+  no_votes_la_plata     Int?
+  yes_votes_lake        Int?
+  no_votes_lake         Int?
+  yes_votes_larimer     Int?
+  no_votes_larimer      Int?
+  yes_votes_las_animas  Int?
+  no_votes_las_animas   Int?
+  yes_votes_lincoln     Int?
+  no_votes_lincoln      Int?
+  yes_votes_logan       Int?
+  no_votes_logan        Int?
+  yes_votes_mesa        Int?
+  no_votes_mesa         Int?
+  yes_votes_mineral     Int?
+  no_votes_mineral      Int?
+  yes_votes_moffat      Int?
+  no_votes_moffat       Int?
+  yes_votes_montezuma   Int?
+  no_votes_montezuma    Int?
+  yes_votes_montrose    Int?
+  no_votes_montrose     Int?
+  yes_votes_morgan      Int?
+  no_votes_morgan       Int?
+  yes_votes_otero       Int?
+  no_votes_otero        Int?
+  yes_votes_ouray       Int?
+  no_votes_ouray        Int?
+  yes_votes_park        Int?
+  no_votes_park         Int?
+  yes_votes_phillips    Int?
+  no_votes_phillips     Int?
+  yes_votes_pitkin      Int?
+  no_votes_pitkin       Int?
+  yes_votes_prowers     Int?
+  no_votes_prowers      Int?
+  yes_votes_pueblo      Int?
+  no_votes_pueblo       Int?
+  yes_votes_rio_blanco  Int?
+  no_votes_rio_blanco   Int?
+  yes_votes_rio_grande  Int?
+  no_votes_rio_grande   Int?
+  yes_votes_routt       Int?
+  no_votes_routt        Int?
+  yes_votes_saguache    Int?
+  no_votes_saguache     Int?
+  yes_votes_san_juan    Int?
+  no_votes_san_juan     Int?
+  yes_votes_san_miguel  Int?
+  no_votes_san_miguel   Int?
+  yes_votes_sedgwick    Int?
+  no_votes_sedgwick     Int?
+  yes_votes_summit      Int?
+  no_votes_summit       Int?
+  yes_votes_teller      Int?
+  no_votes_teller       Int?
+  yes_votes_washington  Int?
+  no_votes_washington   Int?
+  yes_votes_weld        Int?
+  no_votes_weld         Int?
+  yes_votes_yuma        Int?
+  no_votes_yuma         Int?
+  total_yes_votes       Int?
+  total_no_votes        Int?
 }
 
-model Year {
-  id        String   @id @default(uuid())
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-  year      Int      @unique
-  results   Result[]
+model propositions {
+  proposition_id Int     @id @default(autoincrement())
+  year           Int
+  name           String  @db.VarChar(255)
+  description    String?
 }
 
-model County {
-  id        String   @id @default(uuid())
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-  name      String   @db.VarChar(255)
-  results   Result[]
-}
-
-model Result {
-  id            String      @id @default(uuid())
-  createdAt     DateTime    @default(now())
-  updatedAt     DateTime    @updatedAt
-  votesFor      Int
-  votesAgainst  Int
-  turnout       Int // Total number of eligible voters
-  proposition   Proposition @relation(fields: [propositionId], references: [id])
-  propositionId String
-  year          Year        @relation(fields: [yearId], references: [id])
-  yearId        String
-  county        County      @relation(fields: [countyId], references: [id])
-  countyId      String
-
-  @@unique([propositionId, yearId, countyId])
+model years {
+  year Int @id
 }

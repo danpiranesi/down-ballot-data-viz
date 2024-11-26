@@ -15,7 +15,7 @@ type Proposition = {
   description: string
 }
 
-export function PropositionFilters() {
+export function PropositionFilters = React.memo(() {
   const [propositions, setPropositions] = useState<Proposition[]>([])
   const [availableYears, setAvailableYears] = useState<number[]>([])
   const [selectedProposition, setSelectedProposition] = useState<string>('')
@@ -24,75 +24,80 @@ export function PropositionFilters() {
   const [error, setError] = useState<string | null>(null)
 
   useEffect(() => {
-    const fetchPropositions = async () => {
-      try {
-        const response = await fetch('/api/propositions')
-        if (!response.ok) throw new Error('Failed to fetch propositions')
-        const data = await response.json()
-        setPropositions(data)
-      } catch (err) {
-        setError(err instanceof Error ? err.message : 'An error occurred')
-      } finally {
-        setLoading(false)
+    const fetchYears = async () => {
+        try {
+          const response = await fetch(`/api/years`)
+          if (!response.ok) {
+            throw new Error('Failed to fetch Years')
+            return
+          }
+          const years = await response.json()
+          setAvailableYears(years)
+        }
+         catch {
+          console.log("failure")
+          setAvailableYears([])
+        } finally {
+          setLoading(false)
+        }
       }
-    }
-
-    fetchPropositions()
+      fetchYears()
   }, [])
 
-  useEffect(() => {
-    if (!selectedProposition) {
-      setAvailableYears([])
-      setSelectedYear('')
-      return
-    }
+  // useEffect(() => {
+  //   const fetchPropositions = async () => {
+  //     try {
+  //       const response = await fetch('/api/years')
+  //       if (!response.ok) throw new Error('Failed to fetch propositions')
+  //       const data = await response.json()
+  //       console.log
+  //       setPropositions(data)
+  //     } catch (err) {
+  //       setError(err instanceof Error ? err.message : 'An error occurred')
+  //     } finally {
+  //       setLoading(false)
+  //     }
+  //   }
 
-    const fetchYears = async () => {
-      setSelectedYear('')
-      try {
-        const response = await fetch(`/api/propositions/${selectedProposition}/years`)
-        if (!response.ok) {
-          setAvailableYears([])
-          return
-        }
-        const years = await response.json()
-        setAvailableYears(years)
-      } catch {
-        setAvailableYears([])
-      }
-    }
+  //   fetchPropositions()
+  // }, [])
 
-    fetchYears()
-  }, [selectedProposition])
+  // useEffect(() => {
+  //   if (!selectedProposition) {
+  //     setAvailableYears([])
+  //     setSelectedYear('')
+  //     return
+  //   }
+
+  //   const fetchYears = async () => {
+  //     setSelectedYear('')
+  //     try {
+  //       const response = await fetch(`/api/years`)
+  //       if (!response.ok) {
+  //         setAvailableYears([])
+  //         return
+  //       }
+  //       const years = await response.json()
+  //       setAvailableYears(years)
+  //     } catch {
+  //       setAvailableYears([])
+  //     }
+  //   }
+
+  //   fetchYears()
+  // }, [selectedProposition])
 
   if (loading) return <div className="text-gray-500">Loading propositions...</div>
   if (error) return <div className="text-red-500">Error: {error}</div>
 
   return (
     <div className="space-y-4">
-      <Select onValueChange={setSelectedProposition} value={selectedProposition}>
-        <SelectTrigger className="w-full text-gray-900">
-          <SelectValue placeholder="Select a proposition" className="text-gray-900" />
-        </SelectTrigger>
-        <SelectContent className="text-gray-900">
-          {propositions.length > 0 ? (
-            propositions.map((prop) => (
-              <SelectItem key={prop.id} value={prop.id}>
-                {prop.title}
-              </SelectItem>
-            ))
-          ) : (
-            <SelectItem value="no-propositions-available" disabled>
-              No propositions available
-            </SelectItem>
-          )}
-        </SelectContent>
-      </Select>
 
+      {/*Year Drop Down Menu Selector*/}
       <Select 
         onValueChange={setSelectedYear} 
         value={selectedYear}
-        disabled={!selectedProposition}
+        //disabled={!selectedProposition}
       >
         <SelectTrigger className="w-full text-gray-900">
           <SelectValue placeholder="Select year" className="text-gray-900" />
@@ -111,6 +116,33 @@ export function PropositionFilters() {
           )}
         </SelectContent>
       </Select>
+
+      {/*Proposition Drop Down Menu Selector*/}
+      <Select
+       onValueChange={setSelectedProposition}
+       value={selectedProposition}
+       disabled={!selectedYear}
+        >
+        <SelectTrigger className="w-full text-gray-900">
+          <SelectValue placeholder="Select a proposition" className="text-gray-900" />
+        </SelectTrigger>
+        <SelectContent className="text-gray-900">
+          {propositions.length > 0 ? (
+            propositions.map((prop) => (
+              <SelectItem key={prop.id} value={prop.id}>
+                {prop.title}
+              </SelectItem>
+            ))
+          ) : (
+            <SelectItem value="no-propositions-available" disabled>
+              No propositions available
+            </SelectItem>
+          )}
+        </SelectContent>
+      </Select>
+
+      
     </div>
   )
 }
+)
