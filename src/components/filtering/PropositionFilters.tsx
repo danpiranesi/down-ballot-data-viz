@@ -15,7 +15,7 @@ type Proposition = {
   description: string
 }
 
-export function PropositionFilters = React.memo(() {
+export function PropositionFilters() {
   const [propositions, setPropositions] = useState<Proposition[]>([])
   const [availableYears, setAvailableYears] = useState<number[]>([])
   const [selectedProposition, setSelectedProposition] = useState<string>('')
@@ -145,4 +145,3 @@ export function PropositionFilters = React.memo(() {
     </div>
   )
 }
-)
