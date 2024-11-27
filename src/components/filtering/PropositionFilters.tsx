@@ -10,9 +10,8 @@ import {
 } from "@/components/ui/select"
 
 type Proposition = {
-  id: string
-  title: string
-  description: string
+  proposition_id: string
+  proposition_name: string
 }
 
 export function PropositionFilters() {
@@ -23,6 +22,7 @@ export function PropositionFilters() {
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
 
+  //Fetch voting years for the drop down on mounting of the component
   useEffect(() => {
     const fetchYears = async () => {
         try {
@@ -44,48 +44,28 @@ export function PropositionFilters() {
       fetchYears()
   }, [])
 
-  // useEffect(() => {
-  //   const fetchPropositions = async () => {
-  //     try {
-  //       const response = await fetch('/api/years')
-  //       if (!response.ok) throw new Error('Failed to fetch propositions')
-  //       const data = await response.json()
-  //       console.log
-  //       setPropositions(data)
-  //     } catch (err) {
-  //       setError(err instanceof Error ? err.message : 'An error occurred')
-  //     } finally {
-  //       setLoading(false)
-  //     }
-  //   }
+  //Fetch propositions from the selected year when a year is chose.
+  useEffect(() => {
+    const fetchPropositions = async () => {
+      try {
+        const response = await fetch(`api/propositions?year=${selectedYear}`)
+        if (!response.ok){
+          throw new Error('failed to fetch propositions')
+        }
+        const propositions = await response.json()
 
-  //   fetchPropositions()
-  // }, [])
+        console.log(" name: " + propositions[0].proposition_name)
+        setSelectedProposition('');
+        setPropositions(propositions)
+      }catch{
+        setPropositions([])
+      }
+      
+    }
+    
+    fetchPropositions()
+  }, [selectedYear])
 
-  // useEffect(() => {
-  //   if (!selectedProposition) {
-  //     setAvailableYears([])
-  //     setSelectedYear('')
-  //     return
-  //   }
-
-  //   const fetchYears = async () => {
-  //     setSelectedYear('')
-  //     try {
-  //       const response = await fetch(`/api/years`)
-  //       if (!response.ok) {
-  //         setAvailableYears([])
-  //         return
-  //       }
-  //       const years = await response.json()
-  //       setAvailableYears(years)
-  //     } catch {
-  //       setAvailableYears([])
-  //     }
-  //   }
-
-  //   fetchYears()
-  // }, [selectedProposition])
 
   if (loading) return <div className="text-gray-500">Loading propositions...</div>
   if (error) return <div className="text-red-500">Error: {error}</div>
@@ -97,7 +77,6 @@ export function PropositionFilters() {
       <Select 
         onValueChange={setSelectedYear} 
         value={selectedYear}
-        //disabled={!selectedProposition}
       >
         <SelectTrigger className="w-full text-gray-900">
           <SelectValue placeholder="Select year" className="text-gray-900" />
@@ -129,8 +108,8 @@ export function PropositionFilters() {
         <SelectContent className="text-gray-900">
           {propositions.length > 0 ? (
             propositions.map((prop) => (
-              <SelectItem key={prop.id} value={prop.id}>
-                {prop.title}
+              <SelectItem key={prop.proposition_id} value={prop.proposition_id}>
+                {prop.proposition_name}
               </SelectItem>
             ))
           ) : (
@@ -140,8 +119,6 @@ export function PropositionFilters() {
           )}
         </SelectContent>
       </Select>
-
-      
     </div>
   )
 }
