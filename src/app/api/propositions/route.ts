@@ -1,6 +1,29 @@
 import prisma from '@/lib/prisma'
 import { NextResponse, NextRequest } from 'next/server'
 
+//INCOMPLETE --- NEEDS TO BE FINISHED
+
+/**
+ * @fileoverview
+ * This file contains the api call that returns all of the propositions
+ *
+ * @dependencies
+ * - prisma: ORM for database interaction.
+ * - next.js: Framework used for server-side routing and API handling.
+ *
+ * @usage
+ * - The `/propositions/years` endpoint retrieves all available years for propositions.
+ * - The `/propositions/years/[year]` endpoint retrieves propositions for a specific year.
+ * - The `/propositions/[proposition_id]` endpoint retrieves data for a given proposition ID.
+ *
+ * @author Oliver Ramirez
+ * @version 1.0.0
+ * @date 2024-11-28
+ * 
+ */
+
+
+//CHANGE THIS CODE TO RETURN ALL PROPOSITIONS
 export async function GET(req: NextRequest) {
   try {
     // Extract the year query parameter from the URL

@@ -10,8 +10,8 @@ import {
 } from "@/components/ui/select"
 
 type Proposition = {
-  proposition_id: string
-  proposition_name: string
+  id: string
+  name: string
 }
 
 export function PropositionFilters() {
@@ -26,7 +26,7 @@ export function PropositionFilters() {
   useEffect(() => {
     const fetchYears = async () => {
         try {
-          const response = await fetch(`/api/years`)
+          const response = await fetch(`/api/propositions/years`)
           if (!response.ok) {
             throw new Error('Failed to fetch Years')
             return
@@ -48,13 +48,12 @@ export function PropositionFilters() {
   useEffect(() => {
     const fetchPropositions = async () => {
       try {
-        const response = await fetch(`api/propositions?year=${selectedYear}`)
+        const response = await fetch(`api/propositions/${selectedYear}`)
         if (!response.ok){
           throw new Error('failed to fetch propositions')
         }
         const propositions = await response.json()
 
-        console.log(" name: " + propositions[0].proposition_name)
         setSelectedProposition('');
         setPropositions(propositions)
       }catch{
@@ -90,7 +89,7 @@ export function PropositionFilters() {
             ))
           ) : (
             <SelectItem value="no-years-available" disabled>
-              {selectedProposition ? 'No years available' : 'Select a proposition first'}
+              {/*selectedProposition ? 'No years available' : 'Select a proposition first'*/}
             </SelectItem>
           )}
         </SelectContent>
@@ -108,8 +107,8 @@ export function PropositionFilters() {
         <SelectContent className="text-gray-900">
           {propositions.length > 0 ? (
             propositions.map((prop) => (
-              <SelectItem key={prop.proposition_id} value={prop.proposition_id}>
-                {prop.proposition_name}
+              <SelectItem key={prop.id} value={prop.id}>
+                {prop.name}
               </SelectItem>
             ))
           ) : (
