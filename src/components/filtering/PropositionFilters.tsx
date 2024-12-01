@@ -8,19 +8,25 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select"
+import {Proposition} from '@/types/propdata';
 
-type Proposition = {
-  id: string
-  name: string
+
+interface Props {
+  setSelectedProp: (value: Proposition) => void; // Accept a string and return nothing
 }
 
-export function PropositionFilters() {
+export function PropositionFilters(props: Props) {
+
   const [propositions, setPropositions] = useState<Proposition[]>([])
+  const [selectedProposition, setSelectedProposition] = useState<Proposition>({ id: 0, name: '' })
+
   const [availableYears, setAvailableYears] = useState<number[]>([])
-  const [selectedProposition, setSelectedProposition] = useState<string>('')
   const [selectedYear, setSelectedYear] = useState<string>('')
+
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
+
+  //console.log("in propositionFilters.tsx, setSelectedProp is", props.setSelectedProp)
 
   //Fetch voting years for the drop down on mounting of the component
   useEffect(() => {
@@ -48,22 +54,42 @@ export function PropositionFilters() {
   useEffect(() => {
     const fetchPropositions = async () => {
       try {
-        const response = await fetch(`api/propositions/${selectedYear}`)
+        //console.log("calling fetchPropositions with year value: ", selectedYear)
+        const response = await fetch(`api/propositions/years/${selectedYear}`)
+        console.log(response)
         if (!response.ok){
           throw new Error('failed to fetch propositions')
         }
-        const propositions = await response.json()
-
-        setSelectedProposition('');
-        setPropositions(propositions)
+        const props = await response.json()
+        
+        setSelectedProposition({id:0, name: ''}); // doesn't pass this change to parent
+        console.log("setting propositions to ", props )
+        setPropositions(props)
       }catch{
         setPropositions([])
       }
       
     }
     
+    if (!selectedYear) return
+
     fetchPropositions()
+    
   }, [selectedYear])
+
+  //handle passing the selected prop to the parent container
+  const handlePropositionChange = (value:string) => {
+    const selected = propositions.find((prop) => prop.name === value);
+
+    if (selected) {
+      setSelectedProposition(selected);
+      props.setSelectedProp(selected);
+    } else {
+      throw new Error('failed to map prop name to proposition object')
+      setSelectedProposition({id:0, name: ''});  
+  };
+}
+  
 
 
   if (loading) return <div className="text-gray-500">Loading propositions...</div>
@@ -97,8 +123,8 @@ export function PropositionFilters() {
 
       {/*Proposition Drop Down Menu Selector*/}
       <Select
-       onValueChange={setSelectedProposition}
-       value={selectedProposition}
+      onValueChange={handlePropositionChange}
+       value={selectedProposition.name}
        disabled={!selectedYear}
         >
         <SelectTrigger className="w-full text-gray-900">
@@ -106,11 +132,14 @@ export function PropositionFilters() {
         </SelectTrigger>
         <SelectContent className="text-gray-900">
           {propositions.length > 0 ? (
-            propositions.map((prop) => (
-              <SelectItem key={prop.id} value={prop.id}>
-                {prop.name}
-              </SelectItem>
-            ))
+            //console.log("propositions", propositions),
+            propositions.map((prop) => {
+              return (
+                <SelectItem key={prop.id} value={prop.name}>
+                  {prop.name}
+                </SelectItem>
+              )
+            })
           ) : (
             <SelectItem value="no-propositions-available" disabled>
               No propositions available
@@ -121,3 +150,8 @@ export function PropositionFilters() {
     </div>
   )
 }
+
+// PropositionFilters.propTypes = {
+//   setSelectedProposition: PropTypes.func
+  
+// }
