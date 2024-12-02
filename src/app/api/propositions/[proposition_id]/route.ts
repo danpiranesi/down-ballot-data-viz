@@ -34,11 +34,29 @@ export async function GET(req: NextRequest, {params}: {params: {proposition_id: 
     const prop_data = await prisma.proposition_county_votes.findMany({
       where: {
         proposition_id: parseInt(proposition_id, 10)
+      },
+      select: {
+        county_id: true,
+        yes_count: true,
+        no_count: true,
+        total_votes: true,
+        counties: {
+          select: {
+            name: true
+          }
+        }
       }
     })
     
+    const packedData = prop_data.map(item => ({
+      county_id: item.county_id,
+      yes_count: item.yes_count,
+      no_count: item.no_count,
+      total_votes: item.total_votes,
+      county_name: item.counties.name
+    }))
     
-    return NextResponse.json(prop_data)
+    return NextResponse.json(packedData)
   } catch (error) {
     console.error('Prisma error:', error)
     return NextResponse.json(

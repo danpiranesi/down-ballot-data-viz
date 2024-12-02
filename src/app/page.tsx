@@ -8,19 +8,42 @@ import { LayerControl } from '@/components/controls/LayerControl';
 import { PropositionFilters } from '@/components/filtering/PropositionFilters';
 import { Card } from '@/components/ui/Card';
 import { Button } from '@/components/ui/Button';
-import {Proposition} from '@/types/propdata';
+import {Proposition, VoteData} from '@/types/propdata';
 
 //example api call for fetching voter data stored at bottom of file
 
 
 
+
 export default function Home() {
-  const [selectedProp, setSelectedProp] = useState<Proposition>({id:0, name:''})
+  const [selectedProp, setSelectedProp] = useState<Proposition>({id:0, name:'', year: 0})
+  const [voteData, setVoteData] = useState<VoteData[]>([])
   //console.log("in page.tsx, setSelectedProp is", setSelectedProp)
 
+  const fetchVoteData = async () => {
+    try {
+      const response = await fetch(`api/propositions/${selectedProp.id}`)
+      console.log(response)
+      if (!response.ok){
+        throw new Error('failed to fetch data')
+      }
+      const data : VoteData[] = await response.json()
+
+      console.log("the data fectched is ", data)
+      setVoteData(data)
+    }catch{
+    }
+  }
+  //fetchVoteData()
+
+  useEffect(() => {
+    console.log("Updated voteData:", voteData);
+  }, [voteData]);
   
   useEffect(() => {
     console.log("selectedProp in page.tsx is: ", selectedProp)
+    fetchVoteData()
+    //console.log("voteData is: ", voteData)
 
   }, [selectedProp])
 
@@ -32,7 +55,10 @@ export default function Home() {
         <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
           <div className="md:col-span-3">
             <Card className="h-[800px]">
-              <ColoradoMap propositionId='' />
+              <ColoradoMap 
+                propositionId={selectedProp.id}
+                year = {selectedProp.year}
+                voteData = {voteData}   />
             </Card>
           </div>
           
@@ -68,16 +94,3 @@ export default function Home() {
 }
 
 
-// const fetchVoteData = async () => {
-//   try {
-//     const response = await fetch(`api/propositions/${selectedProp}`)
-//     console.log(response)
-//     if (!response.ok){
-//       throw new Error('failed to fetch data')
-//     }
-//     const data = await response.json()
-//     console.log(data)
-//   }catch{
-//   }
-// }
-// fetchVoteData()
