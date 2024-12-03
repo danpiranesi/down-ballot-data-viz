@@ -10,7 +10,7 @@ export const Header = () => {
             Down-Ballot Data Visualizer
           </Link>
           <nav className="space-x-4">
-              <Link href="/dashboard" className="text-xl hover:text-violet-950">Home</Link>
+              <Link href="/home" className="text-xl hover:text-violet-950">Home</Link>
           </nav>
           <nav className="space-x-4">
               <Link href="/about" className="text-xl hover:text-violet-950">About</Link>
