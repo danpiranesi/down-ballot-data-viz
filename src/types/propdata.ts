@@ -6,7 +6,6 @@ export type Proposition = {
 
 export type VoteData = {
     county_id: number;
-    //countyName: string;
     yes_count: number;
     no_count: number;
     total_votes: number;

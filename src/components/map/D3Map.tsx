@@ -43,7 +43,6 @@ export function ColoradoMap({ propositionId, year: year, voteData = [] }: MapPro
     tooltipRef.current = tooltip;
 
     function getVotes(county_name: string) {
-      console.log("county name is " ,county_name)
       const countyData = voteData.find(d => d.county_name === county_name);
       if (!countyData) return { votesFor: 0, votesAgainst: 0, turnout: 0 };
       return {
@@ -88,7 +87,6 @@ export function ColoradoMap({ propositionId, year: year, voteData = [] }: MapPro
         .attr('stroke-width', 0.5)
         .on('mouseenter', function(event, d: Feature<Geometry, CountyProperties>) {
           const votes = getVotes(d.properties.name);
-          console.log(d, votes)
           d3.select(this).style('opacity', 0.8);
           tooltip
             .style('opacity', 1)
