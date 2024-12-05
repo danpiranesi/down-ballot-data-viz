@@ -2,6 +2,8 @@ export type Proposition = {
     id: number
     name: string
     year: number
+    for_statement: string
+    against_statement: string
 }
 
 export type VoteData = {
