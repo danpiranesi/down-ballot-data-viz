@@ -12,4 +12,5 @@ export type VoteData = {
     no_count: number;
     total_votes: number;
     county_name: "string";
+    passed: boolean;
   }
