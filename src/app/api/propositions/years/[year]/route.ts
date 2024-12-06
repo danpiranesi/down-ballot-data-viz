@@ -38,7 +38,9 @@ export async function GET(req: NextRequest, {params}: {params: {year: string}}) 
       select: {
         id: true,
         name: true,
-        year: true
+        year: true,
+        for_statement: true,
+        against_statement:true
       }
     })
     console.log(propositions)

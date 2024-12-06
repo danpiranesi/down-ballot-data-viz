@@ -2,6 +2,8 @@ export type Proposition = {
     id: number
     name: string
     year: number
+    for_statement: string
+    against_statement: string
 }
 
 export type VoteData = {
@@ -10,4 +12,5 @@ export type VoteData = {
     no_count: number;
     total_votes: number;
     county_name: "string";
+    passed: boolean;
   }

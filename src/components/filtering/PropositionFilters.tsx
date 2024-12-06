@@ -18,7 +18,7 @@ interface Props {
 export function PropositionFilters(props: Props) {
 
   const [propositions, setPropositions] = useState<Proposition[]>([])
-  const [selectedProposition, setSelectedProposition] = useState<Proposition>({ id: 0, name: '', year: 0})
+  const [selectedProposition, setSelectedProposition] = useState<Proposition>({ id: 0, name: '', year: 0, for_statement: "", against_statement: ""})
 
   const [availableYears, setAvailableYears] = useState<number[]>([])
   const [selectedYear, setSelectedYear] = useState<string>('')
@@ -62,7 +62,7 @@ export function PropositionFilters(props: Props) {
         }
         const props = await response.json()
         
-        setSelectedProposition({id:0, name: '', year: 0}); // doesn't pass this change to parent
+        setSelectedProposition({id:0, name: '', year: 0, for_statement: "", against_statement:""}); // doesn't pass this change to parent
         console.log("setting propositions to ", props )
         setPropositions(props)
       }catch{
@@ -86,7 +86,7 @@ export function PropositionFilters(props: Props) {
       props.setSelectedProp(selected);
     } else {
       throw new Error('failed to map prop name to proposition object')
-      setSelectedProposition({id:0, name: '', year: 0});  
+      setSelectedProposition({id:0, name:'', year: 0, for_statement:" ", against_statement: " "});  
   };
 }
   

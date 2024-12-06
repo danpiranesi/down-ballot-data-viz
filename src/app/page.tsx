@@ -15,7 +15,7 @@ import ProgressDemo from '@/components/ui/Progress';
 
 
 export default function Home() {
-  const [selectedProp, setSelectedProp] = useState<Proposition>({id:0, name:'', year: 0})
+  const [selectedProp, setSelectedProp] = useState<Proposition>({id:0, name:'', year: 0, for_statement:" ", against_statement: " "})
   const [voteData, setVoteData] = useState<VoteData[]>([])
   const [totalYesVotes, setTotalYesVotes] = useState<number>(0)
   const [totalNoVotes, setTotalNoVotes] = useState<number>(0)
@@ -70,7 +70,10 @@ export default function Home() {
       <main className="container mx-auto px-4 py-8">
         <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
           <div className="md:col-span-3">
-            <Card className="h-[800px]">
+            <Card className="h-[800px] flex flex-col grow">
+              <div className="items-center justify-center flex">
+              {selectedProp.name}
+              </div>
               <ColoradoMap 
                 propositionId={selectedProp.id}
                 year = {selectedProp.year}
