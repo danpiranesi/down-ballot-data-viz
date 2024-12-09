@@ -53,9 +53,19 @@ export function ColoradoMap({ propositionId, year: year, voteData = [] }: MapPro
     }
 
     function getColor(county_name: string) {
+      const colorScale = setupcolor();
       const { votesFor, votesAgainst } = getVotes(county_name);
       if (votesFor === 0 && votesAgainst === 0) return '#ccc';
-      return votesFor > votesAgainst ? '#1a9850' : '#d73027';
+      const percent_yes = (votesFor/(votesFor+votesAgainst)*100);
+      return colorScale(percent_yes);
+    }
+    
+    function setupcolor() {
+      const colorScale = d3
+        .scaleLinear()
+        .domain([0, 33, 66, 100]) // Map percentages to color stops
+        .range(['#edf8fb', '#b3cde3', '#8c96c6', '#88419d']); // Your hues
+      return colorScale;
     }
 
     function render(us: FeatureCollection<Geometry, CountyProperties>) {
