@@ -22,9 +22,9 @@ import { NextResponse, NextRequest } from 'next/server'
  */
 
 
-export async function GET(req: NextRequest, {params}: {params: {proposition_id: string}}) {
+export async function GET(req: NextRequest, {params}: {params: Promise<{proposition_id: string}>}) {
   try {
-    const { proposition_id }= await params
+    const { proposition_id }= await params;
 
     // Check if 'year' is null or not a valid number
     if (!proposition_id) {

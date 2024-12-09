@@ -15,14 +15,14 @@ try:
 
     # Load CSV data 
     # UPDATE THIS FILEPATH TO LOCALLY STORED CSV
-    csv_file_path = "/Users/danschmidt/Downloads/PROP_EXQ.csv"
+    csv_file_path = "/Users/danschmidt/Downloads/2020_Amendment_77_Local_Voter_Approval_of_Gaming_Limits.csv"
     data = pd.read_csv(csv_file_path)
 
     # Insert proposition
     # UPDATE THIS NAME TO PROP NAME
-    proposition_name = "PROP_EXQ"
+    proposition_name = "Amendment 77: Local Voter Approval of Gaming Limits"
     proposition_description = "TODO"
-    proposition_year = 2024
+    proposition_year = 2020
     timestamp = datetime.now()
 
     insert_proposition_query = """
@@ -58,7 +58,7 @@ try:
                 print(f"Error: County '{county_name}' not found in the database.")
                 continue
 
-            print(county_result[0])
+            print("Data added for county number: ", county_result[0])
             county_id = county_result[0]
 
             # Insert Votes Data
