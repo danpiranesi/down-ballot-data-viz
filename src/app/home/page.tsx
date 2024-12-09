@@ -1,7 +1,6 @@
 'use client';
 // skeleton page for a home screen
 // TODO: make this the redirect page
-// TODO: link to the page with the choropleth map
 import { Header } from '@/components/layout/Header';
 import { HistImage } from './HistImage';
 import { MapImage } from './MapImage';
