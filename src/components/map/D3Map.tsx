@@ -59,12 +59,27 @@ export function ColoradoMap({ propositionId, year: year, voteData = [] }: MapPro
       const percent_yes = (votesFor/(votesFor+votesAgainst)*100);
       return colorScale(percent_yes);
     }
+
+    function county_passed(county_name: string) {
+      const { votesFor, votesAgainst } = getVotes(county_name);
+      if (votesFor === 0 && votesAgainst === 0) return '#ccc';
+      if (votesFor > (.5*(votesFor+votesAgainst))) {
+        return true;
+      }
+      return false;
+    }
     
     function setupcolor() {
       const colorScale = d3
         .scaleLinear()
-        .domain([0, 33, 66, 100]) // Map percentages to color stops
-        .range(['#edf8fb', '#b3cde3', '#8c96c6', '#88419d']); // Your hues
+        .domain([0, 25, 50, 75, 100]) // Map percentages to color stops
+        .range([
+          '#edf8fb',
+          '#b3cde3',
+          '#8c96c6',
+          '#8856a7',
+          '#810f7c',
+        ]); // Your hues
       return colorScale;
     }
 
@@ -86,18 +101,70 @@ export function ColoradoMap({ propositionId, year: year, voteData = [] }: MapPro
 
       const path = d3.geoPath().projection(projection);
 
+        //hashing code
+    svg
+    .append('defs')
+    .append('pattern')
+    .attr('id', 'diagonalHatch')
+    .attr('patternUnits', 'userSpaceOnUse')
+    .attr('width', 4)
+    .attr('height', 4)
+    .append('path')
+    .attr('d', 'M-1,1 l2,-2 M0,4 l4,-4 M3,5 l2,-2')
+    .attr('stroke', '#000000')
+    .attr('stroke-width', 1);
+
+    svg
+    .append('defs')
+    .append('pattern')
+    .attr('id', 'diagonalHatch_hover')
+    .attr('patternUnits', 'userSpaceOnUse')
+    .attr('width', 4)
+    .attr('height', 4)
+    .append('path')
+    .attr('d', 'M-1,1 l2,-2 M0,4 l4,-4 M3,5 l2,-2')
+    .attr('stroke', '#ccc')
+    .attr('stroke-width', 1);
+
       // Add counties
       svg.append('g')
         .selectAll('path')
         .data(us.features)
         .join('path')
-        .attr('fill', d => getColor(d.properties.name))
+        .attr('fill', (d) => {
+          const passed = county_passed(d.properties.name);
+          if (passed == true) {
+            return getColor(d.properties.name);
+          }
+          return '#ccc';
+        })
+        .attr('d', path)
+        .attr('stroke', '#333')
+        .attr('stroke-width', 0.5)
+
+        //hashing
+        svg
+        .append('g')
+        .attr('class', 'counties')
+        .selectAll('path')
+        .data(us.features)
+        .enter()
+        .append('path')
+        .attr('fill', (d) => {
+          const passed = county_passed(d.properties.name);
+          if (passed == true) {
+            return 'url(#diagonalHatch)';
+          }
+          return getColor(d.properties.name);
+        })
         .attr('d', path)
         .attr('stroke', '#333')
         .attr('stroke-width', 0.5)
         .on('mouseenter', function(event, d: Feature<Geometry, CountyProperties>) {
+          const passed = county_passed(d.properties.name);
           const votes = getVotes(d.properties.name);
-          d3.select(this).style('opacity', 0.8);
+          d3.select(this).style('opacity', 0.5);
+          d3.select(this).attr('fill', passed ? 'url(#diagonalHatch_hover)' : getColor(d.properties.name));
           tooltip
             .style('opacity', 1)
             .html(
@@ -115,11 +182,13 @@ export function ColoradoMap({ propositionId, year: year, voteData = [] }: MapPro
             .style('left', (event.pageX + 10) + 'px')
             .style('top', (event.pageY - 20) + 'px');
         })
-        .on('mouseleave', function() {
+        .on('mouseleave',function(event, d: Feature<Geometry, CountyProperties>) {
+          const passed = county_passed(d.properties.name);
           d3.select(this).style('opacity', 1);
+          d3.select(this).attr('fill', passed ? 'url(#diagonalHatch)' : getColor(d.properties.name));
           tooltip.style('opacity', 0);
         });
-
+    
       // Add labels
     //   svg.append('g')
     //     .selectAll('text')
