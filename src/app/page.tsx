@@ -2,6 +2,7 @@
 // skeleton page for a home screen
 // TODO: make this the redirect page
 import { Header } from '@/components/layout/Header';
+import { Footer } from '@/components/layout/Footer';
 import { HistImage } from '@/components/home/HistImage';
 import { MapImage } from '@/components/home/MapImage';
 import { PropImage } from '@/components/home/PropImage';
@@ -21,16 +22,17 @@ export default function HomePage() {
 Integer blandit eleifend dolor, at vulputate urna molestie quis. Nullam sit amet lacus sit amet augue ultricies porttitor tristique et purus. Integer rutrum.</p>
 
         </div>
-        <div className="min-h-96 bg-white text-gray-900 px-14 py-4">
+        <div className="min-h-96 bg-white text-gray-900 py-4 px-14">
           <h1 className="text-xl">Explore Different Visualizations</h1>
             <div className="min-h-80 flex py-4 borderRadius items-stretch justify-between">
               <MapImage/>
               <PropImage/>
               <HistImage/>
             </div>
+            <Footer/>
         </div>
-    
       </div>
+      
 
     );
 };
