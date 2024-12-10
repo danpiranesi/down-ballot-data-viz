@@ -62,7 +62,9 @@ export function ColoradoMap({ propositionId, year: year, voteData = [] }: MapPro
 
     function county_passed(county_name: string) {
       const { votesFor, votesAgainst } = getVotes(county_name);
-      if (votesFor === 0 && votesAgainst === 0) return '#ccc';
+      if (votesFor === 0 && votesAgainst === 0) {
+        return false;
+      }
       if (votesFor > (.5*(votesFor+votesAgainst))) {
         return true;
       }
@@ -103,16 +105,16 @@ export function ColoradoMap({ propositionId, year: year, voteData = [] }: MapPro
 
         //hashing code
     svg
-    .append('defs')
-    .append('pattern')
-    .attr('id', 'diagonalHatch')
-    .attr('patternUnits', 'userSpaceOnUse')
-    .attr('width', 4)
-    .attr('height', 4)
-    .append('path')
-    .attr('d', 'M-1,1 l2,-2 M0,4 l4,-4 M3,5 l2,-2')
-    .attr('stroke', '#000000')
-    .attr('stroke-width', 1);
+      .append('defs')
+      .append('pattern')
+      .attr('id', 'diagonalHatch')
+      .attr('patternUnits', 'userSpaceOnUse')
+      .attr('width', 7) // Increase spacing
+      .attr('height', 7) // Increase spacing
+      .append('path')
+      .attr('d', 'M0,7 l7,-7 M-7,7 l7,-7 M7,7 l7,-7') // Adjust path for wider spacing
+      .attr('stroke', '#000000')
+      .attr('stroke-width', 1);
 
     svg
     .append('defs')
@@ -124,7 +126,7 @@ export function ColoradoMap({ propositionId, year: year, voteData = [] }: MapPro
     .append('path')
     .attr('d', 'M-1,1 l2,-2 M0,4 l4,-4 M3,5 l2,-2')
     .attr('stroke', '#ccc')
-    .attr('stroke-width', 1);
+    .attr('stroke-width', .4);
 
       // Add counties
       svg.append('g')
