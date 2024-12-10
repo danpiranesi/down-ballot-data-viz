@@ -1,9 +1,10 @@
-'use client';
+import React from "react";
 // skeleton page for a home screen
 // TODO: make this the redirect page
 import { Header } from '@/components/layout/Header';
 import { HistImage } from './HistImage';
 import { MapImage } from './MapImage';
+import { PropImage } from './PropImage';
 
 export default function HomePage() {
     return (
@@ -22,8 +23,9 @@ Integer blandit eleifend dolor, at vulputate urna molestie quis. Nullam sit amet
         </div>
         <div className="min-h-96 bg-white text-gray-900 px-14 py-4">
           <h1 className="text-xl">Explore Different Visualizations</h1>
-            <div className="min-h-96 flex justify-between py-4 px-14 borderRadius">
+            <div className="min-h-80 flex py-4 borderRadius items-stretch justify-between">
               <MapImage/>
+              <PropImage/>
               <HistImage/>
             </div>
         </div>
