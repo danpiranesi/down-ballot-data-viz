@@ -149,8 +149,8 @@ export function ColoradoMap({ propositionId, year: year, voteData = [] }: MapPro
         tooltipRef.current.remove();
       }
     };
-  }, [voteData]); // Added voteData to dependencies
-
+  }, [voteData]); 
+  
   return (
     <div 
       ref={containerRef} 

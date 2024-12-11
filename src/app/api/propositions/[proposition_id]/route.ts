@@ -1,70 +1,70 @@
-import prisma from '@/lib/prisma'
-import { NextResponse, NextRequest } from 'next/server'
+import prisma from '@/lib/prisma';
+import { NextResponse, NextRequest } from 'next/server';
 
-/**
- * @fileoverview
- * This file contains the api call that will return the data from a 
- * given proposition id.
- *
- * @dependencies
- * - prisma: ORM for database interaction.
- * - next.js: Framework used for server-side routing and API handling.
- *
- * @usage
- * - The `/propositions/years` endpoint retrieves all available years for propositions.
- * - The `/propositions/years/[year]` endpoint retrieves propositions for a specific year.
- * - The `/propositions/[proposition_id]` endpoint retrieves data for a given proposition ID.
- *
- * @author Oliver Ramirez, Dan Schmidt
- * @version 1.0.0
- * @date 2024-11-28
- * 
- */
-
-
-export async function GET(req: NextRequest, {params}: {params: Promise<{proposition_id: string}>}) {
+export async function GET(req: NextRequest, { params }: { params: { proposition_id: string } }) {
   try {
-    const { proposition_id }= await params;
+    const { proposition_id } = params;
 
-    // Check if 'year' is null or not a valid number
     if (!proposition_id) {
-     return NextResponse.json({ error: 'proposition_id parameter is required' }, { status: 400 });
-  }
-    
-    const prop_data = await prisma.proposition_county_votes.findMany({
-      where: {
-        proposition_id: parseInt(proposition_id, 10)
+      console.error('No proposition_id provided');
+      return NextResponse.json({ error: 'proposition_id parameter is required' }, { status: 400 });
+    }
+
+    const id = parseInt(proposition_id, 10);
+
+    if (isNaN(id)) {
+      console.error('Invalid proposition_id:', proposition_id);
+      return NextResponse.json({ error: 'Invalid proposition_id' }, { status: 400 });
+    }
+
+    console.log('Fetching proposition with id:', id);
+
+    const proposition = await prisma.propositions.findUnique({
+      where: { id },
+      include: {
+        proposition_county_votes: {
+          include: {
+            counties: true,
+          },
+        },
       },
-      select: {
-        county_id: true,
-        yes_count: true,
-        no_count: true,
-        total_votes: true,
-        counties: {
-          select: {
-            name: true
-          }
-        }
-      }
-    })
-    
-    const packedData = prop_data.map(item => ({
-      county_id: item.county_id,
-      yes_count: item.yes_count,
-      no_count: item.no_count,
-      total_votes: item.total_votes,
-      county_name: item.counties.name
-    }))
-    
-    return NextResponse.json(packedData)
+    });
+
+    if (!proposition) {
+      console.error('Proposition not found for id:', id);
+      return NextResponse.json({ error: 'Proposition not found' }, { status: 404 });
+    }
+
+    const formattedVotes = proposition.proposition_county_votes.map((vote) => ({
+      county_id: vote.county_id,
+      county_name: vote.counties?.name || 'Unknown County',
+      yes_count: vote.yes_count || 0,
+      no_count: vote.no_count || 0,
+      total_votes: vote.total_votes || 0,
+    }));
+
+    const responseData = {
+      id: proposition.id,
+      name: proposition.name,
+      year: proposition.year,
+      description: proposition.description,
+      for_statement: proposition.for_statement,
+      against_statement: proposition.against_statement,
+      passed: proposition.passed,
+      votes: formattedVotes,
+    };
+
+    //console.log('Formatted proposition response:', responseData);
+
+    return NextResponse.json(responseData);
   } catch (error) {
-    console.error('Prisma error:', error)
+    console.error('Error fetching proposition details:', error);
     return NextResponse.json(
-      { 
-        error: 'Failed to fetch propositions',
-        details: error instanceof Error ? error.message : String(error)
+      {
+        error: 'Failed to fetch proposition details',
+        details: error instanceof Error ? error.message : String(error),
       },
       { status: 500 }
-    )
+    );
   }
 }
