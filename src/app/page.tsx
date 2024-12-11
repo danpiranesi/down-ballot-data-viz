@@ -1,168 +1,43 @@
 'use client';
-
-import React, { useState, useEffect } from 'react';
-import { usePathname } from 'next/navigation';
+// skeleton page for a home screen
+// TODO: make this the redirect page
 import { Header } from '@/components/layout/Header';
-import { ColoradoMap } from '@/components/map/D3Map';
-import { LayerControl } from '@/components/controls/LayerControl';
-import { PropositionFilters } from '@/components/filtering/PropositionFilters';
-import { Card } from '@/components/ui/Card';
-import { Button } from '@/components/ui/Button';
-import { ResultDisplay } from '@/components/results/ResultDisplay';
-import { Proposition, VoteData } from '@/types/propdata';
+import { Footer } from '@/components/layout/Footer';
+import { HistImage } from '@/components/home/HistImage';
+import { MapImage } from '@/components/home/MapImage';
+import { PropImage } from '@/components/home/PropImage';
+import Link from 'next/link';
 
-export default function Home() {
-  const pathname = usePathname();
-  const [selectedProp, setSelectedProp] = useState<Proposition | null>(null);
-  const [voteData, setVoteData] = useState<VoteData[]>([]);
-  const [totalYesVotes, setTotalYesVotes] = useState<number>(0);
-  const [totalNoVotes, setTotalNoVotes] = useState<number>(0);
-
-  const fetchVoteData = async (id: number) => {
-    try {
-      const response = await fetch(`/api/propositions/${id}`);
-      if (!response.ok) {
-        throw new Error('Failed to fetch vote data');
-      }
-      const data = await response.json();
-  
-      if (Array.isArray(data.votes)) {
-        setVoteData(data.votes); // Extract and set only the votes array
-      } else {
-        console.warn('API did not return a valid votes array:', data);
-        setVoteData([]); // Default to an empty array
-      }
-    } catch (error) {
-      console.error('Error fetching vote data:', error);
-      setVoteData([]); // Handle errors by setting voteData to an empty array
-    }
-  };  
-  
-  // Calculate totals when voteData changes
-  useEffect(() => {
-    const sumVotes = () => {
-      if (!Array.isArray(voteData)) return { totalYes: 0, totalNo: 0 };
-  
-      let totalYes = 0;
-      let totalNo = 0;
-  
-      voteData.forEach((vote) => {
-        totalYes += vote.yes_count;
-        totalNo += vote.no_count;
-      });
-  
-      return { totalYes, totalNo };
-    };
-  
-    const totals = sumVotes();
-    setTotalYesVotes(totals.totalYes);
-    setTotalNoVotes(totals.totalNo);
-  }, [voteData]);
-  
-
-  useEffect(() => {
-    const params = new URLSearchParams(window.location.search);
-    const propositionId = params.get('proposition_id'); // Retrieve the query string value
-    if (propositionId) {
-      const id = parseInt(propositionId, 10);
-
-      // Set selectedProp state based on URL
-      const prop = {
-        id,
-        name: `Congrats! You found an annoying bug. This is on Dan's TODO`, 
-        year: 2020, 
-        for_statement: '',
-        against_statement: '',
-      };
-      setSelectedProp(prop);
-
-      fetchVoteData(id); 
-    }
-  }, []);
-
-  useEffect(() => {
-    if (selectedProp) {
-      const slug = `?proposition_id=${selectedProp.id}`;
-      const newUrl = `/${slug}`;
-      window.history.pushState({}, '', newUrl); 
-    }
-  }, [selectedProp]);
-
-  // Calculate totals when voteData changes
-  useEffect(() => {
-    const sumVotes = () => {
-      let totalYes = 0;
-      let totalNo = 0;
-
-      voteData.forEach((vote) => {
-        totalYes += vote.yes_count;
-        totalNo += vote.no_count;
-      });
-
-      return { totalYes, totalNo };
-    };
-
-    const totals = sumVotes();
-    setTotalYesVotes(totals.totalYes);
-    setTotalNoVotes(totals.totalNo);
-  }, [voteData]);
-
-const handleDropdownChange = (proposition: Proposition) => {
-  setSelectedProp(proposition);
-  fetchVoteData(proposition.id);
-
-};
-
-  return (
-    <div className="min-h-screen bg-gray-50 text-gray-900">
-      <Header />
-      <main className="container mx-auto px-4 py-8">
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
-          <div className="md:col-span-3">
-            <Card className="h-[800px] flex flex-col grow">
-              <div className="items-center justify-center flex">
-                {selectedProp ? selectedProp.name : 'Select a Proposition'}
-              </div>
-              <ColoradoMap
-                propositionId={selectedProp?.id || 0}
-                year={selectedProp?.year || 0}
-                voteData={voteData}
-              />
-            </Card>
-          </div>
-          <div className="space-y-4">
-            <Card className="p-4">
-              <PropositionFilters
-                setSelectedProp={handleDropdownChange}
-              />
-            </Card>
-            <Card>
-              <ResultDisplay
-                yesTotal={totalYesVotes}
-                noTotal={totalNoVotes}
-              />
-            </Card>
-            <Card>
-              <LayerControl
-                layers={[
-                  { id: 'counties', label: 'Counties' },
-                  { id: 'districts', label: 'Districts' },
-                  { id: 'results', label: 'Election Results' },
-                ]}
-                activeLayers={['counties']}
-                onToggleLayer={(id) => console.log('Toggle layer:', id)}
-              />
-            </Card>
-            <Card>
-              <div className="space-y-2">
-                <Button variant="primary" className="w-full">
-                  Export Map
-                </Button>
-              </div>
-            </Card>
-          </div>
+export default function HomePage() {
+    return (
+      <div className="min-h-screen bg-white text-gray-900">
+        <Header />
+        <div className="pt-4 px-14">
+          <h1 className="text-3xl font-serif">Colorado's Down-Ballot Data Visualizer</h1>
+          <p className="text-sm">Explore the State of Colorado’s proposition and amendment races.</p>
+          <hr className="h-px my-4 bg-violet-300 border-0"></hr>
         </div>
-      </main>
-    </div>
-  );
-}
+        <div className="min-h-content bg-white text-gray-900 px-14">
+          <p className="text-m">Understanding how votes add up matters. It matters for big races, but it matters for smaller, down ballot races too.</p>
+          <br></br>
+          <p className="text-m"> The Colorado down ballot vote visualizer is another tool to be used in the pursuit of understanding down ballot voting trends in Colorado races. It’s hard to cover all of the propositions that come up in Colorado and it’s even harder to see trends around the state for similar propositions over the years. The three visualization tools this site offers are meant to lend a hand to journalists covering these races and to voters seeking more information about how support for state-level issues has changed over time. </p>
+          <br></br>
+          <p className="text-m">The County Level Pass/Fail Density Map allows users to search by year and proposition to see the density of support for a given proposition by county. The Proposition Comparison visualizer allows users to pick two separate years and two separate propositions within those years. This visualization aims to support users comparing two similar propositions on a county level to see how the level of support within counties has changed over time. The County Level Pass/Fail Histogram visualization allows users another way to think about county level support for propositions. </p> 
+          <br></br>
+          <p className="text-m"> These visualizations can be exported in their entirety and used in local election reporting. All the data for these visualizations comes from the Colorado Secretary of State’s elections data. Find out more about how this data was sourced <Link href="/about" className="text-m text-blue-700 hover:underline"> here</Link>.</p>
+
+        </div>
+        <div className="min-h-96 bg-white text-gray-900 py-4 px-14">
+          <h1 className="text-xl">Explore Different Visualizations</h1>
+            <div className="min-h-80 flex py-4 borderRadius items-stretch justify-between">
+              <MapImage/>
+              <PropImage/>
+              <HistImage/>
+            </div>
+            <Footer/>
+        </div>
+      </div>
+      
+
+    );
+};
