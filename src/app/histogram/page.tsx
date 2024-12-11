@@ -10,7 +10,7 @@ import { Card } from '@/components/ui/Card';
 import { Button } from '@/components/ui/Button';
 import { ResultDisplay } from '@/components/results/ResultDisplay';
 import {Proposition, VoteData} from '@/types/propdata';
-import ProgressDemo from '@/components/ui/Progress';
+import { PropositionHistogram } from '@/components/histogram/histogramChart';
 
 
 
@@ -79,7 +79,7 @@ export default function Home() {
               <div className="items-center justify-center flex">
               {selectedProp.name}
               </div>
-              <ColoradoMap 
+              <PropositionHistogram
                 propositionId={selectedProp.id}
                 year = {selectedProp.year}
                 voteData = {voteData}   />
