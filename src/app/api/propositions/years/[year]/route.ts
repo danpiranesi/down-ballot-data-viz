@@ -22,14 +22,14 @@ import { NextResponse, NextRequest } from 'next/server'
  */
 
 
-export async function GET(req: NextRequest, {params}: {params: {year: string}}) {
+export async function GET(req: NextRequest, {params}: {params: Promise<{year: string}>}) {
   try {
-    const { year }= await params
+    const { year }= await params;
 
     // Check if 'year' is null or not a valid number
-    if (!year) {
-     return NextResponse.json({ error: 'Year query parameter is required' }, { status: 400 });
-  }
+  //   if (!year) {
+  //    return NextResponse.json({ error: 'Year query parameter is required' }, { status: 400 });
+  // }
     
     const propositions = await prisma.propositions.findMany({
       where:{
@@ -38,9 +38,7 @@ export async function GET(req: NextRequest, {params}: {params: {year: string}}) 
       select: {
         id: true,
         name: true,
-        year: true,
-        for_statement: true,
-        against_statement:true
+        year: true
       }
     })
     console.log(propositions)
