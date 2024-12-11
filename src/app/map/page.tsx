@@ -83,7 +83,7 @@ export default function Home() {
   useEffect(() => {
     if (selectedProp) {
       const slug = `?proposition_id=${selectedProp.id}`;
-      const newUrl = `/${slug}`;
+      const newUrl = `/map/${slug}`;
       window.history.pushState({}, '', newUrl); 
     }
   }, [selectedProp]);
