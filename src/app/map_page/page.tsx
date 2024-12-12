@@ -3,11 +3,13 @@
 
 import React, { useState, useEffect } from 'react'
 import { Header } from '@/components/layout/Header';
+import { Footer } from '@/components/layout/Footer';
 import { ColoradoMap } from '@/components/map/D3Map';
 import { LayerControl } from '@/components/controls/LayerControl';
 import { PropositionFilters } from '@/components/filtering/PropositionFilters';
 import { Card } from '@/components/ui/Card';
 import { Button } from '@/components/ui/Button';
+import GradientBar from '@/components/ui/Key'
 import { ResultDisplay } from '@/components/results/ResultDisplay';
 import {Proposition, VoteData} from '@/types/propdata';
 import ProgressDemo from '@/components/ui/Progress';
@@ -65,20 +67,23 @@ export default function Home() {
 
   return (
     
-    <div className="min-h-screen bg-gray-50 text-gray-900">
+    <div className="min-h-screen bg-white text-gray-900">
       <Header />
       <main className="container mx-auto px-4 py-8">
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
+        <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
           <div className="md:col-span-3">
-            <Card className="h-[800px] flex flex-col grow">
-              <div className="items-center justify-center flex">
+            <Card className="h-[800px] flex flex-col grow justify-center">
+              <div className="items-left flex mx-14 my-4 text-lg font-serif">
               {selectedProp.name}
               </div>
               <ColoradoMap 
                 propositionId={selectedProp.id}
                 year = {selectedProp.year}
                 voteData = {voteData}   />
-            </Card>
+              <div className='mx-14'>
+              <GradientBar/>
+              </div>
+            </Card>            
           </div> 
           <div className="space-y-4">
             <Card className="p-4">
@@ -109,6 +114,7 @@ export default function Home() {
             </Card>
           </div>
         </div>
+        <Footer/>
       </main>
     </div>
   );
