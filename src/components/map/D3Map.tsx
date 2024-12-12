@@ -71,18 +71,18 @@ export function ColoradoMap({ propositionId, year: year, voteData = [] }: MapPro
       return false;
     }
     
-    function setupcolor() {
-      const colorScale = d3
+    function setupcolor() { // must interp for Vercel
+      return d3
         .scaleLinear()
-        .domain([0, 25, 50, 75, 100]) // Map percentages to color stops
+        .domain([0, 25, 50, 75, 100])
         .range([
           '#edf8fb',
           '#b3cde3',
           '#8c96c6',
           '#8856a7',
-          '#810f7c',
-        ]); // Your hues
-      return colorScale;
+          '#810f7c'
+        ])
+        .interpolate(d3.interpolateRgb as any);
     }
 
     function render(us: FeatureCollection<Geometry, CountyProperties>) {
