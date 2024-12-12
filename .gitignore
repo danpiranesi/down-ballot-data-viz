@@ -1,3 +1,5 @@
 node_modules/
 .next/
-.env*
+git p
+.env
+.DS_store
