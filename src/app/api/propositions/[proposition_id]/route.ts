@@ -3,10 +3,11 @@ import { NextResponse, NextRequest } from 'next/server';
 
 export async function GET(
   req: NextRequest, 
-  { params }: { params: { proposition_id: string } }
+  { params }: { params: Promise<{ proposition_id: string }> }
 ) {
   try {
-    const { proposition_id } = params;
+    // Correctly await the params
+    const { proposition_id } = await params;
 
     if (!proposition_id) {
       console.error('No proposition_id provided');
