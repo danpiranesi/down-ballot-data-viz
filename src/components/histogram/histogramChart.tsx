@@ -37,6 +37,7 @@ export function PropositionHistogram({ propositionId, year, voteData }: MapProps
       .attr('transform', 'translate(' + margin.left + ',' + margin.top + ')');
 
     // Extract the county names and voter data
+    console.log("in hist, voteData is, ",voteData)
     const counties = voteData.map((d) => d.county_name);
 
     // Define scales
