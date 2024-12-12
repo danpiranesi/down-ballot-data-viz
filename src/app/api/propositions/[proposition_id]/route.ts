@@ -1,9 +1,13 @@
 import prisma from '@/lib/prisma';
 import { NextResponse, NextRequest } from 'next/server';
 
-export async function GET(req: NextRequest, { params }: { params: { proposition_id: string } }) {
+export async function GET(
+  req: NextRequest, 
+  { params }: { params: Promise<{ proposition_id: string }> }
+) {
   try {
-    const { proposition_id } = params;
+    // Correctly await the params
+    const { proposition_id } = await params;
 
     if (!proposition_id) {
       console.error('No proposition_id provided');
@@ -53,8 +57,6 @@ export async function GET(req: NextRequest, { params }: { params: { proposition_
       passed: proposition.passed,
       votes: formattedVotes,
     };
-
-    //console.log('Formatted proposition response:', responseData);
 
     return NextResponse.json(responseData);
   } catch (error) {
