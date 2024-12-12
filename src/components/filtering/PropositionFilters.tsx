@@ -55,8 +55,8 @@ export function PropositionFilters(props: Props) {
     const fetchPropositions = async () => {
       try {
         //console.log("calling fetchPropositions with year value: ", selectedYear)
-        const response = await fetch(`api/propositions/years/${selectedYear}`)
-        console.log(response)
+        const response = await fetch(`/api/propositions/years/${selectedYear}`)
+        console.log("the response is", response)
         if (!response.ok){
           throw new Error('failed to fetch propositions')
         }
