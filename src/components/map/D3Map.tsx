@@ -76,13 +76,13 @@ export function ColoradoMap({ propositionId, year: year, voteData = [] }: MapPro
         .scaleLinear()
         .domain([0, 25, 50, 75, 100])
         .range([
-          '#edf8fb',
-          '#b3cde3',
-          '#8c96c6',
-          '#8856a7',
-          '#810f7c'
+          d3.rgb('#edf8fb').r,
+          d3.rgb('#b3cde3').r,
+          d3.rgb('#8c96c6').r,
+          d3.rgb('#8856a7').r,
+          d3.rgb('#810f7c').r
         ])
-        .interpolate(d3.interpolateRgbBasis as any);
+        .interpolate(d3.interpolateRgb as any);
     }
 
     function render(us: FeatureCollection<Geometry, CountyProperties>) {
