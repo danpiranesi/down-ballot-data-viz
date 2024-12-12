@@ -8,6 +8,7 @@ import { MapImage } from '@/components/home/MapImage';
 import { PropImage } from '@/components/home/PropImage';
 import Link from 'next/link';
 
+
 export default function HomePage() {
     return (
       <div className="min-h-screen bg-white text-gray-900">
