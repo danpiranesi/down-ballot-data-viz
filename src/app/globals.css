@@ -75,3 +75,16 @@ body {
 header {
   font-family: Georgia, serif;
 }
+
+div#yesvotes {
+  background-image: repeating-linear-gradient(
+      -45deg,
+      #000000 0px,
+      #000000 2px,
+      transparent 2px,
+      transparent 10px
+  );
+  
+}
+
+

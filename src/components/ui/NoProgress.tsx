@@ -6,7 +6,7 @@ type Props = {
     max: number
 }
 
-function ProgressDemo (props: Props) {
+function NoProgress (props: Props) {
 	const [progress, setProgress] = React.useState(13);
 
 	// React.useEffect(() => {
@@ -25,13 +25,11 @@ function ProgressDemo (props: Props) {
 			value={progress}
 		>
 			<Indicator
-				id = 'yesvotes'
-				className="ease-[cubic-bezier(0.65, 0, 0.35, 1)] size-full bg-[#8856a7] transition-transform duration-[660ms]"
-				style={{ transform: `translateX(-${100 - (props.value/props.max * 100)}%)`}}
+				className="ease-[cubic-bezier(0.65, 0, 0.35, 1)] size-full bg-[#b3cde3] transition-transform duration-[660ms]"
+				style={{ transform: `translateX(-${100 - (props.value/props.max * 100)}%)`, background: 'linear-gradient(to right, #edf8fb, #b3cde3, #8c96c6)'}}
 			/>
 		</Root>
 	);
 };
 
-
-export default ProgressDemo;
+export default NoProgress;

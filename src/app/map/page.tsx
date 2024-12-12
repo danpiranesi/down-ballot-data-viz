@@ -116,14 +116,19 @@ const handleDropdownChange = (proposition: Proposition) => {
 };
 
   return (
-    <div className="min-h-screen bg-gray-50 text-gray-900">
+    <div className="min-h-screen bg-white text-gray-900">
       <Header />
-      <main className="container mx-auto px-4 py-8">
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
+      <div className="pt-4 px-14">
+          <h1 className="text-3xl font-serif">County Level Pass/Fail Density Map</h1>
+          <p className="text-sm">Compare the percentages of people voting for propositions in each county.</p>
+          <hr className="h-px my-4 bg-violet-300 border-0"></hr>
+      </div>
+      <main className="container mx-auto px-4 py-4">
+        <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
           <div className="md:col-span-3">
-            <Card className="h-[800px] flex flex-col grow">
-              <div className="items-center justify-center flex">
-                {selectedProp ? selectedProp.name : 'Select a Proposition'}
+            <Card className="h-[800px] flex flex-col grow justify-center">
+              <div className="justify-center flex mx-14 my-4 text-lg font-serif">
+                {selectedProp ? selectedProp.name : 'Select a Year and Proposition'}
               </div>
               <ColoradoMap
                 propositionId={selectedProp?.id || 0}
