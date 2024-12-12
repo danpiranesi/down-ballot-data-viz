@@ -11,6 +11,7 @@ import { Button } from '@/components/ui/Button';
 import { ResultDisplay } from '@/components/results/ResultDisplay';
 import { Proposition, VoteData } from '@/types/propdata';
 import GradientBar from '@/components/ui/Key';
+import Link from 'next/link';
 
 export const VoteDataContext = createContext<VoteData[]>([
   // {
@@ -134,6 +135,11 @@ const handleDropdownChange = (proposition: Proposition) => {
 
 };
 
+const handleMapChange =  () => {
+  console.log(window.location.href)
+}
+
+
   return (
     <div className="min-h-screen bg-gray-50 text-gray-900">
       <Header />
@@ -168,6 +174,13 @@ const handleDropdownChange = (proposition: Proposition) => {
                 yesTotal={totalYesVotes}
                 noTotal={totalNoVotes}
               />
+            </Card>
+            <Card>
+              <Link href={`/visuals/map`} key = {'hi'}>
+                <Button>
+                  Switch
+                </Button>
+              </Link>
             </Card>
             <Card>
               <LayerControl
