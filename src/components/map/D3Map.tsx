@@ -72,17 +72,14 @@ export function ColoradoMap({ propositionId, year: year, voteData = [] }: MapPro
     }
     
     function setupcolor() {
-      return d3
-        .scaleLinear()
-        .domain([0, 25, 50, 75, 100])
-        .range([
-          d3.rgb('#edf8fb').r,
-          d3.rgb('#b3cde3').r,
-          d3.rgb('#8c96c6').r,
-          d3.rgb('#8856a7').r,
-          d3.rgb('#810f7c').r
-        ])
-        .interpolate(d3.interpolateRgb as any);
+      const colorScale = d3
+        .scaleLinear<number, number>() // Domain and range should match the interpolation type
+        .domain([0, 33, 66, 100]) // Map percentages to color stops
+        .range([0, 1, 2, 3]) 
+        .interpolate(() =>
+          d3.interpolateRgbBasis(['#edf8fb', '#b3cde3', '#8c96c6', '#88419d'])
+        );
+      return (value: number) => colorScale(value);
     }
 
     function render(us: FeatureCollection<Geometry, CountyProperties>) {
