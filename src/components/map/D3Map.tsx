@@ -71,7 +71,7 @@ export function ColoradoMap({ propositionId, year: year, voteData = [] }: MapPro
       return false;
     }
     
-    function setupcolor() { // must interp for Vercel
+    function setupcolor() {
       return d3
         .scaleLinear()
         .domain([0, 25, 50, 75, 100])
@@ -82,7 +82,7 @@ export function ColoradoMap({ propositionId, year: year, voteData = [] }: MapPro
           '#8856a7',
           '#810f7c'
         ])
-        .interpolate(d3.interpolateRgb as any);
+        .interpolate(d3.interpolateRgbBasis as any);
     }
 
     function render(us: FeatureCollection<Geometry, CountyProperties>) {
