@@ -1,6 +1,5 @@
 'use client';
-
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, createContext} from 'react';
 import { usePathname } from 'next/navigation';
 import { Header } from '@/components/layout/Header';
 import { Footer } from '@/components/layout/Footer';
@@ -13,20 +12,39 @@ import { ResultDisplay } from '@/components/results/ResultDisplay';
 import { Proposition, VoteData } from '@/types/propdata';
 import GradientBar from '@/components/ui/Key';
 
-export default function Home() {
-  const pathname = usePathname();
+export const VoteDataContext = createContext<VoteData[]>([
+  // {
+  //   county_id: 1,
+  //   yes_count: 1200,
+  //   no_count: 800,
+  //   total_votes: 2000,
+  //   county_name: "Larimer",
+  //   passed: true,
+  // },
+]);
+
+
+export default function visualLayoutRootLayout({
+    children,
+  }: Readonly<{
+    children: React.ReactNode;
+  }>) {
+    const pathname = usePathname();
   const [selectedProp, setSelectedProp] = useState<Proposition | null>(null);
   const [voteData, setVoteData] = useState<VoteData[]>([]);
   const [totalYesVotes, setTotalYesVotes] = useState<number>(0);
   const [totalNoVotes, setTotalNoVotes] = useState<number>(0);
 
+
   const fetchVoteData = async (id: number) => {
     try {
-      const response = await fetch(`/api/propositions/${id}`);
+      const response = await fetch(`${window.location.origin}/api/propositions/${id}`);
+      //const response = await fetch(`/api/propositions/${id}`);
       if (!response.ok) {
         throw new Error('Failed to fetch vote data');
       }
       const data = await response.json();
+      console.log("data is: ", data)
   
       if (Array.isArray(data.votes)) {
         setVoteData(data.votes); // Extract and set only the votes array
@@ -85,7 +103,8 @@ export default function Home() {
   useEffect(() => {
     if (selectedProp) {
       const slug = `?proposition_id=${selectedProp.id}`;
-      const newUrl = `/map/${slug}`;
+      const newUrl = `${slug}`;
+      //const newUrl = `/visuals/${slug}`;
       window.history.pushState({}, '', newUrl); 
     }
   }, [selectedProp]);
@@ -130,11 +149,14 @@ const handleDropdownChange = (proposition: Proposition) => {
               <div className="justify-center flex mx-14 my-4 text-lg font-serif">
                 {selectedProp ? selectedProp.name : 'Select a Year and Proposition'}
               </div>
-              <ColoradoMap
+              <VoteDataContext.Provider value={voteData}>
+              {children}
+              </VoteDataContext.Provider>
+              {/* <ColoradoMap
                 propositionId={selectedProp?.id || 0}
                 year={selectedProp?.year || 0}
                 voteData={voteData}
-              />
+              /> */}
               <div className='mx-14'>
               <GradientBar/>
               </div>
@@ -176,6 +198,4 @@ const handleDropdownChange = (proposition: Proposition) => {
       </main>
     </div>
   );
-}
-
-
+  }

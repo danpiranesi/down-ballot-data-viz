@@ -15,6 +15,7 @@ git on the terminal.
 a conflict when you push, it is on you to fix it.
 - NO directly pushing to main until demo days. You will have to merge integration
 to main only on those days.
+
 - NO committing syntactically incorrect code into branches. Everuthing you commit
 should work. You should have tested it.
 - NO turning on git on VSCode.
