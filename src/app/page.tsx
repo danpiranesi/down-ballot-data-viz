@@ -1,122 +1,44 @@
 'use client';
-
-
-import React, { useState, useEffect } from 'react'
+// skeleton page for a home screen
+// TODO: make this the redirect page
 import { Header } from '@/components/layout/Header';
-import { ColoradoMap } from '@/components/map/D3Map';
-import { LayerControl } from '@/components/controls/LayerControl';
-import { PropositionFilters } from '@/components/filtering/PropositionFilters';
-import { Card } from '@/components/ui/Card';
-import { Button } from '@/components/ui/Button';
-import { ResultDisplay } from '@/components/results/ResultDisplay';
-import {Proposition, VoteData} from '@/types/propdata';
-import ProgressDemo from '@/components/ui/Progress';
+import { Footer } from '@/components/layout/Footer';
+import { HistImage } from '@/components/home/HistImage';
+import { MapImage } from '@/components/home/MapImage';
+import { PropImage } from '@/components/home/PropImage';
+import Link from 'next/link';
 
 
-
-export default function Home() {
-  const [selectedProp, setSelectedProp] = useState<Proposition>({id:0, name:'', year: 0, for_statement:" ", against_statement: " "})
-  const [voteData, setVoteData] = useState<VoteData[]>([])
-  const [totalYesVotes, setTotalYesVotes] = useState<number>(0)
-  const [totalNoVotes, setTotalNoVotes] = useState<number>(0)
-  //console.log("in page.tsx, setSelectedProp is", setSelectedProp)
-
-  const fetchVoteData = async () => {
-    try {
-      const response = await fetch(`api/propositions/${selectedProp.id}`)
-      console.log(response)
-      if (!response.ok){
-        throw new Error('failed to fetch data')
-      }
-      const data : VoteData[] = await response.json()
-
-      console.log("the data fectched is ", data)
-      setVoteData(data)
-    }catch{
-    }
-  }
-
-
-  useEffect(()=> {
-    console.log("vote data is", voteData)
-  },[voteData])
-  
-  //when the selected prop is updated, update vote data
-  useEffect(() => {
-    
-    console.log("selectedProp in page.tsx is: ", selectedProp)
-    fetchVoteData()
-  }, [selectedProp])
-
-  useEffect(() =>{
-    function sumVotes (){
-      let totalYes = 0
-      let totalNo = 0
-
-      voteData.forEach(voteData => {
-        totalYes += voteData.yes_count
-        totalNo += voteData.no_count
-      })
-
-      return {totalYes, totalNo}
-    }
-
-    const totals = sumVotes()
-    console.log("totals: ", totals)
-    setTotalYesVotes(totals.totalYes)
-    setTotalNoVotes(totals.totalNo)
-  },[voteData])
-
-
-  return (
-    
-    <div className="min-h-screen bg-gray-50 text-gray-900">
-      <Header />
-      <main className="container mx-auto px-4 py-8">
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
-          <div className="md:col-span-3">
-            <Card className="h-[800px] flex flex-col grow">
-              <div className="items-center justify-center flex">
-              {selectedProp.name}
-              </div>
-              <ColoradoMap 
-                propositionId={selectedProp.id}
-                year = {selectedProp.year}
-                voteData = {voteData}   />
-            </Card>
-          </div> 
-          <div className="space-y-4">
-            <Card className="p-4">
-              <PropositionFilters setSelectedProp={setSelectedProp}/>
-            </Card>
-            <Card>
-              <ResultDisplay yesTotal={totalYesVotes} noTotal={totalNoVotes}/>
-            </Card>
-    
-            <Card>
-              <LayerControl 
-                layers={[
-                  { id: 'counties', label: 'Counties' },
-                  { id: 'districts', label: 'Districts' },
-                  { id: 'results', label: 'Election Results' }
-                ]}
-                activeLayers={['counties']}
-                onToggleLayer={(id) => console.log('Toggle layer:', id)}
-              />
-            </Card>
-            
-            <Card>
-              <div className="space-y-2">
-                <Button variant="primary" className="w-full">
-                  Export Map
-                </Button>
-              </div>
-            </Card>
-          </div>
+export default function HomePage() {
+    return (
+      <div className="min-h-screen bg-white text-gray-900">
+        <Header />
+        <div className="pt-4 px-14">
+          <h1 className="text-3xl font-serif">Colorado's Down-Ballot Data Visualizer</h1>
+          <p className="text-sm">Explore the State of Colorado’s proposition and amendment races.</p>
+          <hr className="h-px my-4 bg-violet-300 border-0"></hr>
         </div>
-      </main>
-    </div>
-  );
-}
+        <div className="min-h-content bg-white text-gray-900 px-14">
+          <p className="text-m">Understanding how votes add up matters. It matters for big races, but it matters for smaller, down ballot races too.</p>
+          <br></br>
+          <p className="text-m"> The Colorado down ballot vote visualizer is another tool to be used in the pursuit of understanding down ballot voting trends in Colorado races. It’s hard to cover all of the propositions that come up in Colorado and it’s even harder to see trends around the state for similar propositions over the years. The three visualization tools this site offers are meant to lend a hand to journalists covering these races and to voters seeking more information about how support for state-level issues has changed over time. </p>
+          <br></br>
+          <p className="text-m">The County Level Pass/Fail Density Map allows users to search by year and proposition to see the density of support for a given proposition by county. The Proposition Comparison visualizer allows users to pick two separate years and two separate propositions within those years. This visualization aims to support users comparing two similar propositions on a county level to see how the level of support within counties has changed over time. The County Level Pass/Fail Histogram visualization allows users another way to think about county level support for propositions. </p> 
+          <br></br>
+          <p className="text-m"> These visualizations can be exported in their entirety and used in local election reporting. All the data for these visualizations comes from the Colorado Secretary of State’s elections data. Find out more about how this data was sourced <Link href="/about" className="text-m text-blue-700 hover:underline"> here</Link>.</p>
 
+        </div>
+        <div className="min-h-96 bg-white text-gray-900 py-4 px-14">
+          <h1 className="text-xl">Explore Different Visualizations</h1>
+            <div className="min-h-80 flex py-4 borderRadius items-stretch justify-between">
+              <MapImage/>
+              <PropImage/>
+              <HistImage/>
+            </div>
+            <Footer/>
+        </div>
+      </div>
+      
 
+    );
+};
