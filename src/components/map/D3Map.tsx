@@ -52,11 +52,17 @@ export function ColoradoMap({ propositionId, year: year, voteData = [] }: MapPro
       };
     }
 
+
     function getColor(county_name: string) {
       const colorScale = setupcolor();
+      //const colorScale2 = setupcolor2();
       const { votesFor, votesAgainst } = getVotes(county_name);
-      if (votesFor === 0 && votesAgainst === 0) return '#ccc';
+      if (votesFor === 0 && votesAgainst === 0){
+        return '#ccc';
+      } 
       const percent_yes = (votesFor/(votesFor+votesAgainst)*100);
+      //console.log("colorscale1: "+colorScale(percent_yes));
+      //console.log("colorscale2: "+colorScale2(percent_yes));
       return colorScale(percent_yes);
     }
 
@@ -71,16 +77,37 @@ export function ColoradoMap({ propositionId, year: year, voteData = [] }: MapPro
       return false;
     }
     
+    /*
     function setupcolor() {
       const colorScale = d3
         .scaleLinear<number, number>() // Domain and range should match the interpolation type
-        .domain([0, 33, 66, 100]) // Map percentages to color stops
-        .range([0, 1, 2, 3]) 
+        .domain([0, 25, 50,75, 100]) // Map percentages to color stops
+        .range([0, 1, 2, 3,4]) 
         .interpolate(() =>
-          d3.interpolateRgbBasis(['#edf8fb', '#b3cde3', '#8c96c6', '#88419d'])
+          d3.interpolateRgbBasis(['#edf8fb',
+        '#b3cde3',
+        '#8c96c6',
+        '#8856a7',
+        '#810f7c',])
         );
       return (value: number) => colorScale(value);
     }
+    */
+
+    function setupcolor() {
+      const colorScale = d3
+        .scaleLinear()
+        .domain([0, 25, 50, 75, 100]) // Map percentages to color stops
+        .range([
+          '#edf8fb',
+          '#b3cde3',
+          '#8c96c6',
+          '#8856a7',
+          '#810f7c',
+        ]); // Your hues
+      return colorScale;
+    }
+
 
     function render(us: FeatureCollection<Geometry, CountyProperties>) {
       const width = containerRef.current?.clientWidth || 800;
@@ -101,17 +128,17 @@ export function ColoradoMap({ propositionId, year: year, voteData = [] }: MapPro
       const path = d3.geoPath().projection(projection);
 
         //hashing code
-    svg
-      .append('defs')
-      .append('pattern')
-      .attr('id', 'diagonalHatch')
-      .attr('patternUnits', 'userSpaceOnUse')
-      .attr('width', 7) // Increase spacing
-      .attr('height', 7) // Increase spacing
-      .append('path')
-      .attr('d', 'M0,7 l7,-7 M-7,7 l7,-7 M7,7 l7,-7') // Adjust path for wider spacing
-      .attr('stroke', '#000000')
-      .attr('stroke-width', 1);
+        svg
+        .append('defs')
+        .append('pattern')
+        .attr('id', 'diagonalHatch')
+        .attr('patternUnits', 'userSpaceOnUse')
+        .attr('width', 9) // Increase spacing
+        .attr('height', 9) // Increase spacing
+        .append('path')
+        .attr('d', 'M0,9 l9,-9 M-9,9 l9,-9 M9,9 l9,-9') // Adjust path for wider spacing
+        .attr('stroke', '#000000')
+        .attr('stroke-width', 1.5);
 
     svg
     .append('defs')
