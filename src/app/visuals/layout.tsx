@@ -11,18 +11,12 @@ import { Button } from '@/components/ui/Button';
 import { ResultDisplay } from '@/components/results/ResultDisplay';
 import { Proposition, VoteData } from '@/types/propdata';
 import GradientBar from '@/components/ui/Key';
-import Link from 'next/link';
+import VisualizationSelect from '@/components/vizSelect/VisualizationSelect';
+import { useRouter } from 'next/router';
+import ToggleButton from '@mui/material/ToggleButton';
+import ToggleButtonGroup from '@mui/material/ToggleButtonGroup';
 
-export const VoteDataContext = createContext<VoteData[]>([
-  // {
-  //   county_id: 1,
-  //   yes_count: 1200,
-  //   no_count: 800,
-  //   total_votes: 2000,
-  //   county_name: "Larimer",
-  //   passed: true,
-  // },
-]);
+export const VoteDataContext = createContext<VoteData[]>([]);
 
 
 export default function visualLayoutRootLayout({
@@ -30,7 +24,7 @@ export default function visualLayoutRootLayout({
   }: Readonly<{
     children: React.ReactNode;
   }>) {
-    const pathname = usePathname();
+  const pathname = usePathname();
   const [selectedProp, setSelectedProp] = useState<Proposition | null>(null);
   const [voteData, setVoteData] = useState<VoteData[]>([]);
   const [totalYesVotes, setTotalYesVotes] = useState<number>(0);
@@ -135,9 +129,19 @@ const handleDropdownChange = (proposition: Proposition) => {
 
 };
 
-const handleMapChange =  () => {
-  console.log(window.location.href)
-}
+
+// const handleVisualChange =  (
+//   //event: React.MouseEvent<HTMLElement>,
+//   visualType : "Histogram"| "Map" | "Comparison"
+// ) => {
+//   if (selectedProp){
+//     router.push(`/visuals/${visualType}/?proposition_id=${selectedProp.id}`)
+//   }else{
+//     router.push(`/visuals/${visualType}/`)
+//   }
+
+//   };
+
 
 
   return (
@@ -176,11 +180,18 @@ const handleMapChange =  () => {
               />
             </Card>
             <Card>
-              <Link href={`/visuals/map`} key = {'hi'}>
-                <Button>
-                  Switch
-                </Button>
-              </Link>
+            {/* <ToggleButtonGroup
+              color="primary"
+              //value={alignment}
+              exclusive
+              onChange={handleVisualChange}
+              aria-label="Platform"
+            >
+              <ToggleButton value="Histogram">Histogram</ToggleButton>
+              <ToggleButton value="Map">Map</ToggleButton>
+              <ToggleButton value="Comparison">Comparison</ToggleButton>
+            </ToggleButtonGroup> */}
+                <VisualizationSelect propId = {selectedProp ? selectedProp.id : 0} />
             </Card>
             <Card>
               <LayerControl
