@@ -55,13 +55,14 @@ export function ColoradoMap({ propositionId, year: year, voteData = [] }: MapPro
 
     function getColor(county_name: string) {
       const colorScale = setupcolor();
+      //const colorScale2 = setupcolor2();
       const { votesFor, votesAgainst } = getVotes(county_name);
       if (votesFor === 0 && votesAgainst === 0){
-        console.log('#ccc');
         return '#ccc';
       } 
       const percent_yes = (votesFor/(votesFor+votesAgainst)*100);
-      console.log(colorScale(percent_yes));
+      //console.log("colorscale1: "+colorScale(percent_yes));
+      //console.log("colorscale2: "+colorScale2(percent_yes));
       return colorScale(percent_yes);
     }
 
@@ -76,6 +77,7 @@ export function ColoradoMap({ propositionId, year: year, voteData = [] }: MapPro
       return false;
     }
     
+    /*
     function setupcolor() {
       const colorScale = d3
         .scaleLinear<number, number>() // Domain and range should match the interpolation type
@@ -89,6 +91,21 @@ export function ColoradoMap({ propositionId, year: year, voteData = [] }: MapPro
         '#810f7c',])
         );
       return (value: number) => colorScale(value);
+    }
+    */
+
+    function setupcolor() {
+      const colorScale = d3
+        .scaleLinear()
+        .domain([0, 25, 50, 75, 100]) // Map percentages to color stops
+        .range([
+          '#edf8fb',
+          '#b3cde3',
+          '#8c96c6',
+          '#8856a7',
+          '#810f7c',
+        ]); // Your hues
+      return colorScale;
     }
 
 

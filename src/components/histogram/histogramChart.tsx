@@ -87,6 +87,7 @@ export function PropositionHistogram({ propositionId, year, voteData }: MapProps
     // Append Y-axis
     const yAxis = svg.append('g').call(d3.axisLeft(y));
 
+
     // Create tooltip
     const tooltip = d3
       .select(containerRef.current)
@@ -150,8 +151,8 @@ export function PropositionHistogram({ propositionId, year, voteData }: MapProps
       .attr('height', height)
       .style('fill', 'none')
       .style('pointer-events', 'all')
-      .attr('transform', 'translate(' + margin.left + ',' + margin.top + ')')
-      .call(zoom);
+      .attr('transform', 'translate(' + margin.left + ',' + margin.top + ')');
+      //.call(zoom);
 
     // Linear scale for the zoom transformation
     const xLinear = d3
