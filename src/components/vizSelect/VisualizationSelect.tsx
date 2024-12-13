@@ -30,19 +30,19 @@ export default function VisuslizationSelect(props : Props) {
       aria-label="Platform"
     >
      <Link
-       href = {props.propId == 0 ? `visuals/histogram` : 
+       href = {props.propId == 0 ? `/visuals/histogram` : 
         `/visuals/histogram/?proposition_id=${props.propId}`}
        >
       <ToggleButton value="Histogram">Histogram</ToggleButton>
       </Link>
       <Link
-       href = {props.propId == 0 ? `visuals/map` : 
+       href = {props.propId == 0 ? `/visuals/map` : 
         `/visuals/map/?proposition_id=${props.propId}`}
        >
       <ToggleButton value="Map">Map</ToggleButton>
       </Link>
       <Link
-       href = {props.propId == 0 ? `visuals/comparison` : 
+       href = {props.propId == 0 ? `/visuals/comparison` : 
         `/visuals/comparison/?proposition_id=${props.propId}`}
        >
       <ToggleButton value="Comparison">Comparison</ToggleButton>
