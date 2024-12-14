@@ -1,4 +1,5 @@
 
+'use client'
 import ProgressDemo from "@/components/ui/Progress"
 import NoProgress from "@/components/ui/NoProgress"
 type Props={

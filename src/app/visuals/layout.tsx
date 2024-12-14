@@ -185,29 +185,7 @@ const handleDropdownChange = (proposition: Proposition) => {
               />
             </Card>
             <Card>
-            {/* <ToggleButtonGroup
-              color="primary"
-              //value={alignment}
-              exclusive
-              onChange={handleVisualChange}
-              aria-label="Platform"
-            >
-              <ToggleButton value="Histogram">Histogram</ToggleButton>
-              <ToggleButton value="Map">Map</ToggleButton>
-              <ToggleButton value="Comparison">Comparison</ToggleButton>
-            </ToggleButtonGroup> */}
                 <VisualizationSelect propId = {selectedProp ? selectedProp.id : 0} />
-            </Card>
-            <Card>
-              <LayerControl
-                layers={[
-                  { id: 'counties', label: 'Counties' },
-                  { id: 'districts', label: 'Districts' },
-                  { id: 'results', label: 'Election Results' },
-                ]}
-                activeLayers={['counties']}
-                onToggleLayer={(id) => console.log('Toggle layer:', id)}
-              />
             </Card>
             <Card>
               <div className="space-y-2">

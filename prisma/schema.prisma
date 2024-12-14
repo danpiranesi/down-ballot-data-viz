@@ -15,9 +15,8 @@ model propositions {
   year                     Int?
   created_at               DateTime?                  @default(now()) @db.Timestamp(6)
   updated_at               DateTime?                  @default(now()) @db.Timestamp(6)
-  for_statement            String?                    @db.VarChar(64)
-  against_statement        String?                    @db.VarChar(64)
   passed                   Boolean?
+  pass_percentage          Float?
   proposition_county_votes proposition_county_votes[]
 }
 
