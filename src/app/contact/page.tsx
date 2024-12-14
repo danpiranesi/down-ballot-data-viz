@@ -16,7 +16,7 @@ export default function Contact() {
             <Header/>
 
         <main className='h-screen flex items-center justify-center'>
-            <div className="bg-violet-100 flex rounded-lg w-1/2" > 
+            <div className="bg-violet-100 flex rounded-lg" > 
                 <div className='flex-1 p-20 items-center justify-center'>
                     <h1 className='text-2xl pb-2 text-gray-900'>
                         Questions? Comments? Concerns?

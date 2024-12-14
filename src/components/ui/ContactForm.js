@@ -29,6 +29,7 @@ const ContactForm = () => {
           }, 5000); // hide message after 5 seconds
         },
         (error) => {
+          console.log('FAILED...', error.text);
           setStateMessage('Something went wrong, please try again later');
           setIsSubmitting(false);
           setTimeout(() => {
@@ -40,6 +41,7 @@ const ContactForm = () => {
     // Clears the form after sending the email
     e.target.reset();
   };
+
   return (
     <form onSubmit={sendEmail}>
       <div className='flex justify-between'>
@@ -48,7 +50,7 @@ const ContactForm = () => {
             <label htmlFor='name' className='block text-med pb-2'>Name</label>
               <br></br>
                 <input 
-                    className='border-2 border-gray-500 p-2 rounded-md focus:border-violet-500focus:ring-violet-500' 
+                    className='border-2 border-gray-500 p-2 rounded-md focus:border-violet-500 focus:ring-violet-500' 
                     type='text' 
                     name='user_name' 
                     placeholder='Enter your name'/>
@@ -61,10 +63,8 @@ const ContactForm = () => {
                       type='email' 
                       name='user_email' 
                       placeholder='name@email.com'/>
-            </div>                          
-            </div>
-            <div className='mt-6'>
-              <div className='pb-4'>
+            </div>  
+            <div className='pb-4'>
                  <label htmlFor='message' className='block text-med pb-2'>Message</label>
                  <br></br>
                   <textarea 
@@ -72,12 +72,14 @@ const ContactForm = () => {
                      type='text' 
                      name='message' 
                      placeholder='Enter your message'
-                     style={{resize:'none'}}/>                    
-              </div>
-                <Button> 
+                     style={{resize:'none'}}/>  
+                  <div>
+                  <Button> 
                   <input type="submit" value="Send" disabled={isSubmitting} />
                 </Button>
-                {stateMessage && <p>{stateMessage}</p>}
+                {stateMessage && <p>{stateMessage}</p>}     
+                </div>             
+              </div>                        
             </div>
           </div>
     </form>
