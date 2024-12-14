@@ -11,6 +11,8 @@ export default function AboutPage() {
             {/* Main content section */}
             <section className="pt-4 px-14">
                 <h1 className="text-3xl font-serif">About</h1>
+                <p className="text-sm">The team, the data and the purpose.</p>
+                <hr className="h-px my-4 bg-violet-300 border-0"></hr>
                 <p className="text-sm mt-4">
                     It’s hard for voters to understand trends through time on key voting issues in 
                     their own counties. And journalist’s limited capacity to cover those stories with helpful graphics casts 
@@ -43,7 +45,7 @@ export default function AboutPage() {
                         className="text-blue-700 hover:underline"
                         aria-label="Visit the Colorado Secretary of State's elections website"
                     >
-                        https://www.sos.state.co.us/
+                        https://historicalelectiondata.coloradosos.gov/eng/?_gl=1*1vgttkt*_ga*MjIzODczMDEuMTcyODg1MDQwMA..*_ga_JDK6PLVHDW*MTczNDIxMTM5NS4xMS4xLjE3MzQyMTE0MDUuMC4wLjA.
                     </a>.
                 </p>
                 
