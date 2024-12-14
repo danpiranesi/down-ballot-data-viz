@@ -13,6 +13,8 @@ export default function AboutPage() {
            {/* Main content section */}
            <section className="pt-4 px-14">
                <h1 className="text-3xl font-serif">About</h1>
+               <p className="text-sm">The purpose, the data and the team.</p>
+               <hr className="h-px my-4 bg-violet-300 border-0"></hr>
                <p className="text-sm mt-4">
                    It’s hard for voters to understand trends through time on key voting issues in
                    their own counties. And journalist’s limited capacity to cover those stories with helpful graphics casts
@@ -37,7 +39,7 @@ export default function AboutPage() {
               
                <p className="text-sm mt-4">
                    All data for these visualizations was sourced from the Colorado Secretary of State’s election database. You can find more information
-                   on Colorado elections at
+                   on Colorado elections at 
                    <a
                        href="https://www.sos.state.co.us/"
                        target="_blank"
