@@ -1,4 +1,4 @@
-'use client';
+//'use client';
 // skeleton page for a home screen
 // TODO: make this the redirect page
 import { Header } from '@/components/layout/Header';
@@ -8,6 +8,23 @@ import { MapImage } from '@/components/home/MapImage';
 import { PropImage } from '@/components/home/PropImage';
 import Link from 'next/link';
 
+export const metadata = {
+  title: 'Colorado Vote Visualizer',
+  description: 'Understanding how votes add up matters. It matters for big races, but it matters for smaller, down ballot races too.',
+  // open graph is the preview that shows up when the site is shared
+  openGraph: {
+    title: 'Colorado Cote Visualizer',
+    description: 'Understanding how votes add up matters. It matters for big races, but it matters for smaller, down ballot races too.',
+    url: 'https://coloradovotevisuals.com',
+    images: [
+      {
+        url: 'https://coloradocotevisuals.com/preview-image.png',
+        width: 800,
+        height: 600,
+      },
+    ],
+  },
+};
 
 export default function HomePage() {
     return (

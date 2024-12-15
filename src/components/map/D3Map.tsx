@@ -214,19 +214,6 @@ export function ColoradoMap({ propositionId, year: year, voteData = [] }: MapPro
           d3.select(this).attr('fill', passed ? 'url(#diagonalHatch)' : getColor(d.properties.name));
           tooltip.style('opacity', 0);
         });
-    
-      // Add labels
-    //   svg.append('g')
-    //     .selectAll('text')
-    //     .data(us.features)
-    //     .join('text')
-    //     .attr('transform', d => `translate(${path.centroid(d)})`)
-    //     .attr('dy', '.35em')
-    //     .text(d => d.properties.name)
-    //     .attr('font-size', '8px')
-    //     .attr('text-anchor', 'middle')
-    //     .attr('pointer-events', 'none')
-    //     .attr('fill', '#000');
     }
 
     // Fetch GeoJSON data
@@ -263,6 +250,7 @@ export function ColoradoMap({ propositionId, year: year, voteData = [] }: MapPro
     >
       <svg 
         ref={svgRef}
+        id="map-svg"
         className="w-full h-full"
       />
     </div>
