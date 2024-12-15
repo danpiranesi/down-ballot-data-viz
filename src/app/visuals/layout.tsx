@@ -15,6 +15,7 @@ import VisualizationSelect from '@/components/vizSelect/VisualizationSelect';
 import { useRouter } from 'next/router';
 import ToggleButton from '@mui/material/ToggleButton';
 import ToggleButtonGroup from '@mui/material/ToggleButtonGroup';
+import { ExportModal } from '@/components/export/ExportModal';
 
 export const VoteDataContext = createContext<VoteData[]>([]);
 
@@ -129,20 +130,7 @@ const handleDropdownChange = (proposition: Proposition) => {
 
 };
 
-
-// const handleVisualChange =  (
-//   //event: React.MouseEvent<HTMLElement>,
-//   visualType : "Histogram"| "Map" | "Comparison"
-// ) => {
-//   if (selectedProp){
-//     router.push(`/visuals/${visualType}/?proposition_id=${selectedProp.id}`)
-//   }else{
-//     router.push(`/visuals/${visualType}/`)
-//   }
-
-//   };
-
-
+const [isModalOpen, setIsModalOpen] = useState(false);
 
   return (
     <div className="min-h-screen bg-white text-gray-900">
@@ -189,15 +177,19 @@ const handleDropdownChange = (proposition: Proposition) => {
             </Card>
             <Card>
               <div className="space-y-2">
-                <Button variant="primary" className="w-full">
-                  Export Map
-                </Button>
+              <Button variant="primary" className="w-full" onClick={() => setIsModalOpen(true)}>
+                Export Map
+              </Button>
               </div>
             </Card>
           </div>
         </div>
         <Footer/>
       </main>
+      <ExportModal isOpen={isModalOpen}
+      onClose={() => setIsModalOpen(false)}
+      selectedProp={selectedProp} 
+      />
     </div>
   );
   }
