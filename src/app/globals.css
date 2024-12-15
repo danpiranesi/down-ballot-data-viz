@@ -120,3 +120,25 @@ textarea {
   width: 100%;
 }
 
+/* Formatting for dropdown form */
+.dropdown button {
+  background-color: transparent;
+
+}
+
+.link{
+  display: block;
+  font-size: medium;
+}
+
+.content{
+  display: none;
+  position: absolute;
+  padding: 15px 20px;
+  min-width: 100px;
+  box-shadow: 2px 2px 5px rgba(128, 128, 128, 0.748);
+
+}
+.dropdown:hover .content{
+  display: block;
+}

@@ -20,7 +20,7 @@ export default function Contact() {
                         Questions? Comments? Concerns?
                     </h1>
                     <p className='text-lg text-gray-700'>
-                        Reach out to the creators.
+                        Reach out to the developers.
                     </p>
                     <div className='width-100%'>
                     <ContactUs/>
