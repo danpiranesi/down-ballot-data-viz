@@ -15,7 +15,7 @@ export default function AboutPage() {
                <h1 className="text-3xl font-serif">About</h1>
                <p className="text-sm">The purpose, the data and the team.</p>
                <hr className="h-px my-4 bg-violet-300 border-0"></hr>
-               <p className="text-sm mt-4">
+               <p className="text-m mt-4">
                    It’s hard for voters to understand trends through time on key voting issues in
                    their own counties. And journalist’s limited capacity to cover those stories with helpful graphics casts
                    more focus on national politics and legislation. National politics and legislation, by their nature,
@@ -24,20 +24,20 @@ export default function AboutPage() {
                    increasingly feeling unheard, underrepresented, and untrusting in their political systems.
                </p>
               
-               <p className="text-sm mt-4">
+               <p className="text-m mt-4">
                    Down ballot races and their coverage matter – as a resource for understanding changes in voters’ state, as
                    a means to feeling heard as a part of the electoral process and as a tool to institute trust in our election
                    process. Journalists need help covering these stories so that readers can get the information they need to
                    see how they’re being listened to by their government.
                </p>
               
-               <p className="text-sm mt-4">
+               <p className="text-m mt-4">
                    This project aims to do just that. These graphics can be quickly embedded into a news story and understood by a reader.
                    We are dedicated to the mission of increasing transparency around our elections, and we’re proud to offer more resources
                    to voters and journalists in that pursuit.
                </p>
               
-               <p className="text-sm mt-4">
+               <p className="text-m mt-4">
                    All data for these visualizations was sourced from the Colorado Secretary of State’s election database. You can find more information
                    on Colorado elections at 
                    <a
@@ -131,7 +131,7 @@ export default function AboutPage() {
            </section>
 
 
-           <Footer />
+           <div className='px-14'><Footer /></div> 
        </div>
    );
 }
