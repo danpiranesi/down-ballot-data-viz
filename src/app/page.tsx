@@ -13,7 +13,7 @@ export const metadata = {
   description: 'Understanding how votes add up matters. It matters for big races, but it matters for smaller, down ballot races too.',
   // open graph is the preview that shows up when the site is shared
   openGraph: {
-    title: 'Colorado Cote Visualizer',
+    title: 'Colorado Vote Visualizer',
     description: 'Understanding how votes add up matters. It matters for big races, but it matters for smaller, down ballot races too.',
     url: 'https://coloradovotevisuals.com',
     images: [
