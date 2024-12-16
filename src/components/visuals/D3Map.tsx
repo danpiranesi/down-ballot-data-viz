@@ -4,11 +4,10 @@ import React, { useEffect, useRef } from 'react';
 import * as d3 from 'd3';
 import { Feature, FeatureCollection, Geometry } from 'geojson';
 import {VoteData} from '@/types/propdata';
+import GradientBar from '../ui/Key';
 
 
 type MapProps = {
-  propositionId?: number;
-  year?: number;
   voteData?: VoteData[];
 }
 
@@ -17,7 +16,7 @@ type CountyProperties = {
   [key: string]: any;
 }
 
-export function ColoradoMap({ propositionId, year: year, voteData = [] }: MapProps) {
+export function ColoradoMap({voteData = [] }: MapProps) {
   const svgRef = useRef<SVGSVGElement>(null);
   const containerRef = useRef<HTMLDivElement>(null);
   const tooltipRef = useRef<d3.Selection<HTMLDivElement, unknown, HTMLElement, any>>();
@@ -252,7 +251,8 @@ export function ColoradoMap({ propositionId, year: year, voteData = [] }: MapPro
         ref={svgRef}
         id="map-svg"
         className="w-full h-full"
-      />
+      >
+      </svg>
     </div>
   );
 }

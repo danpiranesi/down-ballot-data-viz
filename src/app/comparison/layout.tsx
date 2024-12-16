@@ -12,7 +12,8 @@ import GradientBar from '@/components/ui/Key';
 import VisualizationSelect from '@/components/vizSelect/VisualizationSelect';
 import { ExportModal } from '@/components/export/ExportModal';
 
-export const VoteDataContext = createContext<VoteData[]>([]);
+export const prop1voteDataContext = createContext<VoteData[]>([]);
+export const prop2voteDataContext = createContext<VoteData[]>([]);
 
 
 export default function visualLayoutRootLayout({
@@ -21,8 +22,10 @@ export default function visualLayoutRootLayout({
     children: React.ReactNode;
   }>) {
   const pathname = usePathname();
-  const [selectedProp, setSelectedProp] = useState<Proposition | null>(null);
-  const [voteData, setVoteData] = useState<VoteData[]>([]);
+  const [selectedProp1, setSelectedProp1] = useState<Proposition | null>(null);
+  const [prop1voteData, setProp1VoteData] = useState<VoteData[]>([]);
+  const [selectedProp2, setSelectedProp2] = useState<Proposition | null>(null);
+  const [prop2voteData, setProp2VoteData] = useState<VoteData[]>([]);
   const [totalYesVotes, setTotalYesVotes] = useState<number>(0);
   const [totalNoVotes, setTotalNoVotes] = useState<number>(0);
 
@@ -31,12 +34,12 @@ export default function visualLayoutRootLayout({
   // Calculate totals when voteData changes
   useEffect(() => {
     const sumVotes = () => {
-      if (!Array.isArray(voteData)) return { totalYes: 0, totalNo: 0 };
+      if (!Array.isArray(prop1voteData)) return { totalYes: 0, totalNo: 0 };
   
       let totalYes = 0;
       let totalNo = 0;
   
-      voteData.forEach((vote) => {
+      prop1voteData.forEach((vote) => {
         totalYes += vote.yes_count;
         totalNo += vote.no_count;
       });
@@ -47,27 +50,30 @@ export default function visualLayoutRootLayout({
     const totals = sumVotes();
     setTotalYesVotes(totals.totalYes);
     setTotalNoVotes(totals.totalNo);
-  }, [voteData]);
+  }, [prop1voteData]);
   
 
 
   useEffect(() => {
-    if (selectedProp) {
-      const slug = `?proposition_id=${selectedProp.id}`;
+    if (selectedProp1) {
+      const slug = `?proposition_id=${selectedProp1.id}`;
       const newUrl = `${slug}`;
       //const newUrl = `/visuals/${slug}`;
       window.history.pushState({}, '', newUrl); 
-      setVoteData(selectedProp.votes)
+      setProp1VoteData(selectedProp1.votes)
     }
     
-  }, [selectedProp]);
+  }, [selectedProp1]);
 
 
-const handleDropdownChange = (proposition: Proposition) => {
+const handleProp1Change = (proposition: Proposition) => {
   // when the selectedProp is changed in the propFilters, make the change in this component.
-  setSelectedProp(proposition);
-  
+  setSelectedProp1(proposition);
+};
 
+const handleProp2Change = (proposition: Proposition) => {
+  // when the selectedProp is changed in the propFilters, make the change in this component.
+  setSelectedProp2(proposition);
 };
 
 const [isModalOpen, setIsModalOpen] = useState(false);
@@ -85,20 +91,24 @@ const [isModalOpen, setIsModalOpen] = useState(false);
           <div className="md:col-span-3">
             <Card className="h-[800px] flex flex-col grow justify-center">
               <div className="justify-center flex mx-14 my-4 text-lg font-serif">
-                {selectedProp ? selectedProp.name : 'Select a Year and Proposition'}
+                {selectedProp1 ? selectedProp1.name : 'Select a Year and Proposition'}
               </div>
-              <VoteDataContext.Provider value={voteData}>
+              <prop2voteDataContext.Provider value = {prop2voteData}>
+              <prop1voteDataContext.Provider value={prop1voteData}>
               {children}
-              </VoteDataContext.Provider>
-              <div className='mx-14'>
-              <GradientBar/>
-              </div>
+              </prop1voteDataContext.Provider>
+              </prop2voteDataContext.Provider>
             </Card>
           </div>
           <div className="space-y-4">
             <Card className="p-4">
               <PropositionFilters
-                setSelectedProp={handleDropdownChange}
+                setSelectedProp={handleProp1Change}
+              />
+            </Card>
+            <Card className="p-4">
+              <PropositionFilters
+                setSelectedProp={handleProp2Change}
               />
             </Card>
             <Card>
@@ -108,7 +118,7 @@ const [isModalOpen, setIsModalOpen] = useState(false);
               />
             </Card>
             <Card>
-                <VisualizationSelect propId = {selectedProp ? selectedProp.id : 0} />
+                <VisualizationSelect propId = {selectedProp1 ? selectedProp1.id : 0} />
             </Card>
             <Card>
               <div className="space-y-2">
@@ -118,7 +128,7 @@ const [isModalOpen, setIsModalOpen] = useState(false);
               </div>
             </Card>
             <Card>
-              {selectedProp ? selectedProp.description : ''}
+              {selectedProp1 ? selectedProp1.description : ''}
             </Card>
           </div>
         </div>
@@ -126,7 +136,7 @@ const [isModalOpen, setIsModalOpen] = useState(false);
       </main>
       <ExportModal isOpen={isModalOpen}
       onClose={() => setIsModalOpen(false)}
-      selectedProp={selectedProp} 
+      selectedProp={selectedProp1} 
       />
     </div>
   );

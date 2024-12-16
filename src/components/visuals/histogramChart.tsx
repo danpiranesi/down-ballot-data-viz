@@ -5,8 +5,6 @@ import * as d3 from 'd3-v4';
 import { VoteData } from '@/types/propdata';
 
 type MapProps = {
-  propositionId?: number;
-  year?: number;
   voteData: VoteData[];
 }
 
@@ -15,7 +13,7 @@ interface CountyData {
   [key: string]: any; // Other properties (e.g., values for categories, etc.)
 }
 
-export function PropositionHistogram({ propositionId, year, voteData }: MapProps) {
+export function PropositionHistogram({ voteData }: MapProps) {
   const svgRef = useRef<SVGSVGElement>(null);
   const containerRef = useRef<HTMLDivElement>(null);
   const tooltipRef = useRef<d3.Selection<HTMLDivElement, unknown, HTMLElement, any>>();
