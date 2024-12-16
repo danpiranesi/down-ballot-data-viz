@@ -82,7 +82,7 @@ export default function AboutPage() {
                        />
                        <h3 className="font-bold text-lg mb-2">Mira Giles-Pufahl</h3>
                        <p className="text-center text-sm">
-                       Mira is a computer science major and art minor at Colorado College from Milwaukee, Wisconsin. During the summer of 2024, Mira researched Generalized Implicit Neural Representation and machine learning models called neural networks. After graduation, hope to pursue a career in video game development. They enjoy crossword puzzles, ceramics, and attending to copious amounts of house plants.
+                       Mira is a computer science major and art minor at Colorado College from Milwaukee, Wisconsin. During the summer of 2024, Mira researched Generalized Implicit Neural Representation and machine learning models called neural networks. After graduation, Mira hopes to pursue a career in video game development. They enjoy crossword puzzles, ceramics, and attending to copious amounts of house plants.
                        </p>
                    </div>
 
