@@ -26,32 +26,7 @@ export default function visualLayoutRootLayout({
   const [prop1voteData, setProp1VoteData] = useState<VoteData[]>([]);
   const [selectedProp2, setSelectedProp2] = useState<Proposition | null>(null);
   const [prop2voteData, setProp2VoteData] = useState<VoteData[]>([]);
-  const [totalYesVotes, setTotalYesVotes] = useState<number>(0);
-  const [totalNoVotes, setTotalNoVotes] = useState<number>(0);
 
-
- 
-  // Calculate totals when voteData changes
-  useEffect(() => {
-    const sumVotes = () => {
-      if (!Array.isArray(prop1voteData)) return { totalYes: 0, totalNo: 0 };
-  
-      let totalYes = 0;
-      let totalNo = 0;
-  
-      prop1voteData.forEach((vote) => {
-        totalYes += vote.yes_count;
-        totalNo += vote.no_count;
-      });
-  
-      return { totalYes, totalNo };
-    };
-  
-    const totals = sumVotes();
-    setTotalYesVotes(totals.totalYes);
-    setTotalNoVotes(totals.totalNo);
-  }, [prop1voteData]);
-  
 
 
   useEffect(() => {
@@ -66,12 +41,8 @@ export default function visualLayoutRootLayout({
   }, [selectedProp1]);
 
   useEffect(() => {
-    if (selectedProp1) {
-      const slug = `?proposition_id=${selectedProp1.id}`;
-      const newUrl = `${slug}`;
-      //const newUrl = `/visuals/${slug}`;
-      window.history.pushState({}, '', newUrl); 
-      setProp1VoteData(selectedProp1.votes)
+    if (selectedProp2) {
+      setProp2VoteData(selectedProp2.votes)
     }
     
   }, [selectedProp2]);
