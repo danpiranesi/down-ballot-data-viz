@@ -5,13 +5,13 @@ import Image from 'next/image';
 
 export const MapImage = () => {
     return (
-        <div className="bg-violet-100 border-b shadow-md py-4 px-8 content-between" style={{ borderBottomRightRadius: 10, borderBottomLeftRadius: 10, borderTopLeftRadius: 10, borderTopRightRadius: 10}}>
+        <div id='image-box' className="border-b shadow-md py-4 px-8 content-between rounded-lg">
             <Link href="visuals/map" className="text-xl font-bold font-serif hover:underline">
             County Level Pass/Fail Density Map
           </Link>
 
-         <div className="bg-white p-4 shadow-md object-contain" style={{ borderBottomRightRadius: 10, borderBottomLeftRadius: 10, borderTopLeftRadius: 10, borderTopRightRadius: 10}}>
-          <Image
+         <div id='image' className="bg-white p-4 shadow-md object-contain rounded-lg">
+          <Image id='map'
               src="/Example_Image.png"
               width={335}
               height={300}
