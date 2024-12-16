@@ -65,6 +65,17 @@ export default function visualLayoutRootLayout({
     
   }, [selectedProp1]);
 
+  useEffect(() => {
+    if (selectedProp1) {
+      const slug = `?proposition_id=${selectedProp1.id}`;
+      const newUrl = `${slug}`;
+      //const newUrl = `/visuals/${slug}`;
+      window.history.pushState({}, '', newUrl); 
+      setProp1VoteData(selectedProp1.votes)
+    }
+    
+  }, [selectedProp2]);
+
 
 const handleProp1Change = (proposition: Proposition) => {
   // when the selectedProp is changed in the propFilters, make the change in this component.
@@ -91,7 +102,7 @@ const [isModalOpen, setIsModalOpen] = useState(false);
           <div className="md:col-span-3">
             <Card className="h-[800px] flex flex-col grow justify-center">
               <div className="justify-center flex mx-14 my-4 text-lg font-serif">
-                {selectedProp1 ? selectedProp1.name : 'Select a Year and Proposition'}
+                {selectedProp2 ? selectedProp2.name : 'Select a Year and Proposition'}
               </div>
               <prop2voteDataContext.Provider value = {prop2voteData}>
               <prop1voteDataContext.Provider value={prop1voteData}>

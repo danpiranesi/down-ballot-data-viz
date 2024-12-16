@@ -108,6 +108,10 @@ const [isModalOpen, setIsModalOpen] = useState(false);
               />
             </Card>
             <Card>
+              {selectedProp ? selectedProp.passed == true ? 'the proposition passed' : 'the proposition did not pass' : 'no selected prop'}
+                
+            </Card>
+            <Card>
                 <VisualizationSelect propId = {selectedProp ? selectedProp.id : 0} />
             </Card>
             <Card>
