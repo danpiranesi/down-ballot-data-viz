@@ -32,28 +32,7 @@ export default function visualLayoutRootLayout({
   const [totalNoVotes, setTotalNoVotes] = useState<number>(0);
 
 
-  const fetchVoteData = async (id: number) => {
-    try {
-      const response = await fetch(`${window.location.origin}/api/propositions/${id}`);
-      //const response = await fetch(`/api/propositions/${id}`);
-      if (!response.ok) {
-        throw new Error('Failed to fetch vote data');
-      }
-      const data = await response.json();
-      console.log("data is: ", data)
-  
-      if (Array.isArray(data.votes)) {
-        setVoteData(data.votes); // Extract and set only the votes array
-      } else {
-        console.warn('API did not return a valid votes array:', data);
-        setVoteData([]); // Default to an empty array
-      }
-    } catch (error) {
-      console.error('Error fetching vote data:', error);
-      setVoteData([]); // Handle errors by setting voteData to an empty array
-    }
-  };  
-  
+ 
   // Calculate totals when voteData changes
   useEffect(() => {
     const sumVotes = () => {
@@ -76,25 +55,6 @@ export default function visualLayoutRootLayout({
   }, [voteData]);
   
 
-  useEffect(() => {
-    const params = new URLSearchParams(window.location.search);
-    const propositionId = params.get('proposition_id'); // Retrieve the query string value
-    if (propositionId) {
-      const id = parseInt(propositionId, 10);
-
-      // Set selectedProp state based on URL
-      const prop = {
-        id,
-        name: `Congrats! You found an annoying bug. This is on Dan's TODO`, 
-        year: 2020, 
-        for_statement: '',
-        against_statement: '',
-      };
-      setSelectedProp(prop);
-
-      fetchVoteData(id); 
-    }
-  }, []);
 
   useEffect(() => {
     if (selectedProp) {
@@ -102,31 +62,16 @@ export default function visualLayoutRootLayout({
       const newUrl = `${slug}`;
       //const newUrl = `/visuals/${slug}`;
       window.history.pushState({}, '', newUrl); 
+      setVoteData(selectedProp.votes)
     }
+    
   }, [selectedProp]);
 
-  // Calculate totals when voteData changes
-  useEffect(() => {
-    const sumVotes = () => {
-      let totalYes = 0;
-      let totalNo = 0;
-
-      voteData.forEach((vote) => {
-        totalYes += vote.yes_count;
-        totalNo += vote.no_count;
-      });
-
-      return { totalYes, totalNo };
-    };
-
-    const totals = sumVotes();
-    setTotalYesVotes(totals.totalYes);
-    setTotalNoVotes(totals.totalNo);
-  }, [voteData]);
 
 const handleDropdownChange = (proposition: Proposition) => {
+  // when the selectedProp is changed in the propFilters, make the change in this component.
   setSelectedProp(proposition);
-  fetchVoteData(proposition.id);
+  
 
 };
 
@@ -181,6 +126,9 @@ const [isModalOpen, setIsModalOpen] = useState(false);
                 Export Map
               </Button>
               </div>
+            </Card>
+            <Card>
+              {selectedProp ? selectedProp.description : ''}
             </Card>
           </div>
         </div>

@@ -1,7 +1,7 @@
 'use client'
 import ToggleButton from '@mui/material/ToggleButton';
 import ToggleButtonGroup from '@mui/material/ToggleButtonGroup';
-import { useRouter } from 'next/navigation';  // Import useRouter from Next.js
+import { useRouter } from 'next/navigation'; 
 import React, { useEffect } from 'react';
 
 type Props = {
@@ -23,7 +23,7 @@ export default function VisualizationSelect(props: Props) {
     }
   };
 
-  // Use effect to set alignment based on current path
+ 
   useEffect(() => {
     if (window.location.pathname.includes('/visuals/histogram')) {
       setAlignment("Histogram");
@@ -40,7 +40,7 @@ export default function VisualizationSelect(props: Props) {
   ) => {
     if (newAlignment !== null) {
       setAlignment(newAlignment);
-      handleNavigation(newAlignment);  // Perform routing when alignment changes
+      handleNavigation(newAlignment);  
     }
   };
 

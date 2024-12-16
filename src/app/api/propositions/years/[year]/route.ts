@@ -31,19 +31,49 @@ export async function GET(req: NextRequest, {params}: {params: Promise<{year: st
   //    return NextResponse.json({ error: 'Year query parameter is required' }, { status: 400 });
   // }
     
-    const propositions = await prisma.propositions.findMany({
-      where:{
-        year: parseInt(year, 10)
-      },
-      select: {
-        id: true,
-        name: true,
-        year: true
-      }
-    })
-    console.log(propositions)
     
-    return NextResponse.json(propositions)
+  
+  
+  const propositions = await prisma.propositions.findMany({
+    where: {
+      year: parseInt(year, 10),
+    },
+    include: {
+      proposition_county_votes: {
+        include: {
+          counties: true,
+        },
+      },
+    },
+  });
+    console.log(propositions)
+
+    if (propositions.length === 0) {
+      console.error('No propositions found for year:', year);
+      return NextResponse.json({ error: 'No propositions found for this year' }, { status: 404 });
+    }
+
+    // Format the vote data for each proposition
+    const formattedPropositions = propositions.map((proposition) => {
+      const formattedVotes = proposition.proposition_county_votes.map((vote) => ({
+        county_id: vote.county_id,
+        county_name: vote.counties?.name || 'Unknown County',
+        yes_count: vote.yes_count || 0,
+        no_count: vote.no_count || 0,
+        total_votes: vote.total_votes || 0,
+      }));
+
+      return {
+        id: proposition.id,
+        name: proposition.name,
+        year: proposition.year,
+        description: proposition.description,
+        passed: proposition.passed,
+        votes: formattedVotes,
+      };
+    });
+    
+    return NextResponse.json(formattedPropositions)
   } catch (error) {
     console.error('Prisma error:', error)
     return NextResponse.json(

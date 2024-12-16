@@ -9,6 +9,7 @@ import {
   SelectValue,
 } from "@/components/ui/select"
 import {Proposition} from '@/types/propdata';
+import { useRouter } from 'next/navigation'; 
 
 
 interface Props {
@@ -18,7 +19,7 @@ interface Props {
 export function PropositionFilters(props: Props) {
 
   const [propositions, setPropositions] = useState<Proposition[]>([])
-  const [selectedProposition, setSelectedProposition] = useState<Proposition>({ id: 0, name: '', year: 0, for_statement: "", against_statement: ""})
+  const [selectedProposition, setSelectedProposition] = useState<Proposition>({ id: 0, name: '', year: 0, votes : [], description : ''})
 
   const [availableYears, setAvailableYears] = useState<number[]>([])
   const [selectedYear, setSelectedYear] = useState<string>('')
@@ -26,10 +27,13 @@ export function PropositionFilters(props: Props) {
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
 
+  const router = useRouter()
+
   //console.log("in propositionFilters.tsx, setSelectedProp is", props.setSelectedProp)
 
-  //Fetch voting years for the drop down on mounting of the component
+  
   useEffect(() => {
+    //Fetch voting years for the drop down on mounting of the component
     const fetchYears = async () => {
         try {
           const response = await fetch(`/api/propositions/years`)
@@ -47,7 +51,37 @@ export function PropositionFilters(props: Props) {
           setLoading(false)
         }
       }
+      const fetchPropositionByID = async(prop_id:string) =>{
+        try {
+          const response = await fetch(`/api/propositions/${prop_id}`)
+          if (!response.ok) {
+            throw new Error('Failed to fetch proposition')
+            return
+          }
+          const prop = await response.json()
+          console.log("fetched the propsoitionByID", prop)
+          setSelectedYear(String(prop.year))
+          setSelectedProposition(prop)
+          props.setSelectedProp(prop);
+          
+        }
+         catch {
+          console.log("failure")
+          return null
+        } finally {
+          setLoading(false)
+        }
+
+      }
+      //populate years on component mount
       fetchYears()
+
+      //if the url contains a value for parameter_id, populate the values from the given prop ID
+      const searchParams = new URLSearchParams(window.location.search);
+      const urlPropId = searchParams.get('proposition_id')
+      if (urlPropId){
+        fetchPropositionByID(urlPropId)
+      }
   }, [])
 
   //Fetch propositions from the selected year when a year is chose.
@@ -62,7 +96,6 @@ export function PropositionFilters(props: Props) {
         }
         const props = await response.json()
         
-        setSelectedProposition({id:0, name: '', year: 0, for_statement: "", against_statement:""}); // doesn't pass this change to parent
         console.log("setting propositions to ", props )
         setPropositions(props)
       }catch{
@@ -86,7 +119,7 @@ export function PropositionFilters(props: Props) {
       props.setSelectedProp(selected);
     } else {
       throw new Error('failed to map prop name to proposition object')
-      setSelectedProposition({id:0, name:'', year: 0, for_statement:" ", against_statement: " "});  
+      setSelectedProposition({id:0, name:'', year: 0, votes: [], description : ''});  
   };
 }
   
@@ -151,7 +184,3 @@ export function PropositionFilters(props: Props) {
   )
 }
 
-// PropositionFilters.propTypes = {
-//   setSelectedProposition: PropTypes.func
-  
-// }
