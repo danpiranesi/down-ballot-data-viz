@@ -111,12 +111,7 @@ const [isModalOpen, setIsModalOpen] = useState(false);
                 setSelectedProp={handleProp2Change}
               />
             </Card>
-            <Card>
-              <ResultDisplay
-                yesTotal={totalYesVotes}
-                noTotal={totalNoVotes}
-              />
-            </Card>
+            
             <Card>
                 <VisualizationSelect propId = {selectedProp1 ? selectedProp1.id : 0} />
             </Card>
@@ -126,9 +121,6 @@ const [isModalOpen, setIsModalOpen] = useState(false);
                 Export Map
               </Button>
               </div>
-            </Card>
-            <Card>
-              {selectedProp1 ? selectedProp1.description : ''}
             </Card>
           </div>
         </div>

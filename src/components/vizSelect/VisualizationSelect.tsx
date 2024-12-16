@@ -19,7 +19,7 @@ export default function VisualizationSelect(props: Props) {
     } else if (newAlignment === "Map") {
       router.push(props.propId === 0 ? `/visuals/map` : `/visuals/map/?proposition_id=${props.propId}`);
     } else if (newAlignment === "Comparison") {
-      router.push(props.propId === 0 ? `/visuals/comparison` : `/visuals/comparison/?proposition_id=${props.propId}`);
+      router.push(props.propId === 0 ? `/comparison` : `/comparison/?proposition_id=${props.propId}`);
     }
   };
 
@@ -29,7 +29,7 @@ export default function VisualizationSelect(props: Props) {
       setAlignment("Histogram");
     } else if (window.location.pathname.includes('/visuals/map')) {
       setAlignment("Map");
-    } else if (window.location.pathname.includes('/visuals/comparison')) {
+    } else if (window.location.pathname.includes('/comparison')) {
       setAlignment("Comparison");
     }
   }, []);  // Make sure this effect runs when the path changes
@@ -45,25 +45,28 @@ export default function VisualizationSelect(props: Props) {
   };
 
   return (
+    <div className=" overflow-x-auto center">
     <ToggleButtonGroup
+      className = "w-full flex justify-center"
       color="primary"
       value={alignment}
       exclusive
       onChange={handleChange}
       aria-label="Visualization Type"
     >
-      <ToggleButton value="Histogram">
+      <ToggleButton value="Histogram" className = 'flex-1 text-center'>
         Histogram
       </ToggleButton>
 
-      <ToggleButton value="Map">
+      <ToggleButton value="Map" className = 'flex-1 text-center'>
         Map
       </ToggleButton>
 
-      <ToggleButton value="Comparison">
+      <ToggleButton value="Comparison" className = 'flex-1 text-center'>
         Comparison
       </ToggleButton>
 
     </ToggleButtonGroup>
+    </div>
   );
 }

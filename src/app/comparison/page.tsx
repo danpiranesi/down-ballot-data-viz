@@ -1,6 +1,6 @@
 'use client'
 import React, { useContext} from 'react';
-import { prop1voteDataContext, prop2voteDataContext } from "../layout";
+import { prop1voteDataContext, prop2voteDataContext } from "./layout";
 import { ComparisonVisual } from '@/components/visuals/comparison';
 
 export default function Map (){
