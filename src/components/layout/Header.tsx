@@ -30,7 +30,7 @@ export const Header = () => {
                 <div className='content bg-violet-100'>
                 <Link href="/visuals/map" className="link text-xl hover:text-violet-950 hover:underline">Map</Link>
                 <Link href="/visuals/histogram" className="link text-xl hover:text-violet-950 hover:underline">Histogram</Link>
-                <Link href="/visuals/comparison" className="link text-xl hover:text-violet-950 hover:underline">Comparison</Link>
+                <Link href="/comparison" className="link text-xl hover:text-violet-950 hover:underline">Comparison</Link>
               </div>
             </div>
             <nav className="space-x-4">

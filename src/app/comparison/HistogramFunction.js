@@ -1,5 +1,5 @@
 'use client';
-import { PropositionHistogram } from '@/components/visuals/histogramChart';
+import { PropositionHistogram } from '@/components/histogram/histogramChart';
 import React, { useContext} from 'react';
 import { VoteDataContext } from "../layout";
 
