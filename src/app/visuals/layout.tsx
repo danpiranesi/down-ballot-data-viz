@@ -108,7 +108,7 @@ const [isModalOpen, setIsModalOpen] = useState(false);
               />
             </Card>
             <Card>
-              {selectedProp ? selectedProp.passed == true ? 'the proposition passed' : 'the proposition did not pass' : 'no selected prop'}
+              {selectedProp ? selectedProp.passed == true ? 'This legislation passed' : 'This legislation did not pass' : 'no selected prop'}
                 
             </Card>
             <Card>
