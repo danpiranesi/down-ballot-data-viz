@@ -2,9 +2,7 @@
 
 import React, { useEffect, useRef } from 'react';
 import * as d3 from 'd3-v4';
-import { Feature, FeatureCollection, Geometry } from 'geojson';
 import {VoteData} from '@/types/propdata';
-import GradientBar from '../ui/Key';
 
 
 type MapProps = {
@@ -29,7 +27,6 @@ export function ComparisonVisual({prop1VoteData, prop2VoteData}: MapProps) {
     console.log("prop1: " +prop1VoteData);
     console.log("prop2: " +prop2VoteData);
     if (prop2VoteData.length > 0) {
-      print("yes");
       voteData = structuredClone(prop2VoteData);
     }
     else {
