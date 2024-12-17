@@ -155,7 +155,7 @@ const yAxisLabel = svg
       const color = d3
       .scaleOrdinal()
       .domain(['yesVotes', 'noVotes'])
-      .range(['#7fbf7b', '#af8dc3']);
+      .range(['#810f7c', '#b3cde3',]);
 
 
         // Set zoom and pan features
