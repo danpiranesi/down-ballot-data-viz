@@ -3,7 +3,7 @@
 import React from 'react';
 //import { VoteDataContext } from "../layout";
 import MapFunc from '@/app/visuals/map/MapFunction';
-import { ColoradoMap } from '@/components/map/D3Map';
+import { ColoradoMap } from '@/components/visuals/D3Map';
 import { VoteData } from '@/types/propdata';
 import { VoteDataContext } from '@/context/VoteDataContext';
 
