@@ -45,6 +45,7 @@ export default function HomePage() {
 
         </div>
         <div className="min-h-96 bg-white text-gray-900 py-4 px-14">
+        <hr className="h-px my-4 bg-violet-300 border-0"></hr>
           <h1 className="text-xl font-serif">Explore Different Visualizations:</h1>
             <div className="min-h-80 flex py-4 borderRadius items-stretch justify-between">
               <MapImage/>
