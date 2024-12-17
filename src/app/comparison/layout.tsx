@@ -30,20 +30,31 @@ export default function visualLayoutRootLayout({
 
 
   useEffect(() => {
-    if (selectedProp1) {
-      const slug = `?proposition_id=${selectedProp1.id}`;
+    if (selectedProp1 && selectedProp2){
+      const slug = `?proposition1_id=${selectedProp1.id}?proposition2_id=${selectedProp2.id}`;
       const newUrl = `${slug}`;
       //const newUrl = `/visuals/${slug}`;
       window.history.pushState({}, '', newUrl); 
       setProp1VoteData(selectedProp1.votes)
-    }
-    
-  }, [selectedProp1]);
-
-  useEffect(() => {
-    if (selectedProp2) {
       setProp2VoteData(selectedProp2.votes)
     }
+    else if (selectedProp1) {
+      const slug = `?proposition1_id=${selectedProp1.id}`;
+      const newUrl = `${slug}`;
+      window.history.pushState({}, '', newUrl); 
+      setProp1VoteData(selectedProp1.votes)
+    }
+    else if (selectedProp2) {
+      const slug = `?proposition2_id=${selectedProp2.id}`;
+      const newUrl = `${slug}`;
+      window.history.pushState({}, '', newUrl); 
+      setProp2VoteData(selectedProp2.votes)
+    }
+    
+  }, [selectedProp1, selectedProp2]);
+
+  useEffect(() => {
+  
     
   }, [selectedProp2]);
 
