@@ -112,7 +112,7 @@ export default function AboutPage() {
                <p className="text-m my-4">
                This project was built as a thesis project for five computer science students at Colorado College. To reach the developers shoot an email to coloradovotevisuals@gmail.com or submit site feedback via our contact form
                <a
-                href="https://www.coloradovotevisuals.com/about"
+                href="https://www.coloradovotevisuals.com/contact"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="text-blue-700 hover:underline"
