@@ -1,7 +1,7 @@
 'use client';
 import { PropositionHistogram } from '@/components/visuals/histogramChart';
 import React, { useContext} from 'react';
-import { VoteDataContext } from "../layout";
+import { VoteDataContext } from '@/context/VoteDataContext';
 
 
 export default function HistogramFunc () {
