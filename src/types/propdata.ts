@@ -4,6 +4,8 @@ export type Proposition = {
     year: number
     votes: VoteData[]
     description: string
+    passed: boolean
+
 }
 
 export type VoteData = {
@@ -12,5 +14,4 @@ export type VoteData = {
     no_count: number;
     total_votes: number;
     county_name: string;
-    passed: boolean;
   }

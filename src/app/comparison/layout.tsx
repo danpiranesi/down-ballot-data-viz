@@ -26,32 +26,7 @@ export default function visualLayoutRootLayout({
   const [prop1voteData, setProp1VoteData] = useState<VoteData[]>([]);
   const [selectedProp2, setSelectedProp2] = useState<Proposition | null>(null);
   const [prop2voteData, setProp2VoteData] = useState<VoteData[]>([]);
-  const [totalYesVotes, setTotalYesVotes] = useState<number>(0);
-  const [totalNoVotes, setTotalNoVotes] = useState<number>(0);
 
-
- 
-  // Calculate totals when voteData changes
-  useEffect(() => {
-    const sumVotes = () => {
-      if (!Array.isArray(prop1voteData)) return { totalYes: 0, totalNo: 0 };
-  
-      let totalYes = 0;
-      let totalNo = 0;
-  
-      prop1voteData.forEach((vote) => {
-        totalYes += vote.yes_count;
-        totalNo += vote.no_count;
-      });
-  
-      return { totalYes, totalNo };
-    };
-  
-    const totals = sumVotes();
-    setTotalYesVotes(totals.totalYes);
-    setTotalNoVotes(totals.totalNo);
-  }, [prop1voteData]);
-  
 
 
   useEffect(() => {
@@ -64,6 +39,13 @@ export default function visualLayoutRootLayout({
     }
     
   }, [selectedProp1]);
+
+  useEffect(() => {
+    if (selectedProp2) {
+      setProp2VoteData(selectedProp2.votes)
+    }
+    
+  }, [selectedProp2]);
 
 
 const handleProp1Change = (proposition: Proposition) => {
@@ -91,7 +73,7 @@ const [isModalOpen, setIsModalOpen] = useState(false);
           <div className="md:col-span-3">
             <Card className="h-[800px] flex flex-col grow justify-center">
               <div className="justify-center flex mx-14 my-4 text-lg font-serif">
-                {selectedProp1 ? selectedProp1.name : 'Select a Year and Proposition'}
+                {selectedProp2 && selectedProp1 ? selectedProp1.name + ' vs ' + selectedProp2.name : 'Select propositions to compare'}
               </div>
               <prop2voteDataContext.Provider value = {prop2voteData}>
               <prop1voteDataContext.Provider value={prop1voteData}>
