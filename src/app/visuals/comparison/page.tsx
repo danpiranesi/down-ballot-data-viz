@@ -1,6 +1,6 @@
 'use client'
 import React, { useContext} from 'react';
-import { VoteDataContext } from "../layout";
+import { VoteDataContext } from '@/context/VoteDataContext';
 
 export default function Map (){
     const voteData = useContext(VoteDataContext);
