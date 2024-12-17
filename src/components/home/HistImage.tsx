@@ -8,8 +8,12 @@ export const HistImage = () => {
             <Link href="/visuals/histogram" className="text-xl font-bold font-serif hover:underline">
             County Level Pass/Fail Histogram
           </Link>
-          <div id='image' className="bg-white p-4 shadow-md object-contain rounded-lg">
-          
+          <div id='histogram-image' className="bg-white p-4 shadow-md object-contain rounded-lg">
+          <img id='histogram' 
+              src="/histogram_example.png"
+              className="hidden md:block"
+              alt="Colorado County Bar Chart"
+            />   
                       
           </div>
 

@@ -19,7 +19,6 @@ import { ExportModal } from '@/components/export/ExportModal';
 
 export const VoteDataContext = createContext<VoteData[]>([]);
 
-
 export default function visualLayoutRootLayout({
     children,
   }: Readonly<{

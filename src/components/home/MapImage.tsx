@@ -10,15 +10,12 @@ export const MapImage = () => {
             County Level Pass/Fail Density Map
           </Link>
 
-         <div id='image' className="bg-white p-4 shadow-md object-contain rounded-lg">
-          <Image id='map'
+         <div id='map-image' className="bg-white p-4 shadow-md rounded-lg">
+          <img id='map' 
               src="/Example_Image.png"
-              width={335}
-              height={300}
               className="hidden md:block"
               alt="Choropleth County Map"
-            />
-                      
+            />    
           </div>
         </div>
     );
