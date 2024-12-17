@@ -1,30 +1,35 @@
 'use client';
 
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect, useRef, useContext } from 'react';
 import * as d3 from 'd3-v4';
 import { VoteData } from '@/types/propdata';
+import { VoteDataContext } from '@/context/VoteDataContext';
+import { SelectedPropContext } from '@/context/SelectedPropContext';
 
 type MapProps = {
-  voteData: VoteData[];
+  propositionId?: number;
+  year?: number;
+  voteData?: VoteData[];
 }
 
 interface CountyData {
-  County: string; // The name or identifier of the county
-  [key: string]: any; // Other properties (e.g., values for categories, etc.)
+  County: string; // the name or identifier of the county
+  [key: string]: any; // other properties (e.g., values for categories, etc.)
 }
 
 export function PropositionHistogram({ voteData }: MapProps) {
   const svgRef = useRef<SVGSVGElement>(null);
   const containerRef = useRef<HTMLDivElement>(null);
   const tooltipRef = useRef<d3.Selection<HTMLDivElement, unknown, HTMLElement, any>>();
+  const { name: propositionName } = useContext(SelectedPropContext);
 
   useEffect(() => {
     console.log("UPDATED DATA")
     if (!svgRef.current || !containerRef.current) return;
-      // Clear all existing elements from the SVG
+      // clear all existing elements from the SVG
     d3.select(svgRef.current).selectAll("*").remove();
 
-        // Create tooltip
+        // create tooltip
         const tooltip = d3.select('body')
         .append('div')
         .attr('class', 'tooltip')
@@ -41,30 +46,35 @@ export function PropositionHistogram({ voteData }: MapProps) {
   
       tooltipRef.current = tooltip;
 
-    // Set the dimensions and margins of the graph
-    const margin = { top: 10, right: 0, bottom: 50, left: 70 },
+    // set the dimensions and margins of the graph
+    const titleHeight = 40;
+    const margin = { top: titleHeight, right: 0, bottom: 50, left: 70 },
       width = 800 - margin.left - margin.right,
       height = 500 - margin.top - margin.bottom;
 
-
-
-    // Set up SVG container
+    // set up SVG container
     const svg = d3
       .select(svgRef.current)
       .attr('width', width + margin.left + margin.right)
-      .attr('height', height + margin.top + margin.bottom)
+      .attr('height', height + margin.top + margin.bottom + titleHeight)
       .append('g')
-      .attr('transform', 'translate(' + margin.left + ',' + margin.top + ')');
+      .attr('transform', `translate(${margin.left}, ${margin.top})`);
 
-
-    
+        // add Title
+        svg
+        .append('text')
+        .attr('x', width / 2)
+        .attr('y', -10) // position above the chart
+        .attr('text-anchor', 'middle')
+        .style('font-size', 18)
+        .style('font-weight', 'bold')
+        .style('fill', '#333')
+        .text(propositionName || 'Select a Proposition');
 
   //d3.select(svgRef.current).call(zoom);
     // Extract the county names and voter data
     console.log("in hist, voteData is, ",voteData)
-    const counties = voteData.map((d) => d.county_name);
-
-
+    const counties = (Array.isArray(voteData) ? voteData : []).map((d) => d.county_name);
 
     // Define scales
     const x = d3
@@ -136,8 +146,8 @@ export function PropositionHistogram({ voteData }: MapProps) {
 const yAxisLabel = svg
 .append('text')
 .attr('class', 'y-axis-label')
-.attr('x', -height / 2) // Center vertically
-.attr('y', -margin.left + 20) // Adjust for spacing
+.attr('x', -height / 2) 
+.attr('y', -margin.left + 20) 
 .attr('transform', 'rotate(-90)')
 .attr('text-anchor', 'middle')
 .style('font-size', '16px')
@@ -161,7 +171,7 @@ const yAxisLabel = svg
         // Set zoom and pan features
   const zoom = d3
   .zoom()
-  .scaleExtent([1, 30]) // Limit zoom range: 1 means no zooming out smaller than the SVG
+  .scaleExtent([1, 30]) // limit zoom range: 1 means no zooming out smaller than the SVG
   .extent([
     [0, 0],
     [width, height],
@@ -209,7 +219,7 @@ scatter
   .on('mouseenter', function (d) {
     const mouseX = d3.mouse(document.body)[0];
     const mouseY = d3.mouse(document.body)[1];
-    d3.select(this).style('opacity', 0.7); // Highlight the bar
+    d3.select(this).style('opacity', 0.7); // highlight the bar
     const countyName = d.data.county_name;
     const yesVotes = d.data.yes_count;
     const noVotes = d.data.no_count;
@@ -351,7 +361,7 @@ scatter
 
   return (
     <div ref={containerRef} className="relative w-full h-full">
-      <svg ref={svgRef} className="w-full h-full" />
+      <svg ref={svgRef} id="histogram-svg" className="w-full h-full" />
     </div>
   );
 }
