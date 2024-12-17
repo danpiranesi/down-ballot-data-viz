@@ -8,12 +8,13 @@ export const ContactUs = () => {
   const REACT_APP_SERVICE_ID = 'service_on3b91f';
   const REACT_APP_TEMPLATE_ID = 'template_fa80c5n';
   const REACT_APP_PUBLIC_KEY = 'mn6m3oLaK60b7yzbP';
+
   const form = useRef();
 
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [stateMessage, setStateMessage] = useState(null);
 
-  const sendEmail = (e) => {
+  const sendEmail = async (e) => {
     e.persist();
     e.preventDefault();
     setIsSubmitting(true);
@@ -44,8 +45,10 @@ export const ContactUs = () => {
       e.target.reset();
   };
 
+
   return (
-    <form ref={form} onSubmit={sendEmail}>
+    <form ref={form} onSubmit={sendEmail} action='?' method="POST">
+      <script src="https://www.google.com/recaptcha/api.js" async defer></script>
       <div>
         <label id='box_label' >Name</label>
         <input id='text_box' type="text" name="from_name" placeholder='Enter your name'/>
@@ -54,7 +57,12 @@ export const ContactUs = () => {
         <label id='box_label' >Message</label>
         <textarea name="message" placeholder='Enter your message'/>
         <br></br>
-        <Button> <input type="submit" value="Send" disabled={isSubmitting} /> </Button>
+        <div className="g-recaptcha" data-sitekey="6Lc3z50qAAAAAOa3IgV9cBCZUahc_8nd4EpI7qBk" style={{width:"304px",height:"78px", display:'block'}} ></div>
+        <Button>
+          <input 
+            type="submit" 
+            value="Send" disabled={isSubmitting} /> 
+        </Button>
         <br></br>
         {stateMessage && <p>{stateMessage}</p>} 
       </div>
