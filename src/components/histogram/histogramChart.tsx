@@ -2,13 +2,14 @@
 
 import React, { useEffect, useRef, useContext } from 'react';
 import * as d3 from 'd3-v4';
+import { VoteData } from '@/types/propdata';
 import { VoteDataContext } from '@/context/VoteDataContext';
 import { SelectedPropContext } from '@/context/SelectedPropContext';
 
 type MapProps = {
   propositionId?: number;
   year?: number;
-  voteData: VoteData[];
+  voteData?: VoteData[];
 }
 
 interface CountyData {
@@ -73,7 +74,7 @@ export function PropositionHistogram({ propositionId, year, voteData }: MapProps
   //d3.select(svgRef.current).call(zoom);
     // Extract the county names and voter data
     console.log("in hist, voteData is, ",voteData)
-    const counties = voteData.map((d) => d.county_name);
+    const counties = (Array.isArray(voteData) ? voteData : []).map((d) => d.county_name);
 
     // Define scales
     const x = d3

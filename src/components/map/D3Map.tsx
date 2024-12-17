@@ -22,7 +22,6 @@ export function ColoradoMap({ propositionId, year, voteData = [] }: MapProps) {
   const { name: propositionName } = useContext(SelectedPropContext);
   const voteDataFromContext = useContext(VoteDataContext);
   const finalVoteData = voteDataFromContext.length > 0 ? voteDataFromContext : voteData;
-
   const svgRef = useRef<SVGSVGElement>(null);
   const containerRef = useRef<HTMLDivElement>(null);
   const tooltipRef = useRef<d3.Selection<HTMLDivElement, unknown, HTMLElement, any>>();
@@ -82,8 +81,8 @@ export function ColoradoMap({ propositionId, year, voteData = [] }: MapProps) {
       const width = containerRef.current?.clientWidth || 1000;
       const height = containerRef.current?.clientHeight || 900;
 
-      const titleHeight = 50; // Space for title at the top
-      const gradientHeight = 80; // Space reserved for gradient bar
+      const titleHeight = 50; // Space for title
+      const gradientHeight = 80; // Space for gradient bar
       const mapHeight = height - titleHeight - gradientHeight -20; // Remaining height for map
 
       const svg = d3.select(svgRef.current)
@@ -143,7 +142,7 @@ export function ColoradoMap({ propositionId, year, voteData = [] }: MapProps) {
 
       // Draw hash pattern overlay if passed
       svg.append('g')
-        .attr('transform', `translate(0, ${titleHeight})`) // Move map below title
+        .attr('transform', `translate(0, ${titleHeight})`) // move map below title
         .attr('class', 'counties')
         .selectAll('path')
         .data(us.features)
