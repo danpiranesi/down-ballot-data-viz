@@ -12,7 +12,7 @@ export const MapImage = () => {
 
          <div id='map-image' className="bg-white p-4 shadow-md rounded-lg">
           <img id='map' 
-              src="/Example_Image.png"
+              src="/map_image2.png"
               className="hidden md:block"
               alt="Choropleth County Map"
             />    
