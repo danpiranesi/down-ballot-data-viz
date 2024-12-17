@@ -108,7 +108,7 @@ return (
       <>
         <Header />
         <div className="pt-4 px-14">
-          <h1 className="text-3xl font-serif">County Level Pass/Fail Density Map</h1>
+          <h1 className="text-3xl font-serif">Visualization Generator</h1>
           <p className="text-sm">Compare the percentages of people voting for propositions in each county.</p>
           <hr className="h-px my-4 bg-violet-300 border-0"></hr>
         </div>
