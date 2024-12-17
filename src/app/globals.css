@@ -112,6 +112,11 @@ div#histogram-image {
   width: 350px;
 }
 
+div#comp-image {
+  height: 90%;
+  width: 370px;
+}
+
 .title {
   font-family: Georgia, serif;
   font-size: large;
