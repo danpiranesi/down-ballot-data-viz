@@ -69,6 +69,7 @@ export async function GET(req: NextRequest, {params}: {params: Promise<{year: st
         year: proposition.year,
         description: proposition.description,
         passed: proposition.passed,
+        pass_percentage: proposition.pass_percentage,
         votes: formattedVotes,
       };
     });

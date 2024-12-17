@@ -50,13 +50,10 @@ export default function visualLayoutRootLayout({
       window.history.pushState({}, '', newUrl); 
       setProp2VoteData(selectedProp2.votes)
     }
+
+    console.log("proposition is changed 2 ", selectedProp1)
     
   }, [selectedProp1, selectedProp2]);
-
-  useEffect(() => {
-  
-    
-  }, [selectedProp2]);
 
 
 const handleProp1Change = (proposition: Proposition) => {

@@ -53,7 +53,9 @@ export async function GET(
       year: proposition.year,
       description: proposition.description,
       passed: proposition.passed,
+      passed_percentage: proposition.pass_percentage,
       votes: formattedVotes,
+
     };
 
     return NextResponse.json(responseData);

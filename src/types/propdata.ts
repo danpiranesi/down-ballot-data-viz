@@ -5,6 +5,8 @@ export type Proposition = {
     votes: VoteData[]
     description: string
     passed: boolean
+    pass_percentatge: number
+
 
 }
 
