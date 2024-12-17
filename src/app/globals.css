@@ -87,6 +87,37 @@ div#yesvotes {
   
 }
 
+img#map {
+  width: 100%;
+  height: 100%;
+}
+
+img#histogram {
+  width: 100%;
+  height: 100%;
+}
+
+/* this is formatting for the map page titles*/
+div#image-box {
+  background-color: rgb(237 233 254);
+}
+
+div#map-image {
+  height: 90%;
+  width: 370px;
+}
+
+div#histogram-image {
+  height: 90%;
+  width: 350px;
+}
+
+.title {
+  font-family: Georgia, serif;
+  font-size: large;
+  font-weight: bold;
+}
+
 /* Formatting for contact form */
 label {
   font-family: Verdana, sans-serif;

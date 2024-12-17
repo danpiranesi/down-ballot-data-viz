@@ -14,7 +14,6 @@ import { ExportModal } from '@/components/export/ExportModal';
 
 export const VoteDataContext = createContext<VoteData[]>([]);
 
-
 export default function visualLayoutRootLayout({
     children,
   }: Readonly<{
@@ -84,7 +83,7 @@ const [isModalOpen, setIsModalOpen] = useState(false);
         <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
           <div className="md:col-span-3">
             <Card className="h-[800px] flex flex-col grow justify-center">
-              <div className="justify-center flex mx-14 my-4 text-lg font-serif">
+              <div className="title justify-center flex mx-14 my-4">
                 {selectedProp ? selectedProp.name : 'Select a Year and Proposition'}
               </div>
               <VoteDataContext.Provider value={voteData}>
@@ -121,11 +120,13 @@ const [isModalOpen, setIsModalOpen] = useState(false);
               </Button>
               </div>
             </Card>
-            <Card>
-              {selectedProp ? selectedProp.description : ''}
-            </Card>
           </div>
         </div>
+        <Card>
+              <div className='title'>{selectedProp ? selectedProp.name : ''}</div>
+             
+              <div>{selectedProp ? selectedProp.description : ''}</div>
+        </Card>
         <Footer/>
       </main>
       <ExportModal isOpen={isModalOpen}

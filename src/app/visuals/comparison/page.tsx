@@ -1,17 +1,16 @@
-//'use client';
-//import { ColoradoMap } from '@/components/map/D3Map';
-import React from 'react';
-//import { VoteDataContext } from "../layout";
-import MapFunc from '@/app/visuals/map/MapFunction';
+//'use client'
+import React, { useContext} from 'react';
+import { VoteDataContext } from "../layout";
+import ComparisonFunc from '@/app/visuals/comparison/ComparisonFunction';
 
 export const metadata = {
     title: 'Colorado Vote Visualizer',
     description: 'Understanding how votes add up matters. It matters for big races, but it matters for smaller, down ballot races too.',
     // open graph is the preview that shows up when the site is shared
     openGraph: {
-      title: 'Colorado Vote Visualizer: County Map',
-      description: 'Compare the percentages of people voting for propositions in each county.',
-      url: 'https://www.coloradovotevisuals.com/visuals/map',
+      title: 'Colorado Vote Visualizer: Proposition Comparison',
+      description: 'Compare the percentage of support for two different propositions.',
+      url: 'https://www.coloradovotevisuals.com/visuals/comparison',
       images: [
         {
           url: 'https://coloradocotevisuals.com/preview-image.png',
@@ -21,9 +20,9 @@ export const metadata = {
       ],
     },
   };
-
+  
 export default function Map (){
-  return(
-    <MapFunc/>
-  ) 
+    return (
+        <ComparisonFunc/>
+    )
 }

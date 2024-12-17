@@ -1,8 +1,25 @@
-"use client";
-
+//"use client";
 
 import { Header } from '@/components/layout/Header';
 import { Footer } from '@/components/layout/Footer';
+
+export const metadata = {
+    title: 'Colorado Vote Visualizer',
+    description: 'Understanding how votes add up matters. It matters for big races, but it matters for smaller, down ballot races too.',
+    // open graph is the preview that shows up when the site is shared
+    openGraph: {
+      title: 'Colorado Vote Visualizer: About',
+      description: 'Motivation and Developers of Colorado Vote Visualizer',
+      url: 'https://www.coloradovotevisuals.com/about',
+      images: [
+        {
+          url: 'https://coloradocotevisuals.com/preview-image.png',
+          width: 800,
+          height: 600,
+        },
+      ],
+    },
+  };
 
 
 export default function AboutPage() {
@@ -60,7 +77,7 @@ export default function AboutPage() {
                <h2 className="text-2xl font-bold mb-6">Meet the Developers</h2>
                <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-8">
                    {/* Developer 1 */}
-                   <div className="flex flex-col items-center bg-gray-100 p-6 rounded-lg shadow-md">
+                   <div id='image-box' className="flex flex-col items-center bg-gray-100 p-6 rounded-lg shadow-md">
                        <img
                            src="/images/dev1.jpg"
                            alt="Developer 1"
@@ -74,21 +91,21 @@ export default function AboutPage() {
 
 
                    {/* Developer 2 */}
-                   <div className="flex flex-col items-center bg-gray-100 p-6 rounded-lg shadow-md">
+                   <div id='image-box' className="flex flex-col items-center p-6 rounded-lg shadow-md">
                        <img
                            src="/images/dev2.jpg"
                            alt="Developer 2"
                            className="w-32 h-32 rounded-full mb-4 object-cover"
                        />
-                       <h3 className="font-bold text-lg mb-2">Mira Giles-Pufhal</h3>
+                       <h3 className="font-bold text-lg mb-2">Mira Giles-Pufahl</h3>
                        <p className="text-center text-sm">
-                       Mira is a senior computer science major and art minor at Colorado College from Milwaukee, Wisconsin. During the summer of 2024, Mira researched Generalized Implicit Neural Representation and machine learning models called neural networks. Even after dipping a toe into this field, their dream career is in video game development. They enjoy crossword puzzles, ceramics, and attending to copious amounts of house plants.
+                       Mira is a computer science major and art minor at Colorado College from Milwaukee, Wisconsin. During the summer of 2024, Mira researched Generalized Implicit Neural Representation and machine learning models called neural networks. After graduation, Mira hopes to pursue a career in video game development. They enjoy crossword puzzles, ceramics, and attending to copious amounts of house plants.
                        </p>
                    </div>
 
 
                    {/* Developer 3 */}
-                   <div className="flex flex-col items-center bg-gray-100 p-6 rounded-lg shadow-md">
+                   <div id='image-box' className="flex flex-col items-center p-6 rounded-lg shadow-md">
                        <img
                            src="/images/dev3.jpg"
                            alt="Developer 3"
@@ -102,7 +119,7 @@ export default function AboutPage() {
 
 
                    {/* Developer 4 */}
-                   <div className="flex flex-col items-center bg-gray-100 p-6 rounded-lg shadow-md">
+                   <div id='image-box' className="flex flex-col items-center p-6 rounded-lg shadow-md">
                        <img
                            src="/images/dev4.jpg"
                            alt="Developer 4"
@@ -116,7 +133,7 @@ export default function AboutPage() {
 
 
                    {/* Developer 5 */}
-                   <div className="flex flex-col items-center bg-gray-100 p-6 rounded-lg shadow-md">
+                   <div id='image-box' className="flex flex-col items-center p-6 rounded-lg shadow-md">
                        <img
                            src="/images/dev5.jpg"
                            alt="Developer 5"
