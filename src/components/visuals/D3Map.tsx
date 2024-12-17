@@ -117,6 +117,31 @@ export function ColoradoMap({ propositionId, year, voteData = [] }: MapProps) {
       // Setup projection and path for the map
       const projection = d3.geoMercator().fitSize([width, mapHeight], us);
       const path = d3.geoPath().projection(projection);
+
+              //hashing code
+              svg
+              .append('defs')
+              .append('pattern')
+              .attr('id', 'diagonalHatch')
+              .attr('patternUnits', 'userSpaceOnUse')
+              .attr('width', 9) // Increase spacing
+              .attr('height', 9) // Increase spacing
+              .append('path')
+              .attr('d', 'M0,9 l9,-9 M-9,9 l9,-9 M9,9 l9,-9') // Adjust path for wider spacing
+              .attr('stroke', '#000000')
+              .attr('stroke-width', 1.5);
+      
+          svg
+          .append('defs')
+          .append('pattern')
+          .attr('id', 'diagonalHatch_hover')
+          .attr('patternUnits', 'userSpaceOnUse')
+          .attr('width', 4)
+          .attr('height', 4)
+          .append('path')
+          .attr('d', 'M-1,1 l2,-2 M0,4 l4,-4 M3,5 l2,-2')
+          .attr('stroke', '#ccc')
+          .attr('stroke-width', .4);
     
       // Draw background counties
       mapGroup.selectAll('path')
@@ -127,8 +152,26 @@ export function ColoradoMap({ propositionId, year, voteData = [] }: MapProps) {
         .attr('d', path)
         .attr('stroke', '#333')
         .attr('stroke-width', 0.5);
-    
+
+      mapGroup
+        .append('g')
+        .attr('class', 'counties')
+        .selectAll('path')
+        .data(us.features)
+        .enter()
+        .append('path')
+        .attr('fill', (d) => {
+          const passed = county_passed(d.properties.name);
+          if (passed == true) {
+            return 'url(#diagonalHatch)';
+          }
+          return getColor(d.properties.name);
+        })
+        .attr('d', path)
+        .attr('stroke', '#333')
+        .attr('stroke-width', 0.5);
       // Tooltips and hover effects
+
       mapGroup.selectAll('path')
         .on('mouseenter', function (event, d) {
           const [pageX, pageY] = [event.pageX, event.pageY];
@@ -158,11 +201,15 @@ export function ColoradoMap({ propositionId, year, voteData = [] }: MapProps) {
             ?.style('left', (pageX + 10) + 'px')
             .style('top', (pageY - 20) + 'px');
         })
-        .on('mouseleave', function () {
-          d3.select(this).style('opacity', 1);
-          tooltipRef.current?.style('opacity', 1);
+        .on('mouseleave', function (event,d) {
+          const passed = county_passed(d.properties.name);
+          console.log(passed);
+          d3.select(this)
+          .style('opacity', 1)
+          .attr('fill', passed ? 'url(#diagonalHatch)' : getColor(d.properties.name));
+          tooltipRef.current?.style('opacity', 0);
         });
-    
+
       // Gradient Bar Group (separate from the map group)
       const gradientGroup = svg.append('g')
       .attr('transform', `translate(0, ${titleHeight + mapHeight + 40})`); // Slight adjustment to clear space
