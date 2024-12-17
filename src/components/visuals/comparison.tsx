@@ -80,7 +80,7 @@ export function ComparisonVisual({prop1VoteData, prop2VoteData}: MapProps) {
     // Extract the county names and voter data
     console.log("in hist, voteData is, ",prop1VoteData)
     console.log("in hist2, voteData is, ",prop2VoteData)
-    const counties = prop1VoteData.map((d) => d.county_name);
+    const counties = voteData.map((d) => d.county_name);
 
 
 
@@ -185,7 +185,7 @@ const yAxisLabel = svg
     })
     .attr('width', x.bandwidth())
     .attr('height', (d) => height - (y((d.yes_count)/(d.yes_count+d.no_count)*100)))
-    .attr('fill', '#7fbf7b') // Green for "Yes Votes"
+    .attr('fill', '#998ec3') // purple for "prop 1"
     .style('stroke', '#000000')
     .on('mouseenter', function (d) {
       const mouseX = d3.mouse(document.body)[0];
@@ -231,7 +231,7 @@ const yAxisLabel = svg
     .attr('y', (d) => (y((d.yes_count)/(d.yes_count+d.no_count)*100)))
     .attr('width', x.bandwidth())
     .attr('height', (d) => height - (y((d.yes_count)/(d.yes_count+d.no_count)*100)))
-    .attr('fill', '#FF0000') // Green for "Yes Votes"
+    .attr('fill', '#f1a340') // orange for prop 2
     .style('stroke', '#000000')
     .on('mouseenter', function (d) {
       const mouseX = d3.mouse(document.body)[0];
