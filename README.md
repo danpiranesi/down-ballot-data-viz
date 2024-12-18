@@ -25,6 +25,9 @@ These visualizations can be exported in their entirety and used in local electio
 
 * Clone the repository into your own directory.
 * Create a .env file and obtain a value for the DATABASE_URL from the core contributors of this project.
+```
+DATABASE_URL = "postgresql://UrlObtainedFromProjectOwners"
+```
 * Run:
 ```
 npm install
