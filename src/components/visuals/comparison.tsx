@@ -1,8 +1,10 @@
 'use client';
 
-import React, { useEffect, useRef } from 'react';
+import React, { useContext, useEffect, useRef } from 'react';
 import * as d3 from 'd3-v4';
 import {VoteData} from '@/types/propdata';
+import { SelectedPropContext } from '@/context/SelectedPropContext';
+import { ComparePropContext } from '@/context/ComparePropContext';
 
 
 type MapProps = {
@@ -17,6 +19,10 @@ type CountyProperties = {
 }
 
 export function ComparisonVisual({prop1VoteData, prop2VoteData}: MapProps) {
+  const SelectedProp1 = useContext(SelectedPropContext)
+  const propositionName1  = SelectedProp1 ?SelectedProp1.name : '';
+  const SelectedProp2 = useContext(ComparePropContext)
+  const propositionName2  = SelectedProp2 ?SelectedProp2.name : '';
   const svgRef = useRef<SVGSVGElement>(null);
   const containerRef = useRef<HTMLDivElement>(null);
   const tooltipRef = useRef<d3.Selection<HTMLDivElement, unknown, HTMLElement, any>>();
@@ -67,6 +73,34 @@ export function ComparisonVisual({prop1VoteData, prop2VoteData}: MapProps) {
       .attr('height', height + margin.top + margin.bottom)
       .append('g')
       .attr('transform', 'translate(' + margin.left + ',' + margin.top + ')');
+
+      const titleHeight = 50; // Space for title
+      const titleText = (propositionName1 && propositionName2) 
+  ? propositionName1 + ' vs ' + propositionName2 
+  : 'select 2 propositions';
+
+// Append the main text to the SVG
+const textElement = svg.append('text')
+  .attr('x', width / 2)
+  .attr('y', titleHeight / 2)
+  .attr('text-anchor', 'middle')
+  .attr('font-size', 18)
+  .attr('font-weight', 'bold')
+  .attr('fill', '#333');
+
+// Append the first line (propositionName1 + ' vs')
+textElement.append('tspan')
+  .attr('x', width / 2)
+  .attr('dy', 0) 
+  .text(propositionName1 + ' vs');
+
+// Append the second line (propositionName2 or 'select 2 propositions')
+textElement.append('tspan')
+  .attr('x', width / 2)
+  .attr('dy', '1.2em') 
+  .text(propositionName2);
+
+      
 
 
     

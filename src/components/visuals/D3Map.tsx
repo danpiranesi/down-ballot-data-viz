@@ -28,6 +28,8 @@ export function ColoradoMap({ propositionId, year, voteData = [] }: MapProps) {
   const svgRef = useRef<SVGSVGElement>(null);
   const containerRef = useRef<HTMLDivElement>(null);
   const tooltipRef = useRef<d3.Selection<HTMLDivElement, unknown, HTMLElement, any>>();
+  const passPercentage = SelectedProp ? SelectedProp.passed_percentage : 50;
+  console.log("Pass percentage is ", SelectedProp);
 
   useEffect(() => {
     if (!svgRef.current || !containerRef.current) return;
@@ -75,7 +77,7 @@ export function ColoradoMap({ propositionId, year, voteData = [] }: MapProps) {
         return false;
       }
       //TODO change .5 to percentage 
-      if (votesFor > (.5 * (votesFor + votesAgainst))) {
+      if (votesFor > ((passPercentage/100) * (votesFor + votesAgainst))) {
         return true;
       }
       return false;

@@ -65,7 +65,6 @@ const [isModalOpen, setIsModalOpen] = useState(false);
           <div className="md:col-span-3">
             <Card className="h-[800px] flex flex-col grow justify-center">
               <div className="justify-center flex mx-14 my-4 text-lg font-serif">
-                {selectedProp2 && selectedProp1 ? selectedProp1.name + ' vs ' + selectedProp2.name : 'Select propositions to compare'}
               </div>
               <SelectedPropContext.Provider value={selectedProp1}>
               <ComparePropContext.Provider value={selectedProp2}>
