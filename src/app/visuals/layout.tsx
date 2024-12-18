@@ -99,6 +99,7 @@ export default function visualLayoutRootLayout({
                 <Card>
                   <ResultDisplay yesTotal={totalYesVotes} noTotal={totalNoVotes} />
                 </Card>
+                {selectedProp ? selectedProp.passed ? <Card>This legislation passed</Card> : <Card>This legislation did not pass </Card>: ''}
                 <Card>
                   <VisualizationSelect propId={selectedProp ? selectedProp.id : 0} />
                 </Card>

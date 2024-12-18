@@ -56,8 +56,8 @@ const [isModalOpen, setIsModalOpen] = useState(false);
     <div className="min-h-screen bg-white text-gray-900">
       <Header />
       <div className="pt-4 px-14">
-          <h1 className="text-3xl font-serif">County Level Pass/Fail Density Map</h1>
-          <p className="text-sm">Compare the percentages of people voting for propositions in each county.</p>
+          <h1 className="text-3xl font-serif">Proposition Comparison By County</h1>
+          <p className="text-sm">Compare the approval percentage of two propositions</p>
           <hr className="h-px my-4 bg-violet-300 border-0"></hr>
       </div>
       <main className="container mx-auto px-4 py-4">
