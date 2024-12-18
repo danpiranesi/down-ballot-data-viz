@@ -8,7 +8,6 @@ import {VoteData} from '@/types/propdata';
 type MapProps = {
   prop1VoteData?: VoteData[];
   prop2VoteData?: VoteData[];
-
 }
 
 type CountyProperties = {
@@ -16,7 +15,7 @@ type CountyProperties = {
   [key: string]: any;
 }
 
-export function ComparisonVisual({prop1VoteData, prop2VoteData}: MapProps) {
+export function ComparisonVisual({prop1VoteData = [], prop2VoteData = []}: MapProps) {
   const svgRef = useRef<SVGSVGElement>(null);
   const containerRef = useRef<HTMLDivElement>(null);
   const tooltipRef = useRef<d3.Selection<HTMLDivElement, unknown, HTMLElement, any>>();
@@ -26,10 +25,10 @@ export function ComparisonVisual({prop1VoteData, prop2VoteData}: MapProps) {
     let voteData: VoteData[] | null = null; // Explicit type annotation
     console.log("prop1: " +prop1VoteData);
     console.log("prop2: " +prop2VoteData);
-    if (prop2VoteData.length > 0) {
+
+    if (prop2VoteData && prop2VoteData.length > 0) {
       voteData = structuredClone(prop2VoteData);
-    }
-    else {
+    } else {
       voteData = structuredClone(prop1VoteData);
     }
 
