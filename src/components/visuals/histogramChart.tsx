@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useEffect, useRef, useContext } from 'react';
-import * as d3 from 'd3-v4';
+import * as d3 from 'd3-v4'; // Ensure you have the correct D3 version installed
 import { VoteData } from '@/types/propdata';
 import { VoteDataContext } from '@/context/VoteDataContext';
 import { SelectedPropContext } from '@/context/SelectedPropContext';
@@ -9,15 +9,14 @@ import { SelectedPropContext } from '@/context/SelectedPropContext';
 type MapProps = {
   propositionId?: number;
   year?: number;
-  voteData?: VoteData[];
+  prop1VoteData?: VoteData[]; // Added
+  prop2VoteData?: VoteData[]; // Added
 };
 
-interface CountyData {
-  County: string; // the name or identifier of the county
-  [key: string]: any; // other properties (e.g., values for categories, etc.)
-}
-
-export function PropositionHistogram({ voteData = [] }: MapProps) { // Provide default value
+export function PropositionHistogram({
+  prop1VoteData = [], // Destructure with default empty array
+  prop2VoteData = [], // Destructure with default empty array
+}: MapProps) {
   const svgRef = useRef<SVGSVGElement>(null);
   const containerRef = useRef<HTMLDivElement>(null);
   const tooltipRef = useRef<d3.Selection<HTMLDivElement, unknown, HTMLElement, any> | null>(null);
@@ -72,9 +71,12 @@ export function PropositionHistogram({ voteData = [] }: MapProps) { // Provide d
       .style('fill', '#333')
       .text(propositionName || 'Select a Proposition');
 
+    // Combine prop1 and prop2 vote data for processing
+    const combinedVoteData = [...prop1VoteData, ...prop2VoteData];
+
     // Extract the county names and voter data
-    console.log("in hist, voteData is:", voteData);
-    const counties = voteData.map((d) => d.county_name);
+    console.log("Combined vote data is:", combinedVoteData);
+    const counties = combinedVoteData.map((d) => d.county_name);
 
     // Define scales
     const x = d3
@@ -83,8 +85,8 @@ export function PropositionHistogram({ voteData = [] }: MapProps) { // Provide d
       .range([0, width])
       .padding(0.2);
 
-    // Handle d3.max safely
-    const maxVotes = d3.max(voteData, (d: VoteData) => d.yes_count + d.no_count) || 0;
+    // Determine the maximum total votes for Y-axis domain
+    const maxVotes = d3.max(combinedVoteData, (d: VoteData) => d.yes_count + d.no_count) || 0;
 
     const y = d3
       .scaleLinear()
@@ -132,7 +134,7 @@ export function PropositionHistogram({ voteData = [] }: MapProps) { // Provide d
       .text('Counties');
 
     // Append X-axis
-    scatter
+    const xAxis = scatter
       .append('g')
       .attr('class', 'x-axis')
       .attr('transform', `translate(0, ${height})`)
@@ -172,9 +174,9 @@ export function PropositionHistogram({ voteData = [] }: MapProps) { // Provide d
 
     // Prepare stacked data
     const stackedData = d3
-      .stack()
+      .stack<VoteData>()
       .keys(['yes_count', 'no_count'])
-      (voteData as any);
+      (combinedVoteData as any); // Ensure VoteData matches the structure
 
     const color = d3
       .scaleOrdinal<string>()
@@ -309,7 +311,7 @@ export function PropositionHistogram({ voteData = [] }: MapProps) { // Provide d
       // Optionally, remove all SVG elements to clean up
       d3.select(svgRef.current).selectAll("*").remove();
     };
-  }, [voteData]); // Re-run effect when voteData changes
+  }, [prop1VoteData, prop2VoteData]); // Re-run effect when prop1VoteData or prop2VoteData changes
 
   return (
     <div ref={containerRef} className="relative w-full h-full">
@@ -319,4 +321,3 @@ export function PropositionHistogram({ voteData = [] }: MapProps) { // Provide d
 }
 
 export default PropositionHistogram;
-
