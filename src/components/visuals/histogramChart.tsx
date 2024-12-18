@@ -262,7 +262,7 @@ export function PropositionHistogram({
 
       // Update bar positions and heights with animation for prop1 bars
       svg
-        .selectAll('.bars rect')
+        .selectAll<SVGRectElement, VoteData>('.bars rect')
         .transition()
         .duration(500)
         .ease(d3.easeCubicOut)
@@ -276,7 +276,7 @@ export function PropositionHistogram({
 
       // Update bar positions and heights with animation for prop2 bars
       svg
-        .selectAll('.bars2 rect')
+        .selectAll<SVGRectElement, VoteData>('.bars2 rect')
         .transition()
         .duration(500)
         .ease(d3.easeCubicOut)
