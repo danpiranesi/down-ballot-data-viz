@@ -1,5 +1,3 @@
-// src/components/visuals/ComparisonVisual.tsx
-
 'use client';
 
 import React from 'react';
