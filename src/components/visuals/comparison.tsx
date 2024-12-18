@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useEffect, useRef } from 'react';
-import * as d3 from 'd3-v4';
+import * as d3 from 'd3'; // Updated to latest D3
 import { VoteData } from '@/types/propdata';
 
 type MapProps = {
@@ -14,14 +14,19 @@ type CountyProperties = {
   [key: string]: any;
 };
 
-export function ComparisonVisual({ prop1VoteData = [], prop2VoteData = [] }: MapProps) {
+export function ComparisonVisual({
+  prop1VoteData = [],
+  prop2VoteData = [],
+}: MapProps) {
   const svgRef = useRef<SVGSVGElement>(null);
   const containerRef = useRef<HTMLDivElement>(null);
-  const tooltipRef = useRef<d3.Selection<HTMLDivElement, unknown, HTMLElement, any>>();
+  const tooltipRef = useRef<d3.Selection<HTMLDivElement, unknown, HTMLElement, any> | null>(null);
 
   useEffect(() => {
     // Clone the appropriate vote data
-    const voteData = prop2VoteData.length > 0 ? structuredClone(prop2VoteData) : structuredClone(prop1VoteData);
+    const voteData: VoteData[] = prop2VoteData.length > 0
+      ? structuredClone(prop2VoteData)
+      : structuredClone(prop1VoteData);
 
     console.log("UPDATED DATA");
 
@@ -43,7 +48,7 @@ export function ComparisonVisual({ prop1VoteData = [], prop2VoteData = [] }: Map
       .style('border-radius', '4px')
       .style('pointer-events', 'none')
       .style('box-shadow', '0 2px 4px rgba(0,0,0,0.1)')
-      .style('color', '#374151') 
+      .style('color', '#374151')
       .style('font-size', '14px');
 
     tooltipRef.current = tooltip;
@@ -68,10 +73,10 @@ export function ComparisonVisual({ prop1VoteData = [], prop2VoteData = [] }: Map
     // Define scales
     const x = d3
       .scaleBand<string>() // Explicitly define scaleBand with string type
-      .domain(counties) // Map counties to bands
-      .range([0, width * 2]) // Map bands to chart width
-      .paddingInner(0.65) // Space within bands
-      .paddingOuter(0.2); // Space on the outer edges
+      .domain(counties)
+      .range([0, width * 2])
+      .paddingInner(0.65)
+      .paddingOuter(0.2);
 
     const y = d3
       .scaleLinear()
@@ -120,11 +125,10 @@ export function ComparisonVisual({ prop1VoteData = [], prop2VoteData = [] }: Map
       .style('font-weight', 'bold') // Make font bold
       .style('opacity', '0');
 
-    // Adjust tick positions with Non-Null Assertion
+    // Adjust tick positions with type-safe transformation
     scatter
-      .selectAll('.x-axis .tick')
+      .selectAll<SVGGElement, string>('.x-axis .tick')
       .attr('transform', function (d: string) {
-        // TypeScript knows d is a string, but x(d) might be undefined
         const xPos = x(d);
         if (xPos === undefined) {
           return 'translate(0,0)'; // Fallback position
@@ -154,46 +158,47 @@ export function ComparisonVisual({ prop1VoteData = [], prop2VoteData = [] }: Map
       scatter
         .append('g')
         .attr('class', 'bars')
-        .selectAll('rect')
+        .selectAll<SVGRectElement, VoteData>('rect')
         .data(prop1VoteData)
         .enter()
         .append('rect')
         .attr('x', (d) => x(d.county_name) || 0) // Provide fallback value
         .attr('y', (d) => {
-          console.log("vote% ", (y((d.yes_count) / (d.yes_count + d.no_count) * 100)));
-          return y((d.yes_count) / (d.yes_count + d.no_count) * 100);
+          const percentYes = (d.yes_count) / (d.yes_count + d.no_count) * 100;
+          console.log("vote% ", y(percentYes));
+          return y(percentYes);
         })
         .attr('width', x.bandwidth())
         .attr('height', (d) => height - y((d.yes_count) / (d.yes_count + d.no_count) * 100))
         .attr('fill', '#998ec3') // Purple for "prop 1"
         .style('stroke', '#000000')
         .on('mouseenter', function (event, d) {
-          const [mouseX, mouseY] = d3.mouse(document.body);
+          const [mouseX, mouseY] = d3.pointer(event, document.body);
           d3.select(this).style('opacity', 0.7); // Highlight the bar
           const countyName = d.county_name;
           const yesVotes = d.yes_count;
           const noVotes = d.no_count;
-          tooltip
-            .style('opacity', 1)
-            .html(
+          tooltipRef.current
+            ?.style('opacity', 1)
+            ?.html(
               `<div class="font-medium text-gray-900 mb-1">${countyName} County</div>
                <div class="text-gray-700">
                Votes For: ${yesVotes.toLocaleString()}<br/>
                Votes Against: ${noVotes.toLocaleString()}<br/>
                Total Votes: ${(yesVotes + noVotes).toLocaleString()}</div>`
             )
-            .style('left', mouseX + 10 + 'px')
-            .style('top', mouseY - 20 + 'px');
+            ?.style('left', mouseX + 10 + 'px')
+            ?.style('top', mouseY - 20 + 'px');
         })
-        .on('mousemove', function () {
-          const [mouseX, mouseY] = d3.mouse(document.body);
-          tooltip
-            .style('left', mouseX + 10 + 'px')
-            .style('top', mouseY - 20 + 'px');
+        .on('mousemove', function (event) {
+          const [mouseX, mouseY] = d3.pointer(event, document.body);
+          tooltipRef.current
+            ?.style('left', mouseX + 10 + 'px')
+            ?.style('top', mouseY - 20 + 'px');
         })
         .on('mouseleave', function () {
           d3.select(this).style('opacity', 1); // Reset opacity
-          tooltip.style('opacity', 0); // Hide tooltip
+          tooltipRef.current?.style('opacity', 0); // Hide tooltip
         });
     }
 
@@ -202,7 +207,7 @@ export function ComparisonVisual({ prop1VoteData = [], prop2VoteData = [] }: Map
       scatter
         .append('g')
         .attr('class', 'bars2')
-        .selectAll('rect')
+        .selectAll<SVGRectElement, VoteData>('rect')
         .data(prop2VoteData)
         .enter()
         .append('rect')
@@ -213,38 +218,38 @@ export function ComparisonVisual({ prop1VoteData = [], prop2VoteData = [] }: Map
         .attr('fill', '#f1a340') // Orange for prop 2
         .style('stroke', '#000000')
         .on('mouseenter', function (event, d) {
-          const [mouseX, mouseY] = d3.mouse(document.body);
+          const [mouseX, mouseY] = d3.pointer(event, document.body);
           d3.select(this).style('opacity', 0.7); // Highlight the bar
           const countyName = d.county_name;
           const yesVotes = d.yes_count;
           const noVotes = d.no_count;
-          tooltip
-            .style('opacity', 1)
-            .html(
+          tooltipRef.current
+            ?.style('opacity', 1)
+            ?.html(
               `<div class="font-medium text-gray-900 mb-1">${countyName} County</div>
                <div class="text-gray-700">
                Votes For: ${yesVotes.toLocaleString()}<br/>
                Votes Against: ${noVotes.toLocaleString()}<br/>
                Total Votes: ${(yesVotes + noVotes).toLocaleString()}</div>`
             )
-            .style('left', mouseX + 10 + 'px')
-            .style('top', mouseY - 20 + 'px');
+            ?.style('left', mouseX + 10 + 'px')
+            ?.style('top', mouseY - 20 + 'px');
         })
-        .on('mousemove', function () {
-          const [mouseX, mouseY] = d3.mouse(document.body);
-          tooltip
-            .style('left', mouseX + 10 + 'px')
-            .style('top', mouseY - 20 + 'px');
+        .on('mousemove', function (event) {
+          const [mouseX, mouseY] = d3.pointer(event, document.body);
+          tooltipRef.current
+            ?.style('left', mouseX + 10 + 'px')
+            ?.style('top', mouseY - 20 + 'px');
         })
         .on('mouseleave', function () {
           d3.select(this).style('opacity', 1); // Reset opacity
-          tooltip.style('opacity', 0); // Hide tooltip
+          tooltipRef.current?.style('opacity', 0); // Hide tooltip
         });
     }
 
     // Set zoom and pan features
     const zoom = d3
-      .zoom()
+      .zoom<SVGSVGElement, unknown>()
       .scaleExtent([1, 30]) // Limit zoom range: 1 means no zooming out smaller than the SVG
       .extent([
         [0, 0],
@@ -258,23 +263,23 @@ export function ComparisonVisual({ prop1VoteData = [], prop2VoteData = [] }: Map
 
     d3.select(svgRef.current).call(zoom);
 
-    var xLinear = d3
+    const xLinear = d3
       .scaleLinear()
       .domain([0, counties.length])
       .range([0, width]);
 
-    function updateChart() {
+    function updateChart(event: any) { // Updated to accept event
       // Recover the new scale from zoom event
-      var t = d3.event.transform;
+      const t = event.transform;
 
       // Limit side-to-side movement to keep the graph in bounds
       t.x = Math.min(0, Math.max(t.x, -width * (t.k - 1)));
       t.y = 0;
 
-      var newX = t.rescaleX(xLinear);
+      const newX = t.rescaleX(xLinear);
 
       // Determine visible counties
-      var visibleCounties = counties.filter((county, i) => {
+      const visibleCounties = counties.filter((county, i) => {
         const xPos = newX(i);
         return xPos >= 0 && xPos <= width; // Check if county is within visible frame
       });
@@ -309,7 +314,7 @@ export function ComparisonVisual({ prop1VoteData = [], prop2VoteData = [] }: Map
       }
 
       // Update the Y scale domain dynamically to fit visible bars
-      var newY = y.copy().domain([0, visibleMax || 1]);
+      const newY = y.copy().domain([0, visibleMax || 1]);
 
       // Animate Y-axis transition
       yAxis
@@ -349,7 +354,7 @@ export function ComparisonVisual({ prop1VoteData = [], prop2VoteData = [] }: Map
         .attr('y', (d) => newY((d.yes_count) / (d.yes_count + d.no_count) * 100))
         .attr('height', (d) => height - newY((d.yes_count) / (d.yes_count + d.no_count) * 100));
 
-      // Move ticks along the X-axis with Non-Null Assertion
+      // Move ticks along the X-axis with type-safe transformation
       svg
         .selectAll('.x-axis .tick')
         .transition()
@@ -371,8 +376,10 @@ export function ComparisonVisual({ prop1VoteData = [], prop2VoteData = [] }: Map
       if (tooltipRef.current) {
         tooltipRef.current.remove();
       }
+      // Optionally, remove all SVG elements to clean up
+      d3.select(svgRef.current).selectAll("*").remove();
     };
-  }, [prop1VoteData, prop2VoteData]); // Re-render when voteData changes
+  }, [prop1VoteData, prop2VoteData]); // Re-run effect when voteData changes
 
   return (
     <div ref={containerRef} className="relative w-full h-full">
@@ -380,4 +387,5 @@ export function ComparisonVisual({ prop1VoteData = [], prop2VoteData = [] }: Map
     </div>
   );
 }
+
 
