@@ -3,8 +3,10 @@
 'use client';
 
 import React from 'react';
+import ComparisonVisual from '@/components/visuals/comparison';
 
 type ComparisonVisualProps = {};
+
 
 const ComparisonVisual: React.FC<ComparisonVisualProps> = () => {
   return (
