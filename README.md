@@ -49,10 +49,10 @@ Contact the developers for any help or guidance on the project.
 
 Contributors names:
 
-*Oliver Ramirez
-*Dan Schmidt
-*Mira Giles-Pufahl
-*Leigh Walden 
+* Oliver Ramirez
+* Dan Schmidt
+* Mira Giles-Pufahl
+* Leigh Walden 
 
 
 
