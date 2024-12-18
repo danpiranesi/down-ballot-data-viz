@@ -10,3 +10,4 @@ export const SelectedPropContext = createContext<SelectedPropContextValue>({
   name: '',
   description: '',
 });
+// export const SelectedPropContext = createContext<Proposition | null>(null);

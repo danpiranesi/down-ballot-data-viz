@@ -24,8 +24,7 @@ export function ComparisonVisual({prop1VoteData, prop2VoteData}: MapProps) {
 
   useEffect(() => {
     var voteData = null;
-    console.log("prop1: " +prop1VoteData);
-    console.log("prop2: " +prop2VoteData);
+    
     if (prop2VoteData.length > 0) {
       voteData = structuredClone(prop2VoteData);
     }
@@ -33,7 +32,6 @@ export function ComparisonVisual({prop1VoteData, prop2VoteData}: MapProps) {
       voteData = structuredClone(prop1VoteData);
     }
 
-    console.log("UPDATED DATA")
     if (!svgRef.current || !containerRef.current) return;
       // Clear all existing elements from the SVG
     d3.select(svgRef.current).selectAll("*").remove();
@@ -75,8 +73,6 @@ export function ComparisonVisual({prop1VoteData, prop2VoteData}: MapProps) {
 
   //d3.select(svgRef.current).call(zoom);
     // Extract the county names and voter data
-    console.log("in hist, voteData is, ",prop1VoteData)
-    console.log("in hist2, voteData is, ",prop2VoteData)
     const counties = voteData.map((d) => d.county_name);
 
 
@@ -177,7 +173,6 @@ const yAxisLabel = svg
     .append('rect')
     .attr('x', (d) => x(d.county_name))
     .attr('y', (d) => {
-      console.log("vote% "+(y((d.yes_count)/(d.yes_count+d.no_count)*100)));
       return(y((d.yes_count)/(d.yes_count+d.no_count)*100));
     })
     .attr('width', x.bandwidth())
@@ -418,7 +413,6 @@ const yAxisLabel = svg
               ',0)',
           );
       }
-      console.log('hello');
 
       return () => {
         if (tooltipRef.current) {

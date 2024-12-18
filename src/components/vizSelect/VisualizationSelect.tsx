@@ -19,7 +19,7 @@ export default function VisualizationSelect(props: Props) {
     } else if (newAlignment === "Map") {
       router.push(props.propId === 0 ? `/visuals/map` : `/visuals/map/?proposition_id=${props.propId}`);
     } else if (newAlignment === "Comparison") {
-      router.push(props.propId === 0 ? `/comparison` : `/comparison/?proposition_id=${props.propId}`);
+      router.push(props.propId === 0 ? `/comparison` : `/comparison/?proposition1_id=${props.propId}`);
     }
   };
 

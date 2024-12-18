@@ -44,12 +44,7 @@ export default function visualLayoutRootLayout({
     setTotalNoVotes(totals.totalNo);
   }, [selectedProp]);
 
-const handleDropdownChange = (proposition: Proposition) => {
-  // when the selectedProp is changed in the propFilters, make the change in this component.
-  setSelectedProp(proposition);
-  
 
-};
 
 const [isModalOpen, setIsModalOpen] = useState(false);
 const searchParams = useSearchParams();
@@ -102,7 +97,7 @@ return (
             </div>
             <div className="space-y-4">
               <Card className="p-4">
-                <PropositionFilters setSelectedProp={handleDropdownChange} />
+                <PropositionFilters setSelectedProp={setSelectedProp} slugName = {'proposition_id'}  />
               </Card>
               <Card>
                 <ResultDisplay yesTotal={totalYesVotes} noTotal={totalNoVotes} />

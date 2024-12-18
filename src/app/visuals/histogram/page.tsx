@@ -3,9 +3,6 @@
 import React from 'react';
 //import { VoteDataContext } from "../layout";
 import HistogramFunc from '@/app/visuals/histogram/HistogramFunction';
-import { PropositionHistogram } from '@/components/histogram/histogramChart';
-import { VoteData } from '@/types/propdata';
-import { VoteDataContext } from '@/context/VoteDataContext';
 
 export const metadata = {
     title: 'Colorado Vote Visualizer',

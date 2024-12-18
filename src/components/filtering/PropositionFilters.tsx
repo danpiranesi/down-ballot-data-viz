@@ -14,12 +14,15 @@ import { useRouter } from 'next/navigation';
 
 interface Props {
   setSelectedProp: (value: Proposition) => void; // Accept a string and return nothing
+  slugName : string 
+  //The slug name is the value that the component looks in in the url to see if it needs to populate the dropdown with specific values.
+  //i.e /visuals/map?proposition_id=31 and slugName = 'proposition_id' then the dropdown will mount with this value filled in.
 }
 
 export function PropositionFilters(props: Props) {
 
   const [propositions, setPropositions] = useState<Proposition[]>([])
-  const [selectedProposition, setSelectedProposition] = useState<Proposition>({ id: 0, name: '', year: 0, votes : [], description : ''})
+  const [selectedProposition, setSelectedProposition] = useState<Proposition>()
 
   const [availableYears, setAvailableYears] = useState<number[]>([])
   const [selectedYear, setSelectedYear] = useState<string>('')
@@ -78,7 +81,7 @@ export function PropositionFilters(props: Props) {
 
       //if the url contains a value for parameter_id, populate the values from the given prop ID
       const searchParams = new URLSearchParams(window.location.search);
-      const urlPropId = searchParams.get('proposition_id')
+      const urlPropId = searchParams.get(props.slugName)
       if (urlPropId){
         fetchPropositionByID(urlPropId)
       }
@@ -119,7 +122,7 @@ export function PropositionFilters(props: Props) {
       props.setSelectedProp(selected);
     } else {
       throw new Error('failed to map prop name to proposition object')
-      setSelectedProposition({id:0, name:'', year: 0, votes: [], description : ''});  
+
   };
 }
   
@@ -157,7 +160,7 @@ export function PropositionFilters(props: Props) {
       {/*Proposition Drop Down Menu Selector*/}
       <Select
       onValueChange={handlePropositionChange}
-       value={selectedProposition.name}
+       value={selectedProposition ? selectedProposition.name : ''}
        disabled={!selectedYear}
         >
         <SelectTrigger className="w-full text-gray-900">
