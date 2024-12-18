@@ -35,18 +35,20 @@ export default function HomePage() {
           <hr className="h-px my-4 bg-violet-300 border-0"></hr>
         </div>
         <div className="min-h-content bg-white text-gray-900 px-14">
-          <p className="text-m">Understanding how votes add up matters. It matters for big races, but it matters for smaller, down ballot races too.</p>
+          <p className="text-m">Understanding how votes add up matters. It matters for big races, but it matters for smaller, down-ballot races too.</p>
           <br></br>
-          <p className="text-m"> The Colorado down ballot vote visualizer is another tool to be used in the pursuit of understanding down ballot voting trends in Colorado races. It’s hard to cover all of the propositions that come up in Colorado and it’s even harder to see trends around the state for similar propositions over the years. The three visualization tools this site offers are meant to lend a hand to journalists covering these races and to voters seeking more information about how support for state-level issues has changed over time. </p>
+          <p className="text-m">The Colorado down-ballot vote visualizer is a tool to be used in the pursuit of understanding down-ballot voting trends in Colorado races. The visualization tools this site offers are meant to lend a hand to journalists covering these races and to voters seeking more information about how support for state-level issues has changed over time.</p>
           <br></br>
-          <p className="text-m">The County Level Pass/Fail Density Map allows users to search by year and proposition to see the density of support for a given proposition by county. The Proposition Comparison visualizer allows users to pick two separate years and two separate propositions within those years. This visualization aims to support users comparing two similar propositions on a county level to see how the level of support within counties has changed over time. The County Level Pass/Fail Histogram visualization allows users another way to think about county level support for propositions. </p> 
+          <p className="text-m">The County Level Pass/Fail Density Map allows users to search by year and proposition to see the density of support for a given proposition by county. The Proposition Comparison visualizer allows users to pick two separate years and two propositions within those years. This visualization aims to support users comparing two similar propositions on a county level to see how the level of support within counties has changed over time. The County Level Pass/Fail Histogram visualization allows users another way to think about county level support for propositions. 
+          </p> 
           <br></br>
-          <p className="text-m"> These visualizations can be exported in their entirety and used in local election reporting. All the data for these visualizations comes from the Colorado Secretary of State’s elections data. Find out more about how this data was sourced <Link href="/about" className="text-m text-blue-700 hover:underline"> here</Link>.</p>
+          <p className="text-m">These visualizations can be exported in their entirety and used in local election reporting. All the data for these visualizations comes from the Colorado Secretary of State’s elections data. Find out more about how this data was sourced<Link href="/about" className="text-m text-blue-700 hover:underline"> here</Link>.</p>
 
         </div>
         <div className="min-h-96 bg-white text-gray-900 py-4 px-14">
+        <hr className="h-px my-4 bg-violet-300 border-0"></hr>
           <h1 className="text-xl font-serif">Explore Different Visualizations:</h1>
-            <div className="min-h-80 flex py-4 borderRadius items-stretch justify-between">
+            <div className="min-h-80 flex py-4 borderRadius sm:grid-cols-1 lg:grid-cols-3 gap-8">
               <MapImage/>
               <PropImage/>
               <HistImage/>

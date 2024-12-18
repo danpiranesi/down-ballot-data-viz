@@ -1,7 +1,7 @@
 'use client';
 import { ColoradoMap } from '@/components/visuals/D3Map';
 import React, { useContext} from 'react';
-import { VoteDataContext } from "../layout";
+import { VoteDataContext } from '@/context/VoteDataContext';
 
 
 export default function MapFunc () {
