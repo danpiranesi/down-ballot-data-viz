@@ -268,7 +268,7 @@ export function ComparisonVisual({
       .domain([0, counties.length])
       .range([0, width]);
 
-    function updateChart(event: any) { // Updated to accept event
+    function updateChart(event: d3.D3ZoomEvent<SVGSVGElement, unknown>) { // Updated to accept event
       // Recover the new scale from zoom event
       const t = event.transform;
 
@@ -356,7 +356,7 @@ export function ComparisonVisual({
 
       // Move ticks along the X-axis with type-safe transformation
       svg
-        .selectAll('.x-axis .tick')
+        .selectAll<SVGGElement, string>('.x-axis .tick')
         .transition()
         .duration(500)
         .ease(d3.easeCubicOut)
@@ -387,5 +387,6 @@ export function ComparisonVisual({
     </div>
   );
 }
+
 
 
