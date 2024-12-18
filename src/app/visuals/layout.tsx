@@ -19,23 +19,19 @@ export default function visualLayoutRootLayout({
   }: Readonly<{
     children: React.ReactNode;
   }>) {
-  const pathname = usePathname();
   const [selectedProp, setSelectedProp] = useState<Proposition | null>(null);
-  const [voteData, setVoteData] = useState<VoteData[]>([]);
   const [totalYesVotes, setTotalYesVotes] = useState<number>(0);
   const [totalNoVotes, setTotalNoVotes] = useState<number>(0);
-  const propositionName = selectedProp ? selectedProp.name : '';
-  const propositionDescription = selectedProp ? selectedProp.description : '';
  
   // Calculate totals when voteData changes
   useEffect(() => {
     const sumVotes = () => {
-      if (!Array.isArray(voteData)) return { totalYes: 0, totalNo: 0 };
+      if (!selectedProp) return { totalYes: 0, totalNo: 0 };
   
       let totalYes = 0;
       let totalNo = 0;
   
-      voteData.forEach((vote) => {
+      selectedProp.votes.forEach((vote) => {
         totalYes += vote.yes_count;
         totalNo += vote.no_count;
       });
@@ -46,7 +42,7 @@ export default function visualLayoutRootLayout({
     const totals = sumVotes();
     setTotalYesVotes(totals.totalYes);
     setTotalNoVotes(totals.totalNo);
-  }, [voteData]);
+  }, [selectedProp]);
 
 const handleDropdownChange = (proposition: Proposition) => {
   // when the selectedProp is changed in the propFilters, make the change in this component.
@@ -60,27 +56,7 @@ const searchParams = useSearchParams();
 const isEmbed = searchParams.get('embed') === 'true';
 const propositionId = searchParams.get('proposition_id');
 
-useEffect(() => {
-  // Fetch data if `proposition_id` exists in the query params
-  if (propositionId) {
-    const fetchPropositionData = async () => {
-      try {
-        // Simulated API call
-        const response = await fetch(`/api/propositions/${propositionId}`);
-        if (response.ok) {
-          const proposition = await response.json();
-          setSelectedProp(proposition);
-          setVoteData(proposition.votes);
-        } else {
-          console.error('Failed to load proposition data');
-        }
-      } catch (error) {
-        console.error('Error fetching proposition data:', error);
-      }
-    };
-    fetchPropositionData();
-  }
-}, [propositionId]);
+
 
 useEffect(() => {
   // update URL and voteData when the proposition is selected from dropdown
@@ -90,7 +66,6 @@ useEffect(() => {
       : `?proposition_id=${selectedProp.id}`;
 
     window.history.pushState({}, '', newUrl);
-    setVoteData(selectedProp.votes);
   }
 }, [selectedProp, isEmbed]);
 
@@ -99,7 +74,7 @@ return (
     {isEmbed ? (
       <div id="export-container" className="w-full h-full">
         <SelectedPropContext.Provider value={{ name: selectedProp?.name || '', description: selectedProp?.description || '' }}>
-          <VoteDataContext.Provider value={voteData}>
+          <VoteDataContext.Provider value={selectedProp ? selectedProp.votes : []}>
             {children}
           </VoteDataContext.Provider>
         </SelectedPropContext.Provider>
@@ -118,7 +93,7 @@ return (
               <Card className="flex flex-col p-4">
                 <div id="export-container">
                   <SelectedPropContext.Provider value={{ name: selectedProp?.name || '', description: selectedProp?.description || '' }}>
-                    <VoteDataContext.Provider value={voteData}>
+                    <VoteDataContext.Provider value={selectedProp ? selectedProp.votes : []}>
                       {children}
                     </VoteDataContext.Provider>
                   </SelectedPropContext.Provider>

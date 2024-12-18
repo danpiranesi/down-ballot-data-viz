@@ -149,8 +149,8 @@ export function ColoradoMap({ propositionId, year, voteData = [] }: MapProps) {
         .attr('stroke-width', 0.4);
 
       // Setup projection and path for map
-      const projection = d3.geoMercator().fitSize([width, mapHeight], us);
-      const path = d3.geoPath().projection(projection);
+      // const projection = d3.geoMercator().fitSize([width, mapHeight], us);
+      // const path = d3.geoPath().projection(projection);
 
       // Draw background counties (base fill)
       svg.append('g')

@@ -6,9 +6,7 @@ import { Footer } from '@/components/layout/Footer';
 import { PropositionFilters } from '@/components/filtering/PropositionFilters';
 import { Card } from '@/components/ui/Card';
 import { Button } from '@/components/ui/Button';
-import { ResultDisplay } from '@/components/results/ResultDisplay';
 import { Proposition, VoteData } from '@/types/propdata';
-import GradientBar from '@/components/ui/Key';
 import VisualizationSelect from '@/components/vizSelect/VisualizationSelect';
 import { ExportModal } from '@/components/export/ExportModal';
 
@@ -96,12 +94,12 @@ const [isModalOpen, setIsModalOpen] = useState(false);
           <div className="space-y-4">
             <Card className="p-4">
               <PropositionFilters
-                setSelectedProp={handleProp1Change}
+                setSelectedProp={setSelectedProp1}
               />
             </Card>
             <Card className="p-4">
               <PropositionFilters
-                setSelectedProp={handleProp2Change}
+                setSelectedProp={setSelectedProp2}
               />
             </Card>
             
