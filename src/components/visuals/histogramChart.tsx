@@ -10,7 +10,7 @@ type MapProps = {
   propositionId?: number;
   year?: number;
   voteData?: VoteData[];
-}
+};
 
 interface CountyData {
   County: string; // the name or identifier of the county
@@ -183,7 +183,7 @@ export function PropositionHistogram({ voteData = [] }: MapProps) { // Provide d
 
     // Set zoom and pan features with translateExtent
     const zoom = d3
-      .zoom()
+      .zoom<SVGSVGElement, unknown>()
       .scaleExtent([1, 30]) // Limit zoom range
       .translateExtent([
         [0, 0],
@@ -191,7 +191,8 @@ export function PropositionHistogram({ voteData = [] }: MapProps) { // Provide d
       ]) // Define panning boundaries
       .on('zoom', updateChart);
 
-    d3.select(svgRef.current).call(zoom);
+    // Apply zoom behavior with proper typing
+    d3.select<SVGSVGElement, unknown>(svgRef.current).call(zoom);
 
     // Linear scale for the zoom transformation
     const xLinear = d3
@@ -203,8 +204,6 @@ export function PropositionHistogram({ voteData = [] }: MapProps) { // Provide d
       // Recover the new scale from zoom event
       var t = d3.event.transform;
 
-      // Remove attempts to mutate t.x and t.y
-
       var newX = t.rescaleX(xLinear);
 
       // Determine visible counties
@@ -215,11 +214,11 @@ export function PropositionHistogram({ voteData = [] }: MapProps) { // Provide d
 
       // Calculate new Y domain based on visible counties
       const visibleMax = d3.max(visibleCounties, (county) => {
-        const countyData = voteData.find(
+        const countyData = prop1VoteData.find(
           (d) => d.county_name === county,
         );
         return countyData
-          ? (countyData.yes_count + countyData.no_count)
+          ? (d3.max([countyData.yes_count, countyData.no_count]) || 0)
           : 0;
       }) || 1; // Ensure at least 1 to prevent zero domain
 
