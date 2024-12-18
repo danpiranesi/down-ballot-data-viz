@@ -23,7 +23,7 @@ export function ComparisonVisual({prop1VoteData, prop2VoteData}: MapProps) {
 
 
   useEffect(() => {
-    var voteData = null;
+    let voteData: VoteData[] | null = null; // Explicit type annotation
     console.log("prop1: " +prop1VoteData);
     console.log("prop2: " +prop2VoteData);
     if (prop2VoteData.length > 0) {
