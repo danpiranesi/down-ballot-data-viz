@@ -9,10 +9,9 @@ import { Button } from '@/components/ui/Button';
 import { Proposition, VoteData } from '@/types/propdata';
 import VisualizationSelect from '@/components/vizSelect/VisualizationSelect';
 import { ExportModal } from '@/components/export/ExportModal';
-import { VoteDataContext } from '@/context/VoteDataContext';
+import { SelectedPropContext } from '@/context/SelectedPropContext';
+import { ComparePropContext } from '@/context/ComparePropContext';
 
-export const prop1voteDataContext = createContext<VoteData[]>([]);
-export const prop2voteDataContext = createContext<VoteData[]>([]);
 
 
 export default function visualLayoutRootLayout({
@@ -68,11 +67,13 @@ const [isModalOpen, setIsModalOpen] = useState(false);
               <div className="justify-center flex mx-14 my-4 text-lg font-serif">
                 {selectedProp2 && selectedProp1 ? selectedProp1.name + ' vs ' + selectedProp2.name : 'Select propositions to compare'}
               </div>
-              <VoteDataContext.Provider value = {selectedProp1 ? selectedProp1.votes : []}>
-              <prop2voteDataContext.Provider value = {selectedProp2 ? selectedProp2.votes : []}>
+              <SelectedPropContext.Provider value={selectedProp1}>
+              <ComparePropContext.Provider value={selectedProp2}>
               {children}
-              </prop2voteDataContext.Provider>
-              </VoteDataContext.Provider>
+              </ComparePropContext.Provider>
+              </SelectedPropContext.Provider>
+              
+  
             </Card>
           </div>
           <div className="space-y-4">

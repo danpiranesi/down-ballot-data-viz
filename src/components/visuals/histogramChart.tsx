@@ -21,7 +21,8 @@ export function PropositionHistogram({ voteData }: MapProps) {
   const svgRef = useRef<SVGSVGElement>(null);
   const containerRef = useRef<HTMLDivElement>(null);
   const tooltipRef = useRef<d3.Selection<HTMLDivElement, unknown, HTMLElement, any>>();
-  const { name: propositionName } = useContext(SelectedPropContext);
+  const SelectedProp = useContext(SelectedPropContext)
+  const propositionName  = SelectedProp ?SelectedProp.name : '';
 
   useEffect(() => {
     console.log("UPDATED DATA")

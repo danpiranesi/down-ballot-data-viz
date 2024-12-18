@@ -20,8 +20,10 @@ type CountyProperties = {
 };
 
 export function ColoradoMap({ propositionId, year, voteData = [] }: MapProps) {
-  const { name: propositionName } = useContext(SelectedPropContext);
-  const voteDataFromContext = useContext(VoteDataContext);
+  //const { name: propositionName } = useContext(SelectedPropContext);
+  const SelectedProp = useContext(SelectedPropContext)
+  const propositionName  = SelectedProp ?SelectedProp.name : '';
+  const voteDataFromContext = SelectedProp ? SelectedProp.votes : [];
   const finalVoteData = voteDataFromContext.length > 0 ? voteDataFromContext : voteData;
   const svgRef = useRef<SVGSVGElement>(null);
   const containerRef = useRef<HTMLDivElement>(null);
