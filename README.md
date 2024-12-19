@@ -55,7 +55,6 @@ Contributors names:
 * Leigh Walden 
 
 
-
 ## Acknowledgments
  Thank you to Professor's Ben Nye and Varsha Koushik for the mentorship and guidance through
  our Team Software capstone project at Colorado College.
