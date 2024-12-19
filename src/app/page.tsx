@@ -45,7 +45,7 @@ export default function HomePage() {
           <p className="text-m">These visualizations can be exported in their entirety and used in local election reporting. All the data for these visualizations comes from the Colorado Secretary of State’s elections data. Find out more about how this data was sourced<Link href="/about" className="text-m text-blue-700 hover:underline"> here</Link>.</p>
 
         </div>
-        <div className="min-h-96 bg-white text-gray-900 py-4 px-14">
+        <div className="min-h-96 bg-white text-gray-900 pb-4 px-14">
         <hr className="h-px my-4 bg-violet-300 border-0"></hr>
           <h1 className="text-xl font-serif">Explore Different Visualizations:</h1>
             <div className="min-h-80 flex py-4 borderRadius sm:grid-cols-1 lg:grid-cols-3 gap-8">
