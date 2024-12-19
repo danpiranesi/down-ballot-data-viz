@@ -28,6 +28,7 @@ export default function AboutPage() {
            <Header />
           
            {/* Main content section */}
+           //future work - make headshots a button to click to launch to LinkedIn and Personal Websites
            <section className="pt-4 px-14">
                <h1 className="text-3xl font-serif">About</h1>
                <p className="text-sm">The purpose, the data, and the team.</p>
@@ -186,7 +187,7 @@ export default function AboutPage() {
                        />
                        <h3 className="font-bold text-lg mb-2">Dan Schmidt</h3>
                        <p className="text-center text-sm">
-                           Dan is an undercover CIA operative. Limited information about "Dan Schmidt" is known.
+                           Dan is a computer science and film studies student at Colorado College.
                        </p>
                    </div>
                </div>
