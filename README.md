@@ -52,7 +52,8 @@ Contributors names:
 * Oliver Ramirez
 * Dan Schmidt
 * Mira Giles-Pufahl
-* Leigh Walden 
+* Leigh Walden
+* Oliver Kendall
 
 
 ## Acknowledgments
