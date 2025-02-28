@@ -29,12 +29,12 @@ export function ComparisonVisual({prop1VoteData, prop2VoteData}: MapProps) {
 
 
   useEffect(() => {
-    var voteData = null;
+    var voteData: VoteData[] = [];
     
-    if (prop2VoteData.length > 0) {
+    if (prop2VoteData && prop2VoteData.length > 0) {
       voteData = structuredClone(prop2VoteData);
     }
-    else {
+    else if (prop1VoteData && prop1VoteData.length > 0) {
       voteData = structuredClone(prop1VoteData);
     }
 
@@ -174,7 +174,7 @@ textElement.append('tspan')
   .selectAll('.x-axis .tick')
   .attr('transform', function (d) {
     // Move tick to center of bar
-    return 'translate(' + (x(d) + x.bandwidth()) + ',0)';
+    return 'translate(' + ((x(d as string) || 0) + x.bandwidth()) + ',0)';
   });
 
 
@@ -197,7 +197,7 @@ const yAxisLabel = svg
       const barSpacing = 2; // Space between bars in the same county
       // Draw bars
   // Draw bars
-  if (prop1VoteData.length > 0) {
+  if (prop1VoteData && prop1VoteData.length > 0) {
   scatter
     .append('g')
     .attr('class', 'bars')
@@ -205,7 +205,7 @@ const yAxisLabel = svg
     .data(prop1VoteData)
     .enter()
     .append('rect')
-    .attr('x', (d) => x(d.county_name))
+    .attr('x', (d) => x(d.county_name as string) || 0)
     .attr('y', (d) => {
       return(y((d.yes_count)/(d.yes_count+d.no_count)*100));
     })
@@ -245,7 +245,7 @@ const yAxisLabel = svg
     });
   }
 
-  if (prop2VoteData.length > 0)  {
+  if (prop2VoteData && prop2VoteData.length > 0)  {
   scatter
     .append('g')
     .attr('class', 'bars2')
@@ -253,7 +253,7 @@ const yAxisLabel = svg
     .data(prop2VoteData)
     .enter()
     .append('rect')
-    .attr('x', (d) => x(d.county_name) + x.bandwidth() * 1.3)
+    .attr('x', (d) => (x(d.county_name as string) || 0) + x.bandwidth() * 1.3)
     .attr('y', (d) => (y((d.yes_count)/(d.yes_count+d.no_count)*100)))
     .attr('width', x.bandwidth())
     .attr('height', (d) => height - (y((d.yes_count)/(d.yes_count+d.no_count)*100)))
@@ -305,7 +305,8 @@ const yAxisLabel = svg
     ]) // Limit panning
     .on('zoom', updateChart);
 
-    d3.select(svgRef.current).call(zoom);
+  // Add type assertion to fix the incompatibility
+  d3.select(svgRef.current).call(zoom as any);
 
     /*
     // This add an invisible rect on top of the chart area. This rect can recover pointer events: necessary to understand when the user zoom
@@ -347,7 +348,8 @@ const yAxisLabel = svg
     
         // Calculate new Y domain based on visible counties
         const visibleMax = d3.max(visibleCounties, (county) => {
-          const countyData = voteData.find(
+          // Add null check before using find
+          const countyData = voteData?.find(
             (d) => d.county_name === county,
           );
           return countyData
@@ -400,18 +402,14 @@ const yAxisLabel = svg
           .ease(d3.easeCubicOut)
           .attr('x', (d) => {
             //console.log('data: ' + d.data.county_name);
-            return(newX(counties.indexOf(d.county_name)))}
+            // Add type assertion to d
+            return(newX(counties.indexOf((d as VoteData).county_name)))}
           )
           .attr('width', barWidth) // Use the computed bar width
           .attr('y', (d) => {
-            //console.log('Data value (d[1]):', d[1]);
-            //console.log(
-            //  'Mapped pixel value (newY(d[1])):',
-            //  newY(d[1]),
-           // );
-            return (newY((d.yes_count)/(d.yes_count+d.no_count)*100));
+            return (newY(((d as VoteData).yes_count)/((d as VoteData).yes_count+(d as VoteData).no_count)*100));
           })
-          .attr('height', (d) => height - (newY((d.yes_count)/(d.yes_count+d.no_count)*100)));
+          .attr('height', (d) => height - (newY(((d as VoteData).yes_count)/((d as VoteData).yes_count+(d as VoteData).no_count)*100)));
           
 
           svg
@@ -421,18 +419,14 @@ const yAxisLabel = svg
           .ease(d3.easeCubicOut)
           .attr('x', (d) => {
             //console.log('data: ' + d.data.county_name);
-            return(newX(counties.indexOf(d.county_name))+ barWidth*1.3)}
+            // Add type assertion to d
+            return(newX(counties.indexOf((d as VoteData).county_name))+ barWidth*1.3)}
           )
           .attr('width', barWidth) // Use the computed bar width
           .attr('y', (d) => {
-            //console.log('Data value (d[1]):', d[1]);
-            //console.log(
-            //  'Mapped pixel value (newY(d[1])):',
-            //  newY(d[1]),
-           // );
-            return (newY((d.yes_count)/(d.yes_count+d.no_count)*100));
+            return (newY(((d as VoteData).yes_count)/((d as VoteData).yes_count+(d as VoteData).no_count)*100));
           })
-          .attr('height', (d) => height - (newY((d.yes_count)/(d.yes_count+d.no_count)*100)));
+          .attr('height', (d) => height - (newY(((d as VoteData).yes_count)/((d as VoteData).yes_count+(d as VoteData).no_count)*100)));
         // Move ticks along the X-axis
         svg
           .selectAll('.x-axis .tick')
@@ -443,7 +437,7 @@ const yAxisLabel = svg
             'transform',
             (d) =>
               'translate(' +
-              (newX(counties.indexOf(d)) + barWidth * 1.15) +
+              (newX(counties.indexOf(d as string)) + barWidth * 1.15) +
               ',0)',
           );
       }

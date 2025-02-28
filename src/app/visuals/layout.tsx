@@ -1,5 +1,5 @@
 'use client';
-import React, { useState, useEffect, createContext } from 'react';
+import React, { useState, useEffect, createContext, Suspense } from 'react';
 import { usePathname } from 'next/navigation';
 import { Header } from '@/components/layout/Header';
 import { Footer } from '@/components/layout/Footer';
@@ -13,6 +13,28 @@ import { ExportModal } from '@/components/export/ExportModal';
 import { SelectedPropContext } from '@/context/SelectedPropContext';
 import { useSearchParams } from 'next/navigation';
 
+// Create a client component that uses useSearchParams
+function SearchParamsHandler({ 
+  setPropositionId, 
+  setIsEmbed 
+}: { 
+  setPropositionId: (id: string | null) => void;
+  setIsEmbed: (isEmbed: boolean) => void;
+}) {
+  const searchParams = useSearchParams();
+  const isEmbed = searchParams.get('embed') === 'true';
+  const propositionId = searchParams.get('proposition_id');
+  
+  useEffect(() => {
+    setIsEmbed(isEmbed);
+    if (propositionId) {
+      setPropositionId(propositionId);
+    }
+  }, [searchParams, setIsEmbed, setPropositionId, isEmbed, propositionId]);
+  
+  return null; // This component doesn't render anything
+}
+
 export default function visualLayoutRootLayout({
   children,
 }: Readonly<{
@@ -21,6 +43,8 @@ export default function visualLayoutRootLayout({
   const [selectedProp, setSelectedProp] = useState<Proposition | null>(null);
   const [totalYesVotes, setTotalYesVotes] = useState<number>(0);
   const [totalNoVotes, setTotalNoVotes] = useState<number>(0);
+  const [isEmbed, setIsEmbed] = useState(false);
+  const [propositionId, setPropositionId] = useState<string | null>(null);
 
   // Calculate totals when voteData changes
   useEffect(() => {
@@ -46,9 +70,8 @@ export default function visualLayoutRootLayout({
 
 
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const searchParams = useSearchParams();
-  const isEmbed = searchParams.get('embed') === 'true';
-  const propositionId = searchParams.get('proposition_id');
+  
+  // Remove direct useSearchParams call since it's now in the SearchParamsHandler
 
 
 
@@ -65,6 +88,10 @@ export default function visualLayoutRootLayout({
 
   return (
     <div className="min-h-screen bg-white text-gray-900">
+      <Suspense fallback={<div>Loading...</div>}>
+        <SearchParamsHandler setPropositionId={setPropositionId} setIsEmbed={setIsEmbed} />
+      </Suspense>
+      
       {isEmbed ? (
         <div id="export-container" className="w-full h-full">
           <SelectedPropContext.Provider value={selectedProp}>

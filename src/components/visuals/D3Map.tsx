@@ -179,17 +179,17 @@ export function ColoradoMap({ propositionId, year, voteData = [] }: MapProps) {
       mapGroup.selectAll('path')
         .on('mouseenter', function (event, d) {
           const [pageX, pageY] = [event.pageX, event.pageY];
-          const passed = county_passed(d.properties.name);
-          const votes = getVotes(d.properties.name);
+          const passed = county_passed((d as any).properties.name);
+          const votes = getVotes((d as any).properties.name);
     
           d3.select(this)
             .style('opacity', 0.5)
-            .attr('fill', passed ? 'url(#diagonalHatch_hover)' : getColor(d.properties.name));
+            .attr('fill', passed ? 'url(#diagonalHatch_hover)' : getColor((d as any).properties.name));
     
           tooltipRef.current
             ?.style('opacity', 1)
             ?.html(`
-              <div class="font-medium text-gray-900 mb-1">${d.properties.name} County</div>
+              <div class="font-medium text-gray-900 mb-1">${(d as any).properties.name} County</div>
               <div class="text-gray-700">
                 Votes For: ${votes.votesFor.toLocaleString()}<br/>
                 Votes Against: ${votes.votesAgainst.toLocaleString()}<br/>
@@ -206,11 +206,11 @@ export function ColoradoMap({ propositionId, year, voteData = [] }: MapProps) {
             .style('top', (pageY - 20) + 'px');
         })
         .on('mouseleave', function (event,d) {
-          const passed = county_passed(d.properties.name);
+          const passed = county_passed((d as any).properties.name);
           console.log(passed);
           d3.select(this)
           .style('opacity', 1)
-          .attr('fill', passed ? 'url(#diagonalHatch)' : getColor(d.properties.name));
+          .attr('fill', passed ? 'url(#diagonalHatch)' : getColor((d as any).properties.name));
           tooltipRef.current?.style('opacity', 0);
         });
 

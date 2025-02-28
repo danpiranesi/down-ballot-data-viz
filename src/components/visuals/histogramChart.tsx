@@ -84,9 +84,19 @@ export function PropositionHistogram({ voteData }: MapProps) {
       .range([0, width])
       .padding(0.2);
 
+    // More explicitly handle the domain calculation with proper typing
+    let maxValue = 0;
+    if (Array.isArray(voteData) && voteData.length > 0) {
+      maxValue = voteData.reduce((max, d) => {
+        const total = (typeof d.yes_count === 'number' ? d.yes_count : Number(d.yes_count)) + 
+                     (typeof d.no_count === 'number' ? d.no_count : Number(d.no_count));
+        return total > max ? total : max;
+      }, 0);
+    }
+
     const y = d3
       .scaleLinear()
-      .domain([0, d3.max(voteData, (d) => d.yes_count + d.no_count) as number])
+      .domain([0, maxValue])
       .nice()
       .range([height, 0]);
 
@@ -195,58 +205,68 @@ scatter
   .call(zoom);
   */
 
-  //apply zooming capabilities to the whole svg
-  d3.select(svgRef.current).call(zoom);
+  // Apply zooming capabilities to the whole svg
+  d3.select(svgRef.current).call(zoom as any);
 
 // Draw bars
-scatter
-  .append('g')
-  .attr('class', 'bars')
-  .selectAll('g')
-  .data(stackedData)
-  .enter()
-  .append('g')
-  .attr('fill', (d) => color(d.key))
-  .selectAll('rect')
-  .data((d) => d)
-  .enter()
-  .append('rect')
-  .attr('x', (d) => x(d.data.county_name))
-  .attr('y', (d) => y(d[1]))
-  .attr('height', (d) => y(d[0]) - y(d[1]))
-  .attr('width', x.bandwidth())
-  .attr('data-key', (d) => d.data.County)
-  .style('stroke', '#000000')
-  .on('mouseenter', function (d) {
-    const mouseX = d3.mouse(document.body)[0];
-    const mouseY = d3.mouse(document.body)[1];
-    d3.select(this).style('opacity', 0.7); // highlight the bar
-    const countyName = d.data.county_name;
-    const yesVotes = d.data.yes_count;
-    const noVotes = d.data.no_count;
-    tooltip
-      .style('opacity', 1)
-      .html(
-        `<div class="font-medium text-gray-900 mb-1">${countyName} County</div>
-         <div class="text-gray-700">
-         Votes For: ${yesVotes.toLocaleString()}<br/>
-         Votes Against: ${noVotes.toLocaleString()}<br/>
-         Total Votes: ${(yesVotes + noVotes).toLocaleString()}</div>`
-      )
-      .style('left', mouseX + 10 + 'px')
-      .style('top', mouseY - 20 + 'px');
-  })
-  .on('mousemove', function () {
-    const mouseX = d3.mouse(document.body)[0];
-    const mouseY = d3.mouse(document.body)[1];
-    tooltip
-      .style('left', mouseX + 10 + 'px')
-      .style('top', mouseY - 20 + 'px');
-  })
-  .on('mouseleave', function () {
-    d3.select(this).style('opacity', 1); // Reset opacity
-    tooltip.style('opacity', 0); // Hide tooltip
-  });
+const bars = scatter
+.append('g')
+.attr('class', 'bars')
+.selectAll('g')
+.data(stackedData)
+.enter()
+.append('g')
+// @ts-ignore
+.attr('fill', function(d) {
+  return color(d.key); 
+});
+
+// @ts-ignore
+bars.selectAll('rect')
+// @ts-ignore
+.data(d => d)
+.enter()
+.append('rect')
+// @ts-ignore
+.attr('x', d => x(d.data.county_name))
+// @ts-ignore
+.attr('y', d => y(d[1]))
+// @ts-ignore
+.attr('height', d => y(d[0]) - y(d[1]))
+.attr('width', x.bandwidth())
+// @ts-ignore
+.attr('data-key', (d) => d.data.County)
+.style('stroke', '#000000')
+.on('mouseenter', function (d) {
+  const mouseX = d3.mouse(document.body)[0];
+  const mouseY = d3.mouse(document.body)[1];
+  d3.select(this).style('opacity', 0.7); // highlight the bar
+  const countyName = d.data.county_name;
+  const yesVotes = d.data.yes_count;
+  const noVotes = d.data.no_count;
+  tooltip
+    .style('opacity', 1)
+    .html(
+      `<div class="font-medium text-gray-900 mb-1">${countyName} County</div>
+       <div class="text-gray-700">
+       Votes For: ${yesVotes.toLocaleString()}<br/>
+       Votes Against: ${noVotes.toLocaleString()}<br/>
+       Total Votes: ${(yesVotes + noVotes).toLocaleString()}</div>`
+    )
+    .style('left', mouseX + 10 + 'px')
+    .style('top', mouseY - 20 + 'px');
+})
+.on('mousemove', function () {
+  const mouseX = d3.mouse(document.body)[0];
+  const mouseY = d3.mouse(document.body)[1];
+  tooltip
+    .style('left', mouseX + 10 + 'px')
+    .style('top', mouseY - 20 + 'px');
+})
+.on('mouseleave', function () {
+  d3.select(this).style('opacity', 1); // Reset opacity
+  tooltip.style('opacity', 0); // Hide tooltip
+});
 
 
 
@@ -272,13 +292,14 @@ scatter
         });
     
         // Calculate new Y domain based on visible counties
-        const visibleMax = d3.max(visibleCounties, (county) => {
-          const countyData = voteData.find(
-            (d) => d.county_name === county,
-          );
-          return countyData
-            ? countyData.yes_count + countyData.no_count
-            : 0;
+        let visibleMax = 0;
+        visibleCounties.forEach(county => {
+          const countyData = voteData?.find(d => d.county_name === county);
+          if (countyData) {
+            const total = (typeof countyData.yes_count === 'number' ? countyData.yes_count : Number(countyData.yes_count)) +
+                         (typeof countyData.no_count === 'number' ? countyData.no_count : Number(countyData.no_count));
+            if (total > visibleMax) visibleMax = total;
+          }
         });
     
         //fade into visibility of x axis
@@ -325,18 +346,15 @@ scatter
           .duration(500)
           .ease(d3.easeCubicOut)
           .attr('x', (d) => {
-            //console.log('data: ' + d.data.county_name);
+            // @ts-ignore
             return(newX(counties.indexOf(d.data.county_name)))}
           )
-          .attr('width', barWidth) // Use the computed bar width
+          .attr('width', barWidth)
           .attr('y', (d) => {
-            //console.log('Data value (d[1]):', d[1]);
-            //console.log(
-            //  'Mapped pixel value (newY(d[1])):',
-            //  newY(d[1]),
-           // );
+            // @ts-ignore
             return newY(d[1]);
           })
+          // @ts-ignore
           .attr('height', (d) => newY(d[0]) - newY(d[1]));
         // Move ticks along the X-axis
         svg
@@ -348,6 +366,7 @@ scatter
             'transform',
             (d) =>
               'translate(' +
+              // @ts-ignore
               (newX(counties.indexOf(d)) + barWidth * 0.5) +
               ',0)',
           );
