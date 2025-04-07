@@ -3,59 +3,34 @@ import { NextResponse } from 'next/server';
 
 /**
  * @fileoverview
- * This file contains the API call that returns data for a given proposition ID.
+ * This file contains the API call that returns all propositions.
  *
  * @usage
- * - The `/propositions/[proposition_id]` endpoint retrieves data for a specific proposition ID.
+ * - The `/propositions` endpoint retrieves a list of all propositions.
  *
  * @author Oliver Ramirez, Dan Schmidt
  * @version 1.0.0
  * @date 2024-11-28
  */
 
-export async function GET(
-  req: Request,
-  { params }: { params: Promise<{ proposition_id: string }> }
-) {
-
+export async function GET() {
   try {
-      const { proposition_id } = await params;
-
-
-    // Validate proposition_id
-    if (!proposition_id || isNaN(Number(proposition_id))) {
-      return NextResponse.json(
-        { error: 'proposition_id parameter is required and must be a valid number' },
-        { status: 400 }
-      );
-    }
-
-    const prop_data = await prisma.proposition_county_votes.findMany({
-      where: {
-        proposition_id: parseInt(proposition_id, 10),
-      },
+    // Return all propositions when accessed directly
+    const allPropositions = await prisma.propositions.findMany({
       select: {
-        county_id: true,
-        yes_count: true,
-        no_count: true,
-        total_votes: true,
-        counties: {
-          select: {
-            name: true,
-          },
-        },
+        id: true,
+        name: true,
+        description: true,
+        year: true,
+        passed: true,
+        pass_percentage: true,
+      },
+      orderBy: {
+        year: 'desc',
       },
     });
 
-    const packedData = prop_data.map((item) => ({
-      county_id: item.county_id,
-      yes_count: item.yes_count,
-      no_count: item.no_count,
-      total_votes: item.total_votes,
-      county_name: item.counties.name,
-    }));
-
-    return NextResponse.json(packedData);
+    return NextResponse.json(allPropositions);
   } catch (error) {
     console.error('Prisma error:', error);
     return NextResponse.json(

@@ -4,20 +4,20 @@ import Link from 'next/link';
 
 export const HistImage = () => {
     return (
-        <div id='image-box' className="border-b shadow-md py-4 px-8 rounded-lg" >
-            <Link href="/visuals/histogram" className="text-xl font-bold font-serif hover:underline">
-            County Level Pass/Fail Histogram
-          </Link>
-          <div id='histogram-image' className="bg-white p-4 shadow-md object-contain rounded-lg">
-          <img id='histogram' 
-              src="/histogram_2.png"
-              className="hidden md:block"
-              alt="Colorado County Bar Chart"
-            />   
-                      
-          </div>
-
-
+        <div id='image-box' className="border-b shadow-md py-4 px-4 sm:px-8 rounded-lg h-full flex flex-col bg-lavender-100">
+            <Link href="/visuals/histogram" className="text-lg sm:text-xl font-bold font-serif hover:underline mb-3">
+              County Level Pass/Fail Histogram
+            </Link>
+            
+            <div className="bg-white p-2 sm:p-4 shadow-md rounded-lg flex-grow overflow-hidden flex items-center justify-center">
+              <div className="w-full h-[200px] md:h-[250px] lg:h-[300px] relative">
+                <img 
+                    src="/histogram_2.png"
+                    className="w-full h-full object-contain"
+                    alt="Colorado County Bar Chart"
+                />
+              </div>
+            </div>
         </div>
     );
 };
